@@ -1,5 +1,5 @@
 {
-  "name": "galdr",
+  "name": "nyelonong",
   "owner": { "name": "Muhammad Zaki Al-Afrani" },
   "plugins": [
     { "name": "galdr", "source": "./", "description": "galdr — personal engineering methodology pack" }

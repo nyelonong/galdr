@@ -113,11 +113,11 @@ galdr is a Claude Code plugin.
 1. Add the marketplace and install the plugin:
    ```
    /plugin marketplace add nyelonong/galdr
-   /plugin install galdr@galdr
+   /plugin install galdr@nyelonong
    ```
 2. Enable the always-on core — it ships **disabled**, so you opt in:
    ```
-   touch ~/.claude/plugins/cache/galdr/galdr/<version>/hooks/enabled
+   touch ~/.claude/plugins/cache/nyelonong/galdr/<version>/hooks/enabled
    ```
 3. Wire each repo once: `/galdr:setup` (writes `docs/agents/galdr.md` — gate commands, invariants, model tiers, thresholds, smoke config).
 4. Optional, once per machine: `/galdr:usage-bridge install` — real 5h/7d usage % and the quota-threshold park, even where your statusline doesn't already write the cache.
