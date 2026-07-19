@@ -66,10 +66,13 @@ Finishing a branch runs this sequence, in order:
 3. **Branch-level review** (the review skill) — both axes, forced verdicts.
 4. **Smoke sheet** (below).
 5. **Default outcome**: keep the branch, write the finish report, append a closeout
-   line to memory-progress.md, and advance the spec's `Lifecycle status:` line to
-   `shipped` — which marks the branch's work finished, not that it merged (merge and
-   push stay separate, below). This is the default outcome every time — finishing does
-   not merge and does not push (see Consent below).
+   line to memory-progress.md — beginning with the `CLOSEOUT` (or, at release, `RELEASED`)
+   marker that `continue` §7's rotation boundary scans for — and advance the spec's
+   `Lifecycle status:` line to `shipped` — which marks the branch's work finished, not
+   that it merged (merge and push stay separate, below). This is the default outcome
+   every time — finishing does not merge and does not push (see Consent below).
+6. **Progress-log rotation** — after the closeout line is written, rotate
+   `memory-progress.md` per `skills/continue/SKILL.md` §7 (Progress-log rotation).
 
 When you defer something at finish rather than fixing it now, append it to the backlog
 per /galdr:backlog (skills/backlog/SKILL.md) — don't restate the format here.

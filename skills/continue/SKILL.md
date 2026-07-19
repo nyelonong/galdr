@@ -95,3 +95,29 @@ starting a new one:
 Park skips nothing silently. Anything that did not get flushed in steps 1-4 is listed
 as `LOST-RISK: <what and why>` in the snapshot, so the next agent knows exactly what to
 re-derive instead of assuming it survived.
+
+## 7. Progress-log rotation
+
+At cycle close, move closed-cycle lines out of the live memory-progress.md into an
+append-only memory-progress-archive.md (same directory), so the resume read and `EV`
+greps stay fast on a long-lived repo.
+
+Trigger: `branches` finish, after the closeout/release line is written; also on
+explicit request.
+
+Boundary: a cycle is closed when its block ends in a `CLOSEOUT` or `RELEASED` marker —
+archive the lines up to the last such marker in the file, keep everything after it live.
+
+Always keep live: the newest `next:` line, any still-open WIP (in-flight, not yet
+closed), and a one-line header at the top of memory-progress.md pointing at the archive
+(example: `archive: older closed cycles in memory-progress-archive.md`). Never archive
+the newest `next:` line or open WIP — the memory-first resume read (§3) must still find
+them in the live file.
+
+Move-only, nothing lost: append the moved block to the archive in original order; never
+delete or rewrite already-archived content. Concatenating the rotated-out region with
+the archive reproduces the pre-rotation file exactly; `grep '^EV' memory-progress*.md`
+returns the full history across both files.
+
+Commit: the move is a normal committed edit under the standing atomic-commit rule — no
+new consent step, no `wip:` exception.

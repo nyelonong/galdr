@@ -1,3 +1,7 @@
+## 0.6.0 — 2026-07-19
+
+- progress-log rotation — at branch finish, closed cycles (through the last `CLOSEOUT`/`RELEASED` marker) move to an append-only `memory-progress-archive.md`; the live `memory-progress.md` keeps the newest `next:`, open WIP, and a one-line archive pointer, so the resume read stays fast and `EV` history is preserved across both files.
+
 ## 0.5.1 — 2026-07-19
 
 - enable flag moved to a stable path (`~/.claude/galdr/enabled`) so the always-on core stays enabled across plugin updates — no more re-enabling after every version bump. The legacy in-plugin `hooks/enabled` is still honored for back-compat.
