@@ -1,3 +1,7 @@
+## 0.5.1 — 2026-07-19
+
+- enable flag moved to a stable path (`~/.claude/galdr/enabled`) so the always-on core stays enabled across plugin updates — no more re-enabling after every version bump. The legacy in-plugin `hooks/enabled` is still honored for back-compat.
+
 ## 0.5.0 — 2026-07-19
 
 - backlog capture — a `/galdr:backlog` skill owns docs/backlog.md (list open items, defined entry format, resolve); shape/plan/waves/review/branches append deferrals to it automatically; branches finish proposes the open items at cycle end.
