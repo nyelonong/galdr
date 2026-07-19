@@ -8,7 +8,7 @@
 
 ## Why I built this
 
-I was running two skill packs at once — overlapping bootstraps, competing conventions, and a standing context cost I paid on every single session. Neither matched how I actually work: shape an idea into a spec, turn it into a wave-based TDD plan, run it with subagents behind evidence gates, and keep durable memory so nothing is lost across a `/clear` or a dead session.
+I was running multiple skill packs at once — overlapping bootstraps, competing conventions, and a standing context cost I paid on every single session. Neither matched how I actually work: shape an idea into a spec, turn it into a wave-based TDD plan, run it with subagents behind evidence gates, and keep durable memory so nothing is lost across a `/clear` or a dead session.
 
 So I built one pack that *is* that method — small enough to leave on all the time, and held to the same standard it holds your code to: every discipline rule was tested against an agent that didn't have it before it shipped.
 
