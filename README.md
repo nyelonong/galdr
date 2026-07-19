@@ -115,9 +115,13 @@ galdr is a Claude Code plugin.
    /plugin marketplace add nyelonong/galdr
    /plugin install galdr@nyelonong
    ```
-2. Enable the always-on core — it ships **disabled**, so you opt in:
+2. **Enable the always-on core** (optional). Skills work as slash commands the moment you
+   install. The `SessionStart` hook — which injects the Iron Laws, routing, and voice into
+   *every* session and re-applies them after `/clear` — ships **disabled**, so installing
+   galdr doesn't silently take over all your sessions or collide with another pack's hook.
+   Flip it on when you want that (version-proof one-liner):
    ```
-   touch ~/.claude/plugins/cache/nyelonong/galdr/<version>/hooks/enabled
+   touch "$(ls -d ~/.claude/plugins/cache/nyelonong/galdr/*/hooks)/enabled"
    ```
 3. Wire each repo once: `/galdr:setup` (writes `docs/agents/galdr.md` — gate commands, invariants, model tiers, thresholds, smoke config).
 4. Optional, once per machine: `/galdr:usage-bridge install` — real 5h/7d usage % and the quota-threshold park, even where your statusline doesn't already write the cache.
