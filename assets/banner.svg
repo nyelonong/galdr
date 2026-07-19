@@ -1,0 +1,73 @@
+<svg width="1200" height="300" viewBox="0 0 1200 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="galdr — routed, evidence-gated engineering methodology for Claude Code">
+  <title>galdr</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1120"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0f2fe"/>
+      <stop offset="1" stop-color="#a5f3fc"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="aurora" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="34"/>
+    </filter>
+    <clipPath id="round"><rect width="1200" height="300" rx="20"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#round)">
+    <rect width="1200" height="300" fill="url(#bg)"/>
+    <!-- aurora wash across the top -->
+    <g filter="url(#aurora)" opacity="0.55">
+      <ellipse cx="360" cy="20" rx="360" ry="60" fill="#22d3ee" opacity="0.30"/>
+      <ellipse cx="760" cy="0"  rx="420" ry="70" fill="#34d399" opacity="0.22"/>
+      <ellipse cx="1050" cy="30" rx="260" ry="55" fill="#818cf8" opacity="0.22"/>
+    </g>
+    <rect x="1" y="1" width="1198" height="298" rx="19" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+    <!-- Elder Futhark: galdr = ᚷ ᚨ ᛚ ᛞ ᚱ, drawn as strokes -->
+    <g stroke="#67e8f9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+       fill="none" filter="url(#glow)" opacity="0.9">
+      <!-- gebo (g): X -->
+      <line x1="462" y1="52" x2="498" y2="104"/>
+      <line x1="498" y1="52" x2="462" y2="104"/>
+      <!-- ansuz (a) -->
+      <line x1="540" y1="52" x2="540" y2="104"/>
+      <line x1="540" y1="52" x2="562" y2="70"/>
+      <line x1="540" y1="70" x2="562" y2="88"/>
+      <!-- laguz (l) -->
+      <line x1="600" y1="52" x2="600" y2="104"/>
+      <line x1="600" y1="52" x2="620" y2="72"/>
+      <!-- dagaz (d) -->
+      <line x1="646" y1="52" x2="646" y2="104"/>
+      <line x1="678" y1="52" x2="678" y2="104"/>
+      <line x1="646" y1="52" x2="678" y2="104"/>
+      <line x1="678" y1="52" x2="646" y2="104"/>
+      <!-- raidho (r) -->
+      <line x1="720" y1="52" x2="720" y2="104"/>
+      <line x1="720" y1="52" x2="740" y2="66"/>
+      <line x1="740" y1="66" x2="720" y2="80"/>
+      <line x1="720" y1="80" x2="740" y2="104"/>
+    </g>
+
+    <!-- wordmark -->
+    <text x="600" y="200" text-anchor="middle"
+          font-family="'Segoe UI', Helvetica, Arial, sans-serif"
+          font-size="128" font-weight="800" letter-spacing="4"
+          fill="url(#ink)" filter="url(#glow)">galdr</text>
+
+    <!-- tagline -->
+    <text x="600" y="242" text-anchor="middle"
+          font-family="'Segoe UI', Helvetica, Arial, sans-serif"
+          font-size="22" font-weight="400" letter-spacing="0.5" fill="#94a3b8">Routed, evidence-gated engineering methodology for Claude Code</text>
+
+    <!-- flow footer -->
+    <text x="600" y="278" text-anchor="middle"
+          font-family="'Segoe UI', Helvetica, Arial, sans-serif"
+          font-size="14" font-weight="600" letter-spacing="5" fill="#3f5069">SHAPE · PLAN · WAVES · VERIFY · MEMORY</text>
+  </g>
+</svg>

@@ -62,14 +62,14 @@ flowchart LR
 
 What keeps it honest:
 
-- **Evidence gates.** Every RED, GREEN, gate, and review verdict is a greppable `EV` line in [`memory-progress.md`](memory-progress.md), tied to the commit that produced it.
-- **Durable memory.** State lives in [`memory.md`](memory.md) and [`memory-progress.md`](memory-progress.md). A new session reads them first and re-verifies claims with commands — so work survives `/clear`, compaction, and session death.
+- **Evidence gates.** Every RED, GREEN, gate, and review verdict is a greppable `EV` line in `memory-progress.md`, tied to the commit that produced it.
+- **Durable memory.** State lives in `memory.md` and `memory-progress.md`. A new session reads them first and re-verifies claims with commands — so work survives `/clear`, compaction, and session death.
 - **Usage-aware.** A pre-dispatch guard parks the run before it burns past your 5-hour / 7-day limit and resumes cleanly; each wave reports tokens spent and your real usage %.
-- **A self-managing backlog.** Deferred work is captured automatically in [`docs/backlog.md`](docs/backlog.md) and proposed back to you when a cycle finishes — nothing gets forgotten.
+- **A self-managing backlog.** Deferred work is captured automatically in `docs/backlog.md` and proposed back to you when a cycle finishes — nothing gets forgotten.
 
 ## The skills
 
-17 skills, each also a slash command (`/galdr:<name>`). Full design in the [spec](docs/specs/2026-07-18-galdr-design.md).
+17 skills, each also a slash command (`/galdr:<name>`).
 
 **Always on — inside every session and task** (injected by the [bootstrap](hooks/bootstrap.md))
 
@@ -98,8 +98,8 @@ What keeps it honest:
 |---|---|
 | [`prototype`](skills/prototype/SKILL.md) | Answer a design question with throwaway working code instead of a spec. |
 | [`rearchitect`](skills/rearchitect/SKILL.md) | Map an architecture pain area read-only, rank it, exit into a plan. |
-| [`backlog`](skills/backlog/SKILL.md) | Owns [`docs/backlog.md`](docs/backlog.md) — captures, lists, and resolves deferred work. |
-| [`setup`](skills/setup/SKILL.md) | Writes this repo's [`docs/agents/galdr.md`](docs/agents/galdr.md) — gates, invariants, models, smoke. |
+| [`backlog`](skills/backlog/SKILL.md) | Owns `docs/backlog.md` — captures, lists, and resolves deferred work. |
+| [`setup`](skills/setup/SKILL.md) | Writes this repo's `docs/agents/galdr.md` — gates, invariants, models, smoke. |
 | [`usage-bridge`](skills/usage-bridge/SKILL.md) | Installs the statusline bridge for real 5h/7d usage % on any machine. |
 | [`authoring`](skills/authoring/SKILL.md) | The meta-skill — write or edit galdr skills through its checks. |
 
@@ -166,7 +166,7 @@ Every wave dispatches subagents that commit their own atomic red-green pairs; ev
 
 ## Proven, not promised
 
-Every rule in this pack was tested against an agent that didn't have it — the same [protocol](testing/protocol.md) the pack prescribes for your code, applied to the pack itself.
+Every rule in this pack was tested against an agent that didn't have it — the same protocol the pack prescribes for your code, applied to the pack itself.
 
 <details>
 <summary><b>The receipts</b> — pressure tests, router accuracy, reviews, line budgets</summary>
@@ -174,10 +174,10 @@ Every rule in this pack was tested against an agent that didn't have it — the 
 <br>
 
 - **Pressure-tested discipline.** Every discipline skill ran RED first: a baseline agent, no skill, real fixtures. The baselines failed the way real sessions fail — edited production code on a "tests after" nudge, retrofitted tests around untested code, mocked on request without a seam, investigated a live payments incident without ever mitigating it. With the skill loaded, every one of those failures reversed: 12/12 GREEN scenarios, zero forbidden behaviors.
-- **A router that earns its overhead.** 16/16 [routing accuracy](testing/router-accuracy.md) on the full request set, zero fast-path violations across every run — including the negatives (i18n, registry, migration, cross-repo) designed to tempt it into skipping ceremony. When a run disagreed with the answer key, the key was wrong: the router had applied the spec more faithfully than its own test.
+- **A router that earns its overhead.** 16/16 routing accuracy on the full request set, zero fast-path violations across every run — including the negatives (i18n, registry, migration, cross-repo) designed to tempt it into skipping ceremony. When a run disagreed with the answer key, the key was wrong: the router had applied the spec more faithfully than its own test.
 - **Reviewed like it reviews you.** Every skill went through fresh-context two-verdict review (spec compliance, then quality). The reviews caught real defects — a project binding hardcoded into a generic skill, an interface mismatch between siblings, a missing file convention — and every fix was re-reviewed to RESOLVED.
 - **Lean enough to always be on.** The v0.1 core was 15 skills + bootstrap in 1,934 lines (superpowers spent 3,150 on 14), with a standing context cost of ~1,240 tokens — the bootstrap and one-line triggers are all a session carries until a skill actually fires.
-- **An audit trail, not a changelog claim.** Every RED, GREEN, review verdict, and gate lives as a greppable `EV` line in [`memory-progress.md`](memory-progress.md), tied to the commit that produced it.
+- **An audit trail, not a changelog claim.** Every RED, GREEN, review verdict, and gate lives as a greppable `EV` line in `memory-progress.md`, tied to the commit that produced it.
 - **Built by itself.** Releases `0.2` through `0.5` were each shaped, planned, wave-executed, reviewed, and shipped through galdr's own flow, with adversarial review at every gate.
 
 </details>
@@ -199,7 +199,7 @@ galdr is a Claude Code plugin.
    ```
    mkdir -p ~/.claude/galdr && touch ~/.claude/galdr/enabled
    ```
-3. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes [`docs/agents/galdr.md`](docs/agents/galdr.md) — gate commands, invariants, model tiers, thresholds, smoke config).
+3. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes `docs/agents/galdr.md` — gate commands, invariants, model tiers, thresholds, smoke config).
 4. Optional, once per machine: [`/galdr:usage-bridge install`](skills/usage-bridge/SKILL.md) — real 5h/7d usage % and the quota-threshold park, even where your statusline doesn't already write the cache.
 
 Then just work. The router picks the right path on every substantive request.
@@ -212,7 +212,7 @@ With the hook enabled, the [router](skills/route/SKILL.md) runs on any substanti
 - **Review the backlog:** [`/galdr:backlog`](skills/backlog/SKILL.md) lists open deferred work; the deferring skills append to it automatically, and [`branches`](skills/branches/SKILL.md) finish proposes it back to you.
 - **Not sure which skill?** [`/galdr:using-galdr`](skills/using-galdr/SKILL.md) tells confusable pairs apart (shape vs prototype, review vs verify, debug vs tdd, plan vs waves).
 
-Skills stay generic; each repo's specifics live in [`docs/agents/galdr.md`](docs/agents/galdr.md) from [`/galdr:setup`](skills/setup/SKILL.md).
+Skills stay generic; each repo's specifics live in `docs/agents/galdr.md` from [`/galdr:setup`](skills/setup/SKILL.md).
 
 ## Usage bridge
 
@@ -222,9 +222,7 @@ Skills stay generic; each repo's specifics live in [`docs/agents/galdr.md`](docs
 
 | | |
 |---|---|
-| [Design spec](docs/specs/2026-07-18-galdr-design.md) | The full architecture — three invocation tiers, line budgets, role indirection. |
-| [Testing protocol](testing/protocol.md) | How each skill is pressure-tested or spot-checked before it ships. |
-| [Router accuracy set](testing/router-accuracy.md) | The request → expected-route cases the router is scored against. |
 | [Bootstrap](hooks/bootstrap.md) | The ~46-line context block injected every session. |
 | [CHANGELOG](CHANGELOG.md) | Every release, `0.1` onward. |
-| [CLAUDE.md](CLAUDE.md) | Repo conventions — this pack dogfoods its own methodology. |
+
+The full design spec, testing protocol, and router-accuracy set live in the private development repo, which is the canonical source this pack is published from.
