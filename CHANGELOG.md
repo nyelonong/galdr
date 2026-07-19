@@ -1,3 +1,7 @@
+## 0.6.1 — 2026-07-19
+
+- setup Budget config simplified — dropped the `reserve-per-task` key (a Workflow-mode-only token-budget guard); `setup` now writes four Budget keys. `seven-day-park-pct` now defaults to `95` (the 7-day budget recovers more slowly than the 5-hour). waves drops the dependent "budget below reserve" park trigger; three park triggers remain (usage-limit warning, "park it", 5h/7d quota threshold).
+
 ## 0.6.0 — 2026-07-19
 
 - progress-log rotation — at branch finish, closed cycles (through the last `CLOSEOUT`/`RELEASED` marker) move to an append-only `memory-progress-archive.md`; the live `memory-progress.md` keeps the newest `next:`, open WIP, and a one-line archive pointer, so the resume read stays fast and `EV` history is preserved across both files.

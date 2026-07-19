@@ -181,35 +181,30 @@ steps: `references/progress-and-usage.md`.
 
 ## Pre-dispatch budget guard
 
-Before each not-yet-started dispatch, waves may park instead of dispatching. Four
+Before each not-yet-started dispatch, waves may park instead of dispatching. Three
 triggers:
 
-- **Budget below reserve (Workflow mode only)** — `budget.remaining()` drops below the
-  repo's per-task reserve. Read the threshold from the `## Budget` section's
-  `reserve-per-task` key in `docs/agents/galdr.md` (written by setup); cite that config,
-  never a literal number here.
 - **Usage limit warning** — a usage limit warning appears this session.
 - **User says "park it".**
 - **Quota threshold (both modes)** — the rate-limit reader shows
   `five_hour.used_percentage` at or above the `five-hour-park-pct` key, or
   `seven_day.used_percentage` at or above the `seven-day-park-pct` key (`## Budget`
-  section — cite the config, never a literal). Unlike `budget.remaining()`, this trigger
-  works in both execution modes; when the cache is unavailable it is simply inactive and
-  the other triggers still apply.
+  section — cite the config, never a literal). This trigger works in both execution
+  modes; when the cache is unavailable it is simply inactive and the other triggers
+  still apply.
 
 Park is graceful. Dispatches already in flight always finish and are reviewed, gated,
 and committed first — never interrupt an in-flight dispatch. Only then does waves park,
 before the next dispatch. In Workflow mode, waves also stops launching not-yet-started
-`agent()` calls once the reserve is crossed.
+`agent()` calls once a park trigger fires.
 
 On park, waves emits one inline line naming the wave and task it parked at plus "run
 `/galdr:continue` after your limit resets". The durable resume header itself is written
 by continue's limit-park (`skills/continue/SKILL.md` §6), not here.
 
-**Mode scope:** the proactive `budget.remaining()` guard runs in Workflow-tool mode
-only — Agent-tool mode has no budget object. In Agent-tool mode waves parks reactively
-at wave boundaries, on a limit warning or "park it". The quota-threshold trigger is
-checked before every dispatch in both modes.
+**Mode scope:** the usage-limit-warning and "park it" triggers are reactive and apply in
+both modes; in Agent-tool mode waves parks at wave boundaries. The quota-threshold
+trigger is checked before every dispatch in both modes.
 
 ## Git discipline
 

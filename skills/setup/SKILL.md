@@ -56,23 +56,21 @@ Exactly these sections, in this order, every time — no more, no fewer:
 - **`## Briefs`** — whether waves' dispatch briefs under `docs/briefs/` are gitignored
   (the default) or committed. State the default explicitly rather than leaving it
   implied.
-- **`## Budget`** — five keys, all written idempotently: re-running setup updates each
+- **`## Budget`** — four keys, all written idempotently: re-running setup updates each
   key in place, never duplicates it.
-  - `reserve-per-task`, default `50000` (a token count). Waves reads it as the
-    pre-dispatch budget guard — the threshold that decides when to park before
-    dispatching the next task rather than run it short on budget.
   - `rate-limits-cache`, default `~/.claude/rate-limits-cache.json` — the file
     (written by the statusline) galdr reads for 5h/7d usage %.
   - `five-hour-park-pct`, default `90` — waves parks before a dispatch when the 5-hour
     used % is at or above this.
-  - `seven-day-park-pct`, default `90` — same as `five-hour-park-pct`, for the 7-day
-    window.
+  - `seven-day-park-pct`, default `95` — same idea as `five-hour-park-pct`, for the 7-day
+    window (defaulted higher because the 7-day budget recovers more slowly).
   - `rate-limits-max-age`, default `300` (seconds) — a cache older than this is treated
     as unavailable.
 
   At setup time, surface the two park thresholds for the user to accept or change (they
-  are the knob that controls when a run parks); write the default `90` only if the user
-  accepts it. All five keys stay editable in the config file afterward.
+  are the knob that controls when a run parks); write the defaults (`90` for 5h, `95` for
+  7d) only if the user accepts them. All four keys stay editable in the config file
+  afterward.
 
 ## CLAUDE.md block
 

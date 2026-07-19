@@ -31,8 +31,8 @@ When unavailable, waves never errors and never blocks the run. Concretely:
 - The **usage report** drops the limit percentages and prints tokens only, plus the line
   `for your limit %, run /usage`.
 - The **quota-threshold trigger** in the budget guard is inactive — it cannot fire
-  without fresh percentages. The guard's other triggers (budget-below-reserve, usage
-  limit warning, "park it") still apply unchanged.
+  without fresh percentages. The guard's other triggers (usage limit warning, "park it")
+  still apply unchanged.
 
 Availability is decided per read, not once per run — a cache that was stale at one wave
 gate may be fresh at the next.
