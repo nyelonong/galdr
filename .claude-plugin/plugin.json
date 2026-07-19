@@ -1,0 +1,6 @@
+{
+  "name": "galdr",
+  "version": "0.5.0",
+  "description": "Personal engineering methodology: routed requests, wave-based TDD plans, evidence gates, subagent execution, durable memory.",
+  "author": { "name": "Muhammad Zaki Al-Afrani" }
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Emits the galdr bootstrap into session context. Silent unless hooks/enabled exists
+# (the trial-run gate creates it — spec §3 install ordering).
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+[ -f "$dir/enabled" ] || exit 0
+cat "$dir/bootstrap.md"
