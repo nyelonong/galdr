@@ -112,7 +112,7 @@ galdr is a Claude Code plugin.
 
 1. Add the marketplace and install the plugin:
    ```
-   /plugin marketplace add nyelonong/galdr        # your GitHub owner/repo, or a local path
+   /plugin marketplace add nyelonong/galdr
    /plugin install galdr@galdr
    ```
 2. Enable the always-on core — it ships **disabled**, so you opt in:
