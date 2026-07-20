@@ -9,19 +9,25 @@ waves executes the task list a plan produced: wave by wave, dispatching each wav
 frontier, distrusting every report until it's checked, and gating the next wave on
 evidence instead of a claim.
 
-## Execution modes
+## Runtimes and dispatch
 
-Two first-class modes. Check once per wave: does a Workflow tool appear in the
-available tools this session?
+waves runs on three runtimes. Each names one dispatch mechanism, one progress view, and
+one usage reader; the detail table is in `references/runtime-dispatch.md`.
 
-- **Workflow-tool script** (when the tool exists): write the wave as a script — fan out
-  the frontier, pin each task's model and effort, encode the gates as code.
-  Deterministic; use this mode when the tool is present.
-- **Agent-tool dispatch** (when it isn't): dispatch one Agent-tool call per frontier
-  task in the same response, so they run in parallel.
+- **Claude** — Workflow or Agent tool for dispatch; TodoWrite for the progress tree; the
+  statusline rate-limit cache as the usage reader.
+- **Codex** — subagents for dispatch (the AGENT-BRIEF is the dispatch prompt: spawn one
+  agent per brief, wait for all, return a summary; `/agent` to inspect); task view for
+  the progress tree; usage reader N/A.
+- **Antigravity** — `start_subagent` for dispatch (dynamic subagents, isolated context,
+  parallel); agent view for the progress tree; usage reader N/A.
 
-Both modes run the same dispatch procedure, status contract, and review gate below —
-the mode only changes how the calls go out.
+### Antigravity returns are reviewable code diffs
+
+On Antigravity, subagent returns surface as native reviewable code diffs. Two binding
+rules: the `EV`/`memory-progress.md` ledger is still written (a diff is not evidence),
+and the hard gate is not skipped by an "Always Proceed" policy — review the diff against
+the brief's acceptance criteria before marking the task `complete`.
 
 ## Dispatch procedure
 
@@ -58,9 +64,8 @@ Order, every time:
    checkbox by checkbox. Quote the criterion for every gap found.
 2. **Code quality second** — only once spec compliance passes.
 
-Severity within either verdict: Critical findings get fixed now, before the task can be
-marked `complete`. Important findings get fixed before the next task starts. This
-mirrors the severity gate the review skill uses at branch level.
+Severity: Critical findings are fixed now (before `complete`); Important before the
+next task — mirroring review's branch-level severity gate.
 
 ## Status contract
 
@@ -120,9 +125,8 @@ reports said. Defer a task to a later cycle? Append it to the backlog per /galdr
 
 ## Live progress table
 
-The plan's `## Progress` table (format defined in `skills/plan/SKILL.md`) is a derived
-view waves maintains — never hand-edited, since `memory-progress.md` stays the durable
-state:
+The plan's `## Progress` table (format in `skills/plan/SKILL.md`) is a derived view
+waves maintains — never hand-edited; `memory-progress.md` stays the durable state:
 
 - **Wave open** — mark the wave's frontier tasks `in-progress`.
 - **Wave gate** — regenerate the whole table from `memory-progress.md`.
@@ -132,26 +136,25 @@ state:
 Both table writes happen only at points the controller may already write the repo (wave
 open, wave gate) — never while a dispatch is in flight.
 
-### Native task tree
+### Native progress tree
 
-Alongside the plan table, waves keeps a native TodoWrite list mirroring the plan's tasks:
-seed one `pending` entry per task at run start; flip a wave's frontier tasks to
-`in_progress` at wave open; set each to its final status at the wave gate. In Workflow
-mode waves runs one workflow per wave, so the controller refreshes the tree at each wave
-boundary; in Agent-tool mode it updates the tree per task as returns land. The TodoWrite
-tree is an ephemeral mirror — `memory-progress.md` stays the only durable state.
+Alongside the plan table, waves keeps a native progress list mirroring the plan's tasks
+(per-runtime mechanism in `references/runtime-dispatch.md`). Seed one `pending` entry
+per task at run start; flip a wave's frontier tasks to `in_progress` at wave open; set
+each to its final status at the wave gate. The native tree is an ephemeral mirror —
+`memory-progress.md` stays the only durable state.
 
 ## Usage and token report
 
 At each wave gate and at run end, waves reports together:
 
-- **Tokens** — spent this wave plus running cumulative: from each workflow-completion's
-  `subagent_tokens` in Workflow mode, or summed from each Agent return's usage in
-  Agent-tool mode.
-- **Usage limits** — the real 5h and 7d `used_percentage` and the 5h reset time from the
-  rate-limit reader below. Label these as usage-limit percentages, not a dollar cost.
+- **Tokens** — spent this wave plus running cumulative, summed from each dispatch
+  return's usage in the wave.
+- **Usage limits (Claude only)** — the real 5h and 7d `used_percentage` and the 5h reset
+  time from the rate-limit reader below. Label as usage-limit percentages, not cost. On
+  Codex and Antigravity the usage reader is N/A — report tokens only.
 
-When the cache is unavailable, report tokens only plus the line "for your limit %, run
+When the cache is unavailable, report tokens only plus "for your limit %, run
 `/usage`". Exact report layout: `references/progress-and-usage.md`.
 
 ## Continuous execution
@@ -168,16 +171,16 @@ these four conditions (verbatim from spec §6):
 No other reason pauses a wave. "This feels like a good stopping point" is not one of
 the four.
 
-## Rate-limit reader
+## Rate-limit reader (Claude)
 
 waves reads real usage from the file at the `rate-limits-cache` key (`## Budget` section
 of `docs/agents/galdr.md`, written by setup — cite the config, never a literal path). It
 parses `five_hour.used_percentage`, `seven_day.used_percentage`, `resets_at`, and
-`cached_at`. The statusline writes this file; galdr never queries an API. Treat the data
-as **unavailable** — never error, never block — when the file is missing or when
-`cached_at` is older than the `rate-limits-max-age` key (seconds). The reader feeds the
-usage report above and the quota trigger below. Exact read, staleness, and fallback
-steps: `references/progress-and-usage.md`.
+`cached_at`. The Claude statusline writes this file; galdr never queries an API. This
+reader is Claude-only (N/A on Codex and Antigravity). Treat the data as **unavailable**
+— never error, never block — when the file is missing or when `cached_at` is older than
+the `rate-limits-max-age` key (seconds). Exact read, staleness, and fallback steps:
+`references/progress-and-usage.md`.
 
 ## Pre-dispatch budget guard
 
@@ -186,25 +189,19 @@ triggers:
 
 - **Usage limit warning** — a usage limit warning appears this session.
 - **User says "park it".**
-- **Quota threshold (both modes)** — the rate-limit reader shows
+- **Quota threshold (Claude only)** — the rate-limit reader shows
   `five_hour.used_percentage` at or above the `five-hour-park-pct` key, or
   `seven_day.used_percentage` at or above the `seven-day-park-pct` key (`## Budget`
-  section — cite the config, never a literal). This trigger works in both execution
-  modes; when the cache is unavailable it is simply inactive and the other triggers
-  still apply.
+  section — cite the config, never a literal). This trigger depends on the statusline
+  rate-limit cache, so it is Claude-only; on Codex and Antigravity it is inactive. The
+  other two triggers above apply on all runtimes.
 
-Park is graceful. Dispatches already in flight always finish and are reviewed, gated,
-and committed first — never interrupt an in-flight dispatch. Only then does waves park,
-before the next dispatch. In Workflow mode, waves also stops launching not-yet-started
-`agent()` calls once a park trigger fires.
+Park is graceful: in-flight dispatches always finish — reviewed, gated, committed —
+before the next dispatch parks; never interrupt one in flight.
 
 On park, waves emits one inline line naming the wave and task it parked at plus "run
-`/galdr:continue` after your limit resets". The durable resume header itself is written
-by continue's limit-park (`skills/continue/SKILL.md` §6), not here.
-
-**Mode scope:** the usage-limit-warning and "park it" triggers are reactive and apply in
-both modes; in Agent-tool mode waves parks at wave boundaries. The quota-threshold
-trigger is checked before every dispatch in both modes.
+`/galdr:continue` after your limit resets". The durable resume header is written by
+continue's limit-park (`skills/continue/SKILL.md` §6), not here.
 
 ## Git discipline
 
@@ -239,3 +236,6 @@ before it goes out.
 
 `references/progress-and-usage.md` — the exact rate-limit cache read, staleness and
 fallback logic, and the gate/run-end usage report layout.
+
+`references/runtime-dispatch.md` — the per-runtime dispatch, progress-tree, and
+usage-reader detail table.

@@ -7,6 +7,10 @@ description: Use when the user runs /galdr:usage-bridge to install, remove, or c
 
 Install, remove, or check the statusline wrapper that feeds galdr its usage numbers.
 
+> Claude-only: this skill wraps the Claude Code `statusLine`, which only Claude
+> exposes. On Codex and Antigravity there is no `statusLine` to wrap, so the bridge
+> is a documented no-op there — run it only on Claude Code.
+
 ## Why a statusLine wrapper
 
 Claude Code hands the official `rate_limits` block only to a `statusLine` command — not

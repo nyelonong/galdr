@@ -151,5 +151,22 @@ Run all three before treating the plan as ready:
 Fix anything the self-review catches inline, in the same pass — do not hand a plan
 with known gaps to `waves` and expect the gate to catch it.
 
+## Antigravity environment
+
+When `plan` runs inside Antigravity, emit the wave DAG as the native **Task List** +
+**Implementation Plan** artifacts the environment provides, instead of (or alongside)
+the `docs/plans/` markdown file. Two binding rules still hold, with no exception for the
+Antigravity UI:
+
+- **Ledger still written.** The `EV` lines and `memory-progress.md` ledger are written
+  exactly as in any other environment — the Task List is a derived view of the plan, not
+  a replacement for durable state. Antigravity does not host the ledger, so plan still
+  appends to `memory-progress.md`.
+- **Hard gate not skipped by "Always Proceed".** Antigravity's "Always Proceed" policy
+  must not be used to wave off the per-wave evidence gate. The gate runs the same way;
+  "Always Proceed" only suppresses UI prompts, never the `verify` evidence check.
+
+## Finishing
+
 Once the plan file is written and self-review passes, set the spec's `Lifecycle
 status:` line to `planned`.

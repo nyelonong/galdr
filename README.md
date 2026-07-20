@@ -184,7 +184,9 @@ Every rule in this pack was tested against an agent that didn't have it — the 
 
 ## Install
 
-galdr is a Claude Code plugin.
+galdr runs on three runtimes — Claude Code, OpenAI Codex, and Google Antigravity. Pick the one you use; the skills land the same way on all three. Only the always-on core hook differs per runtime, wired by `/galdr:core install <runtime>`.
+
+### Claude Code
 
 1. Add the marketplace and install the plugin:
    ```
@@ -195,12 +197,40 @@ galdr is a Claude Code plugin.
    moment you install. The `SessionStart` [hook](hooks/session-start) — which injects the Iron Laws, routing, and
    voice into *every* session and re-applies them after `/clear` — ships **disabled**, so
    installing galdr doesn't silently take over all your sessions or collide with another
-   pack's hook. Flip it on once — it lives at a stable path, so it survives plugin updates:
+   pack's hook. Flip it on once — the config lives at a stable path, so it survives plugin
+   updates:
    ```
-   mkdir -p ~/.claude/galdr && touch ~/.claude/galdr/enabled
+   /galdr:core install claude
    ```
-3. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes `docs/agents/galdr.md` — gate commands, invariants, model tiers, thresholds, smoke config).
-4. Optional, once per machine: [`/galdr:usage-bridge install`](skills/usage-bridge/SKILL.md) — real 5h/7d usage % and the quota-threshold park, even where your statusline doesn't already write the cache.
+
+### OpenAI Codex
+
+1. Land the 17 skills:
+   ```
+   npx skills add nyelonong/galdr
+   ```
+2. Enable the always-on core (optional, one-time). This writes the marked core block into
+   `~/.codex/AGENTS.md`:
+   ```
+   /galdr:core install codex
+   ```
+
+### Google Antigravity
+
+1. Land the 17 skills:
+   ```
+   npx skills add nyelonong/galdr
+   ```
+2. Enable the always-on core (optional, one-time). This writes the marked core block into
+   `~/.gemini/AGENTS.md`:
+   ```
+   /galdr:core install antigravity
+   ```
+
+### After install (all runtimes)
+
+1. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes `docs/agents/galdr.md` — gate commands, invariants, model tiers, thresholds, smoke config).
+2. Optional, once per machine (Claude Code only): [`/galdr:usage-bridge install`](skills/usage-bridge/SKILL.md) — real 5h/7d usage % and the quota-threshold park, even where your statusline doesn't already write the cache.
 
 Then just work. The router picks the right path on every substantive request.
 

@@ -1,3 +1,12 @@
+## 0.7.0 — 2026-07-19
+
+- multi-agent installability — galdr is now runtime-neutral across Claude, Codex, and Antigravity.
+- canonical `galdr-core.md` plus three carriers (`hooks/bootstrap.md` for Claude, `carriers/codex.md` → `~/.codex/AGENTS.md`, `carriers/antigravity.md` → `~/.gemini/AGENTS.md`); each reproduces the §0–§6 block byte-identical, enforced by a content-anchored canon grep in the gate.
+- `/galdr:core` installer (`install|uninstall|status` per agent: `claude`, `codex`, `antigravity`) — consent-before-write, idempotent marked-block replacement, atomic writes, reversible; unifies all three enables under one command.
+- runtime-gap and Antigravity artifact notes across six skills (`waves`, `usage-bridge`, `setup`, `plan`, `verify`, `branches`): per-runtime dispatch (Claude Workflow/Agent tool, Codex subagents, Antigravity `start_subagent`), Claude-only markers, and Antigravity native Artifacts (Task List + Implementation Plan, reviewable code diffs, browser verification, Walkthrough) as the human-facing surface — additive to the durable text ledger, never replacing it.
+- multi-agent install via `npx skills add nyelonong/galdr` (skills on all three runtimes) plus `/galdr:core install <agent>` (always-on core per agent).
+- live smoke — Claude Code verified this cycle (`/galdr:core install claude` enables the hook; the injected core is byte-identical to `galdr-core.md`; a live four-wave parallel `waves` run dispatched, reviewed, and gated). Codex and Antigravity are not yet smoked this cycle — runbook sheets at `docs/agents/smoke/2026-07-19-0.7-codex.md` and `…-antigravity.md` are recorded as untested, not passed.
+
 ## 0.6.1 — 2026-07-19
 
 - setup Budget config simplified — dropped the `reserve-per-task` key (a Workflow-mode-only token-budget guard); `setup` now writes four Budget keys. `seven-day-park-pct` now defaults to `95` (the 7-day budget recovers more slowly than the 5-hour). waves drops the dependent "budget below reserve" park trigger; three park triggers remain (usage-limit warning, "park it", 5h/7d quota threshold).

@@ -67,6 +67,18 @@ run counts.
 - Wave gate: the full gate manifest.
 - Branch finish: the full gate manifest + invariant checks + e2e where configured.
 
+## Antigravity: browser verification
+
+On Antigravity (no terminal gate command), the fresh-evidence check is browser
+verification: capture screenshots and a recording of the running app, in this
+message, against the current code. Two rules bind this mode:
+
+1. The EV line is still written to memory-progress.md (below) — browser evidence is
+   evidence, not a substitute for the ledger.
+2. The hard gate is not skipped by an "Always Proceed" policy. If the app cannot be
+   launched or the screenshots cannot be produced, the gate fails; it does not
+   silently pass.
+
 ## Gate commands
 
 Read the gate manifest from the repo's `docs/agents/galdr.md` (written by `setup`).

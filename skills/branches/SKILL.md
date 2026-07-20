@@ -120,6 +120,22 @@ actual base URL from the config, not a placeholder.
 A change with zero user-visible surface still gets a sheet — item 5 above is what makes
 it non-empty. Never skip the smoke sheet because "nothing to click."
 
+## Antigravity: Walkthrough as the smoke sheet
+
+On Antigravity, the smoke sheet is emitted as the native Walkthrough instead of a
+standalone file under the smoke-sheet output dir — same contents, same order, native
+surface. Two rules bind this case and do not relax for the format change:
+
+1. **The EV/memory-progress.md ledger is still written.** Producing a Walkthrough does
+   not replace the closeout line, the gate evidence, or any `EV [...]` line the finish
+   procedure requires; the ledger is the durable record, the Walkthrough is the
+   readable one, and on Antigravity both are produced.
+2. **The hard gate is not skipped by an "Always Proceed" policy.** Antigravity's
+   "Always Proceed" setting is a default for advancing past prompts, not a substitute
+   for the full gate manifest, the invariant checks, or the review verdicts in steps
+   1-3 of the finish procedure. A Critical finding still stops the sequence there,
+   "Always Proceed" or not.
+
 ## Consent: merge and push
 
 Finishing a branch never merges or pushes by itself.

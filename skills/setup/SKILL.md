@@ -25,6 +25,10 @@ destroys a hand-edited config.
 
 ## Detection heuristics
 
+- **Host agent** → detect Claude vs Codex vs Antigravity up front. The `## Budget`
+  usage keys (`rate-limits-cache`, `five-hour-park-pct`, `seven-day-park-pct`,
+  `rate-limits-max-age`) are **Claude-only**: on Codex and Antigravity, skip them when
+  writing `docs/agents/galdr.md` (see Budget below).
 - **Go markers** (`go.mod`) → Gates defaults: `gofmt -l .`, `go vet ./...`,
   `go test ./...`. Note any docker-compose or `make up`-style dependency as a
   docker/skip note next to the test command — tests that skip without it are not a
@@ -57,7 +61,9 @@ Exactly these sections, in this order, every time — no more, no fewer:
   (the default) or committed. State the default explicitly rather than leaving it
   implied.
 - **`## Budget`** — four keys, all written idempotently: re-running setup updates each
-  key in place, never duplicates it.
+  key in place, never duplicates it. **Claude-only:** the rate-limits statusline that
+  feeds these keys is a Claude Code feature. On Codex and Antigravity, skip the whole
+  `## Budget` section — do not write any of its keys.
   - `rate-limits-cache`, default `~/.claude/rate-limits-cache.json` — the file
     (written by the statusline) galdr reads for 5h/7d usage %.
   - `five-hour-park-pct`, default `90` — waves parks before a dispatch when the 5-hour
@@ -70,7 +76,7 @@ Exactly these sections, in this order, every time — no more, no fewer:
   At setup time, surface the two park thresholds for the user to accept or change (they
   are the knob that controls when a run parks); write the defaults (`90` for 5h, `95` for
   7d) only if the user accepts them. All four keys stay editable in the config file
-  afterward.
+  afterward. Skip this entire step on Codex and Antigravity.
 
 ## CLAUDE.md block
 
