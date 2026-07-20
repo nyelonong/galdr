@@ -61,7 +61,11 @@ Exactly these sections, in this order, every time — no more, no fewer:
   (the default) or committed. State the default explicitly rather than leaving it
   implied.
 - **`## Budget`** — four keys, all written idempotently: re-running setup updates each
-  key in place, never duplicates it. **Claude-only:** the rate-limits statusline that
+  key already present in place, never duplicates it, and never re-adds a key the user
+  has deliberately removed from the file — a missing key stays missing unless the user
+  explicitly asks to add it back. Same respect-rule as Gates/Invariants below, just
+  without the extra diff-and-confirm step (there's nothing to overwrite when a key is
+  simply absent). **Claude-only:** the rate-limits statusline that
   feeds these keys is a Claude Code feature. On Codex and Antigravity, skip the whole
   `## Budget` section — do not write any of its keys.
   - `rate-limits-cache`, default `~/.claude/rate-limits-cache.json` — the file

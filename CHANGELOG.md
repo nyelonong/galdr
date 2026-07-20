@@ -1,3 +1,8 @@
+## 0.8.1 — 2026-07-20
+
+- `setup` respects deliberately-removed Budget keys — a user-deleted key (e.g. `rate-limits-max-age`) no longer gets silently re-added on the next `/galdr:setup` re-run, mirroring the existing Gates/Invariants Human-edits protection (without needing the extra diff-and-confirm step, since nothing is being overwritten when a key is simply absent).
+- fixed a stale `testing/scenarios/setup.md` assertion (`usage-config`'s expected `seven-day-park-pct` default was `90`; the real default has been `95` since 0.6.1) and added a new scenario covering the Budget-key-removal behavior.
+
 ## 0.8.0 — 2026-07-20
 
 - roles-and-journeys — `setup` gains a 5th step: an interview that reads a target repo's own docs/specs/code first, drafts what it finds, interviews only for gaps, and writes a cited-only `docs/agents/roles-and-journeys.md` (never inventing an unsourced claim). `shape` gains a matching "Roles touched" field and a 5th self-review point that catches a spec drifting from that doc, stopping synthesis on conflict rather than silently proceeding. A shipped script, `scripts/roles-touched-check.sh`, adds a non-semantic CI backstop (presence, not meaning). galdr itself has no product roles and is not a target for the doc this feature generates.
