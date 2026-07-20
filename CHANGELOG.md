@@ -1,3 +1,11 @@
+## 0.8.0 — 2026-07-20
+
+- roles-and-journeys — `setup` gains a 5th step: an interview that reads a target repo's own docs/specs/code first, drafts what it finds, interviews only for gaps, and writes a cited-only `docs/agents/roles-and-journeys.md` (never inventing an unsourced claim). `shape` gains a matching "Roles touched" field and a 5th self-review point that catches a spec drifting from that doc, stopping synthesis on conflict rather than silently proceeding. A shipped script, `scripts/roles-touched-check.sh`, adds a non-semantic CI backstop (presence, not meaning). galdr itself has no product roles and is not a target for the doc this feature generates.
+- `/galdr:core install` auto-detect — the invoking agent now determines its own runtime from its own operating context and passes it as `[agent]`, instead of defaulting to `codex` and requiring the user to always name it explicitly.
+- two stale `testing/scenarios/waves.md` spot-checks fixed to match `waves`' post-0.7.0 shape (a renamed heading, per-runtime cadence detail that moved to a reference file); `testing/scenarios/core.md` added, closing the gap where `core` had a shipped-bash test but no retrieval spot-check coverage.
+- `waves`' usage/token report is now required to be printed in the response to the user at every wave gate, not just logged as an `EV` line to the ledger — closes an ambiguity that let the two get conflated.
+- README/CLAUDE.md stale-doc fixes carried over from 0.7.0 (version badge, skill count, `core` missing from the skill table).
+
 ## 0.7.0 — 2026-07-19
 
 - multi-agent installability — galdr is now runtime-neutral across Claude, Codex, and Antigravity.

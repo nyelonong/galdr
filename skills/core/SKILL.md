@@ -28,13 +28,17 @@ test suite can sandbox them and the real global files are never touched.
 
 `scripts/core-install.sh` is the write mechanism. Run it as:
 `bash scripts/core-install.sh {install|uninstall|status} [agent]`
-(`agent` defaults to `codex` when omitted; every interaction should name it
-explicitly.)
+(`agent` is optional. When it's omitted, the invoking agent already knows its
+own runtime from its own operating context — whether it is Claude Code,
+Codex, or Antigravity is inherent to what's running it — and should determine
+that and pass it as `[agent]` itself. Only ask the user when genuinely unable
+to tell.)
 
 It writes atomically (temp file then `mv`). For Codex / Antigravity:
 - target absent → create the file with the marked block;
 - markers present → replace the marked region with the block (idempotent —
-  never duplicates, even on repeated install);
+  never duplicates, even on repeated install; content outside the marked
+  region is untouched, per Rules below);
 - target exists without markers → append the marked block, preserving all
   prior content.
 
