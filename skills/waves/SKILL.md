@@ -155,8 +155,9 @@ summary folded into other text. Reports together:
 
 - **Tokens** — spent this wave plus running cumulative, summed from each dispatch
   return's usage in the wave.
-- **Usage limits (Claude only)** — the real 5h and 7d `used_percentage` and the 5h reset
-  time from the rate-limit reader below. Label as usage-limit percentages, not cost. On
+- **Usage limits (Claude only)** — the real 5h and 7d `used_percentage`, the 5h reset
+  time, and each line's pp delta since the run's last report (omitted on the first) —
+  from the rate-limit reader below. Label as usage-limit percentages, not cost. On
   Codex and Antigravity the usage reader is N/A — report tokens only.
 
 When the cache is unavailable, report tokens only plus "for your limit %, run

@@ -51,9 +51,14 @@ When the cache is available:
 ```
 Usage — wave <N>
   tokens: <this wave> (cumulative <running total>)
-  5h limit: <five_hour.used_percentage>%  (resets <resets_at>)
-  7d limit: <seven_day.used_percentage>%
+  5h limit: <five_hour.used_percentage>% (<delta>, resets <resets_at>)
+  7d limit: <seven_day.used_percentage>% (<delta>)
 ```
+
+`<delta>` is `+<N>pp` or `-<N>pp` — the percentage-point change since the run's last
+printed reading (e.g. `+2pp`); omitted (bare percentage, no parentheses — reset time
+still shown alone on the 5h line) on the first reading of a run, since there is nothing
+yet to compare against.
 
 When the cache is unavailable:
 
@@ -73,3 +78,11 @@ Rules:
 - **Reset time** is shown only on the 5h line, taken from `resets_at`.
 - At run end, print the same block with the final wave number and the final cumulative
   token total.
+- **Delta baseline.** The percentage-point change is against the run's own previous
+  printed reading — never an external or cross-session baseline. Track it in memory for
+  the run's lifetime only; never write it to `memory-progress.md` (this is report
+  formatting, not evidence).
+- **Skip unavailable gates.** A gate where the cache was unavailable contributes no
+  reading. The next gate that has a reading computes its delta against the last gate
+  that actually had one — not the immediately preceding (unavailable) gate, and never
+  treating the skipped gap as a 0-point move.

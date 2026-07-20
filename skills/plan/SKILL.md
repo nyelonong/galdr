@@ -18,9 +18,8 @@ Every plan file has, in order:
   involved), and a **Global Constraints** block (see below).
 - **Waves**: one section per DAG level (see "Waves are DAG levels"), each ending in a
   wave gate.
-- **Per task**: Files (create/modify), write-scope, Consumes/Produces, declared seams,
-  test list, acceptance checkboxes, and a model tier line only when it overrides the
-  default tier for that kind of task.
+- **Per task**: Files (create/modify), write-scope, Consumes/Produces, seams, test
+  list, acceptance checkboxes, and a model tier line only when it overrides the default.
 
 Example task entry (compressed; a real one also has step-by-step checkboxes):
 
@@ -54,59 +53,74 @@ it at each wave gate from `memory-progress.md`, and nobody hand-edits it in betw
 `memory.md` / `memory-progress.md` remain the only durable state — the table just makes
 that state readable from the plan doc without grepping it.
 
+## Diagram
+
+A fenced ` ```mermaid ` `flowchart`, right after the Progress table and before Waves —
+no separate file, no image. One `subgraph` per wave (`Wave N`), one node per task
+(`<task id>: <short name>`), edges only for blocking Consumes/Produces dependencies.
+Same-wave tasks never get an edge — see the frontier rule below — so every edge crosses
+a wave boundary. Generated once, with the Waves sections, from the same task list;
+`waves` never regenerates it at a gate (structure, not status), but re-sync it in the
+same edit if the plan is later amended. Example, two waves, one cross-wave edge:
+
+```mermaid
+flowchart TD
+  subgraph Wave 1
+    1.1["1.1: parse config"]
+  end
+  subgraph Wave 2
+    2.1["2.1: validate config"]
+  end
+  1.1 --> 2.1
+```
+
 ## Waves are DAG levels
 
 Build the task dependency graph using blocking edges only (task B needs an artifact
 from task A, not just "A happens to relate to B"). A wave is one topological level of
 that graph. The **frontier** is the full set of tasks with no unresolved blocking edge
-at that point — every task in the frontier is dispatched in the same wave, in the same
+at that point — every task in the frontier is dispatched in the same wave, same
 response, in parallel.
 
 ## Write-scope discipline
 
-Every task declares its write-scope: the exact files and directories it may touch.
-Two tasks in the same wave with overlapping write-scopes is a **plan error** — fix it
-before dispatch, never during. Fix by one of:
-
-- Moving one of the tasks to a later wave (make it depend on the other).
-- Splitting the shared file's ownership so only one task edits it; the other task
-  consumes what the first produces.
-
-Never dispatch a wave with an unresolved overlap and rely on the two subagents to
-"just be careful" — write-scopes exist so the plan itself proves safety, not the
-subagents' judgment at dispatch time.
+Every task declares its write-scope: the exact files and directories it may touch. Two
+tasks in the same wave with overlapping write-scopes is a **plan error**, fixed before
+dispatch, never during — either move one task to a later wave (make it depend on the
+other), or split the shared file's ownership so only one task edits it while the other
+consumes what the first produces. Never dispatch a wave with an unresolved overlap and
+rely on the two subagents to "just be careful" — write-scopes exist so the plan itself
+proves safety, not the subagents' judgment at dispatch time.
 
 ## Task sizing
 
 A task is the smallest unit that (a) has its own RED→GREEN test cycle and (b) is worth
 a reviewer stopping to check — not a one-line edit, not an entire feature. It must also
 fit inside one subagent's context: the files it touches, plus what's needed to
-understand them, have to be readable and editable in a single dispatch. Too small
-wastes a review gate on nothing; too large starves the subagent's context or hides
-unrelated changes behind one review.
+understand them, must be readable and editable in a single dispatch. Too small wastes a
+review gate; too large starves context or hides unrelated changes behind one review.
 
 ## Consumes/Produces
 
 State exact names and types, not descriptions. "Produces: a repository" is not
 plan-grade; "Produces: `UserRepository` interface with `FindByID(ctx, UserID) (*User,
-error)`" is. A task that consumes something must name the exact producing task; a task
-that produces something must name every task listed as consuming it. This is what lets
-the self-review catch mismatches before dispatch.
+error)`" is. A task that consumes something names the exact producing task; a task that
+produces something names every task listed as consuming it — what lets self-review
+catch mismatches before dispatch.
 
 ## Global Constraints block
 
-Copy this block verbatim from the spec's own constraints section — do not paraphrase,
-shorten, or reword it. This is where cross-repo invariants, style rules, and consent
-rules live; a task that seems to conflict with this block is a plan error, not
-something to route around silently.
+Copy this block verbatim from the spec's own Constraints section — never paraphrase or
+reword it. It holds cross-repo invariants, style, and consent rules; a task that
+conflicts with it is a plan error, not something to route around silently.
 
 ## Durable-horizon rule
 
-Specs never name file paths — they describe goals, constraints, and acceptance
-criteria that should still make sense after the code around them changes. Plans and
-briefs do name paths, because they describe one specific build. Nobody writes
-implementation code at plan time, not even a sketch to "save time later" — plan says
-what and where; the task's own TDD loop decides how.
+Specs never name file paths — they describe goals, constraints, and acceptance criteria
+that should still make sense after the code around them changes. Plans and briefs do
+name paths, since they describe one specific build. Nobody writes implementation code
+at plan time, not even a "save time later" sketch — plan says what and where; the
+task's own TDD loop decides how.
 
 ## No-placeholder red flags
 
@@ -126,24 +140,20 @@ dependency and no declared seam is incomplete — go back and name it before dis
 
 ## Expand-migrate-contract
 
-For a refactor wide enough to span multiple call sites or repos, use three phases
-instead of one big rewrite:
-
-1. **Expand** — add the new path alongside the old one; both work, nothing breaks.
-2. **Migrate** — move callers to the new path one at a time, each behind its own test.
-3. **Contract** — delete the old path once nothing calls it.
-
-Each phase is its own wave (or waves); the contract phase's acceptance criterion is a
-grep proving zero remaining callers of the old path.
+For a refactor spanning multiple call sites or repos, use three phases, not one big
+rewrite: **Expand** (add the new path alongside the old; both work) → **Migrate** (move
+callers to the new path one at a time, each behind its own test) → **Contract** (delete
+the old path once nothing calls it). Each phase is its own wave (or waves); the
+contract phase's acceptance criterion is a grep proving zero remaining callers of the
+old path.
 
 ## Self-review before finishing
 
 Run all three before treating the plan as ready:
 
-- **Spec coverage**: every numbered section of the spec maps to at least one task. If a
-  section has no task, either add one or write down why it's out of scope. A section
-  deferred to a later cycle also gets a backlog entry per /galdr:backlog
-  (skills/backlog/SKILL.md) — don't restate the format here.
+- **Spec coverage**: every numbered section of the spec maps to at least one task — add
+  one, or note why it's out of scope. A deferred section gets a backlog entry per
+  /galdr:backlog (skills/backlog/SKILL.md).
 - **Placeholder scan**: grep the draft for the red flags above.
 - **Name/type consistency**: every name and type in a Produces line matches, exactly,
   what the consuming task's Consumes line expects.
@@ -154,17 +164,14 @@ with known gaps to `waves` and expect the gate to catch it.
 ## Antigravity environment
 
 When `plan` runs inside Antigravity, emit the wave DAG as the native **Task List** +
-**Implementation Plan** artifacts the environment provides, instead of (or alongside)
-the `docs/plans/` markdown file. Two binding rules still hold, with no exception for the
-Antigravity UI:
+**Implementation Plan** artifacts, instead of (or alongside) the `docs/plans/` markdown
+file. Two binding rules still hold, no exception for the Antigravity UI:
 
-- **Ledger still written.** The `EV` lines and `memory-progress.md` ledger are written
-  exactly as in any other environment — the Task List is a derived view of the plan, not
-  a replacement for durable state. Antigravity does not host the ledger, so plan still
-  appends to `memory-progress.md`.
-- **Hard gate not skipped by "Always Proceed".** Antigravity's "Always Proceed" policy
-  must not be used to wave off the per-wave evidence gate. The gate runs the same way;
-  "Always Proceed" only suppresses UI prompts, never the `verify` evidence check.
+- **Ledger still written.** `EV` lines and `memory-progress.md` still get written —
+  Antigravity doesn't host the ledger, and the Task List is a derived view, not a
+  replacement for durable state.
+- **Hard gate not skipped by "Always Proceed".** That policy only suppresses UI
+  prompts; the per-wave `verify` evidence check still runs.
 
 ## Finishing
 
