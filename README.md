@@ -4,8 +4,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.6.1-22d3ee?style=flat-square" alt="version 0.6.1"></a>
-  <a href="skills/"><img src="https://img.shields.io/badge/skills-17-34d399?style=flat-square" alt="17 skills"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.7.0-22d3ee?style=flat-square" alt="version 0.7.0"></a>
+  <a href="skills/"><img src="https://img.shields.io/badge/skills-18-34d399?style=flat-square" alt="18 skills"></a>
   <img src="https://img.shields.io/badge/build-none_·_pure_Markdown-64748b?style=flat-square" alt="no build step">
   <img src="https://img.shields.io/badge/discipline-TDD_first-f59e0b?style=flat-square" alt="TDD first">
 </p>
@@ -69,7 +69,7 @@ What keeps it honest:
 
 ## The skills
 
-17 skills, each also a slash command (`/galdr:<name>`).
+18 skills, each also a slash command (`/galdr:<name>`).
 
 **Always on — inside every session and task** (injected by the [bootstrap](hooks/bootstrap.md))
 
@@ -100,6 +100,7 @@ What keeps it honest:
 | [`rearchitect`](skills/rearchitect/SKILL.md) | Map an architecture pain area read-only, rank it, exit into a plan. |
 | [`backlog`](skills/backlog/SKILL.md) | Owns `docs/backlog.md` — captures, lists, and resolves deferred work. |
 | [`setup`](skills/setup/SKILL.md) | Writes this repo's `docs/agents/galdr.md` — gates, invariants, models, smoke. |
+| [`core`](skills/core/SKILL.md) | Installs, removes, or checks the always-on core rules block per agent (Claude, Codex, Antigravity). |
 | [`usage-bridge`](skills/usage-bridge/SKILL.md) | Installs the statusline bridge for real 5h/7d usage % on any machine. |
 | [`authoring`](skills/authoring/SKILL.md) | The meta-skill — write or edit galdr skills through its checks. |
 
@@ -205,7 +206,7 @@ galdr runs on three runtimes — Claude Code, OpenAI Codex, and Google Antigravi
 
 ### OpenAI Codex
 
-1. Land the 17 skills:
+1. Land the 18 skills:
    ```
    npx skills add nyelonong/galdr
    ```
@@ -217,7 +218,7 @@ galdr runs on three runtimes — Claude Code, OpenAI Codex, and Google Antigravi
 
 ### Google Antigravity
 
-1. Land the 17 skills:
+1. Land the 18 skills:
    ```
    npx skills add nyelonong/galdr
    ```

@@ -39,7 +39,12 @@ gate may be fresh at the next.
 
 ## Usage and token report layout
 
-Emitted at every wave gate and once more at run end.
+Printed in the response to the user at every wave gate and once more at run end — a
+chat-visible block, not a fact folded into a closing sentence. Writing the matching `EV
+[.../gate] usage — ...` line to memory-progress.md (SKILL.md's Wave gate step 3) is a
+separate, additional requirement: the ledger line is for evidence and resume; this
+block is what the user actually reads. Doing one without the other is not doing this
+step.
 
 When the cache is available:
 

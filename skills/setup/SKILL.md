@@ -93,3 +93,12 @@ section on a re-run, show the diff between what's on disk and what this run woul
 write, and get explicit confirmation — a silent overwrite here is data loss, not a
 refresh. The other sections can refresh without this extra step; step 3's confirmation
 still covers the file as a whole either way.
+
+## Step 5: roles-and-journeys.md
+
+If `docs/agents/roles-and-journeys.md` does not yet exist, offer the interview that
+produces it: read the target repo's own docs/specs/code first, draft what's found,
+interview the user only for gaps, and write a cited-only canonical roles doc. If the
+file already exists, skip this step on an ordinary re-run — only an explicit refresh
+request reopens the interview. Full procedure, output contract, and edge cases:
+`references/roles-and-journeys.md`.

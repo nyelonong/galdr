@@ -96,10 +96,14 @@ sets it to `shaped` when it writes the spec.
   synthesis), as a table: `# | Decision | Choice`.
 - **Acceptance criteria** — stated per future wave, so the downstream `plan` skill
   has something concrete to check tasks against.
+- **Roles touched** — one line, `**Roles touched:** <comma-separated role names>` or
+  `**Roles touched:** none`. Names are roles cited from the target repo's
+  `docs/agents/roles-and-journeys.md`, if that doc exists; if the repo has no such
+  doc, the field is always `none`.
 
-### 4-point self-review
+### 5-point self-review
 
-Before showing the spec, check it against these four and fix inline — don't flag
+Before showing the spec, check it against these five and fix inline — don't flag
 a problem and leave it for later:
 
 1. **Placeholders** — any "TBD", "handle edge cases", "similar to X"? Replace with
@@ -110,6 +114,21 @@ a problem and leave it for later:
    Trim anything that crept in.
 4. **Ambiguity** — could two different readers build this two different ways?
    Sharpen the wording until one reading survives.
+5. **Roles drift** — check what "Roles touched" ended up being:
+   - No existing role named (the field is `none`, or names only roles absent from
+     `docs/agents/roles-and-journeys.md`): this point is done — the review is the
+     original four points, unchanged.
+   - An existing role is named and the spec's claims about that role's
+     capabilities/boundaries match the doc's `**Capabilities:**` /
+     `**Boundaries:**` lines for it: passes silently, same as any other point that
+     finds nothing wrong.
+   - An existing role is named and the spec's claims conflict with the doc (the
+     spec assumes a capability the doc's `**Boundaries:**` rules out, or contradicts
+     a stated `**Capabilities:**` line): stop synthesis before the spec is shown for
+     approval, and tell the user to either fix the spec to match the doc, or run
+     `setup`'s refresh to update the doc first — then resume. Never fix this by
+     editing `docs/agents/roles-and-journeys.md` yourself in-session; that file is
+     only ever written by `setup`.
 
 ### Hard gate
 

@@ -117,7 +117,9 @@ Before opening the next wave:
 2. Run one refactor pass across the wave's tests. Refactoring belongs here, at the wave
    gate — the task's TDD loop stops at green.
 3. Write the EV line for every gate command run, plus a wave-level status line, to
-   memory-progress.md.
+   memory-progress.md, **and** print the usage report (below) in your response to the
+   user — the ledger line and the printed report are both required; neither substitutes
+   for the other.
 
 A wave gate that produced no EV lines has not happened, regardless of what the dispatch
 reports said. Defer a task to a later cycle? Append it to the backlog per /galdr:backlog
@@ -146,7 +148,10 @@ each to its final status at the wave gate. The native tree is an ephemeral mirro
 
 ## Usage and token report
 
-At each wave gate and at run end, waves reports together:
+At each wave gate and at run end, waves **prints this report in its response to the
+user** — a memory-progress.md EV line records the same numbers for the ledger but does
+not, on its own, satisfy this; the user sees the block itself, every time, not a
+summary folded into other text. Reports together:
 
 - **Tokens** — spent this wave plus running cumulative, summed from each dispatch
   return's usage in the wave.
