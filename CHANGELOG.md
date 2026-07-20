@@ -1,3 +1,10 @@
+## 0.8.2 — 2026-07-20
+
+- `memory.md`'s Current State section now rotates — restructured from one continuous, unbounded paragraph into one paragraph per release; the last 3 stay inline, older ones move to a new `memory-archive.md` (new `continue` §8). Applied immediately to this repo's own memory.
+- `scripts/roles-touched-check.sh` gained a `--range <rev-range>` mode — scans only the `docs/specs/` files changed within a git revision range instead of the whole directory.
+- removed the stale `reserve-key` scenario from `testing/scenarios/setup.md` (tested a Budget key dropped from the skill entirely in 0.6.1, with no replacement — Budget already has real coverage elsewhere).
+- `continue` added to the discipline-skill list in `CLAUDE.md`, `testing/protocol.md`, `docs/agents/galdr.md`, and `skills/authoring/SKILL.md` — it was pressure-tested from the pack's original build, but 4 documentation lists never named it.
+
 ## 0.8.1 — 2026-07-20
 
 - `setup` respects deliberately-removed Budget keys — a user-deleted key (e.g. `rate-limits-max-age`) no longer gets silently re-added on the next `/galdr:setup` re-run, mirroring the existing Gates/Invariants Human-edits protection (without needing the extra diff-and-confirm step, since nothing is being overwritten when a key is simply absent).

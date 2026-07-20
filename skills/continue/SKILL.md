@@ -121,3 +121,25 @@ returns the full history across both files.
 
 Commit: the move is a normal committed edit under the standing atomic-commit rule — no
 new consent step, no `wip:` exception.
+
+## 8. Memory Current State rotation
+
+Same problem as §7, narrative shape instead of a ledger: `memory.md`'s Current State
+keeps a few recent releases inline rather than near-zero.
+
+Format: one paragraph per release, blank-line separated, starting with
+`**<version>** — <date>: ` — the split point rotation needs, since a single run-on
+paragraph has nothing to slice on.
+
+Trigger: same as §7 (branches finish, after closeout/release; also on request), but
+only fires once more than 3 release paragraphs are inline — not unconditional.
+
+Boundary: keep the last 3 inline; move older ones, oldest first, to
+`memory-archive.md` (same directory).
+
+Always keep live: the last 3 release paragraphs, the trailing NOTE bookkeeping
+paragraph, and a header pointing at the archive (`archive: releases older than the
+last 3 live in memory-archive.md`).
+
+Move-only, nothing lost, same rule as §7: append in order, never rewrite the archive.
+Commit is a normal edit — no new consent step.

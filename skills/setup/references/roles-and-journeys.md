@@ -86,7 +86,8 @@ step 5 is skipped on a repo that already has the file), offer to add
 `docs/agents/galdr.md` — same accept/decline pattern as setup's other detected Gate
 defaults. The script exits 0/1 and takes an optional list of spec files and/or
 directories (`bash scripts/roles-touched-check.sh [spec-file-or-dir...]`, defaulting to
-`docs/specs/*.md` with no args); it checks presence only (a spec naming a role in prose
-but not in its "Roles touched" field), never meaning — a contradiction between a spec's
-claim and the doc is `shape`'s job, not this script's. Checking only the specs changed
-in a git SHA range is deferred, not built into this version.
+`docs/specs/*.md` with no args), or a git revision range instead
+(`bash scripts/roles-touched-check.sh --range <rev-range>`, scoped to specs changed
+within that range, excluding deletions); it checks presence only (a spec naming a role
+in prose but not in its "Roles touched" field), never meaning — a contradiction between
+a spec's claim and the doc is `shape`'s job, not this script's.

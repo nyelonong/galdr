@@ -5,17 +5,33 @@
 # semantic one.
 #
 # Usage: roles-touched-check.sh [spec-file-or-dir...]
+#        roles-touched-check.sh --range <rev-range>
 #   no args:      checks docs/specs/*.md, relative to the current working directory
 #   file args:    checks exactly those files
 #   directory args: checks *.md directly under that directory
 #   args may mix files and directories
+#   --range <rev-range>: checks only docs/specs/*.md files changed within that git
+#     revision range (e.g. `HEAD~3..HEAD`, any `git diff`-accepted range), excluding
+#     files deleted within the range. Mutually exclusive with file/dir args. Must run
+#     inside a git repo; an invalid range or non-git directory exits 2 (usage/execution
+#     error, distinct from the 0/1 flag-result codes below).
 #
 # If docs/agents/roles-and-journeys.md does not exist (relative to the
 # current working directory), exits 0 immediately: nothing to check yet.
-#
-# SHA-range mode (checking only specs changed in a git range) is deferred —
-# out of scope for this presence-only backstop; see docs/backlog.md.
 set -u
+
+range=""
+if [ "${1:-}" = "--range" ]; then
+  if [ "$#" -ne 2 ]; then
+    echo "usage: $0 --range <rev-range>  (no other args allowed with --range)" >&2
+    exit 2
+  fi
+  range="$2"
+  shift 2
+elif printf '%s\n' "$@" | grep -qx -- '--range'; then
+  echo "usage: --range must be the only argument, given as: $0 --range <rev-range>" >&2
+  exit 2
+fi
 
 roles_file="docs/agents/roles-and-journeys.md"
 
@@ -40,10 +56,26 @@ if [ -z "$roles" ]; then
   exit 0
 fi
 
-# Determine files to check. Args may be files or directories; directories
-# expand to the *.md files directly under them.
+# Determine files to check.
 files=()
-if [ "$#" -gt 0 ]; then
+if [ -n "$range" ]; then
+  # --range mode: docs/specs/*.md files changed within the range, excluding
+  # deletions (diff-filter=d) — nothing to check for a file that's gone.
+  changed=$(git diff --name-only --diff-filter=d "$range" -- docs/specs/ 2>&1)
+  rc=$?
+  if [ "$rc" -ne 0 ]; then
+    printf 'invalid range or not a git repo: %s\n' "$changed" >&2
+    exit 2
+  fi
+  while IFS= read -r f; do
+    [ -z "$f" ] && continue
+    case "$f" in
+      *.md) [ -f "$f" ] && files+=("$f") ;;
+    esac
+  done <<< "$changed"
+elif [ "$#" -gt 0 ]; then
+  # Args may be files or directories; directories expand to the *.md files
+  # directly under them.
   for arg in "$@"; do
     if [ -d "$arg" ]; then
       for f in "$arg"/*.md; do

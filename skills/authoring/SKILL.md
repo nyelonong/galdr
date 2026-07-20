@@ -20,11 +20,12 @@ still hide individual no-op sentences.
 ## Before writing a discipline skill: capture, don't guess
 
 A discipline skill enforces a rule under pressure (tdd, verify, debug, bootstrap,
-route). For these, run the scenario without the skill first, per `testing/protocol.md`
-§1, and record the verbatim rationalization under `## Baseline captures` in the
-scenario file. Every row in the skill's rationalization table must trace to a captured
-excuse. A row invented without a capture is a guess, and a guess misses the loophole
-the agent actually reaches for — write the baseline run before the table, not after.
+route, continue). For these, run the scenario without the skill first, per
+`testing/protocol.md` §1, and record the verbatim rationalization under `## Baseline
+captures` in the scenario file. Every row in the skill's rationalization table must
+trace to a captured excuse. A row invented without a capture is a guess, and a guess
+misses the loophole the agent actually reaches for — write the baseline run before the
+table, not after.
 
 General skills (reference, orchestrator) skip this step; they go straight to the
 spot-check in `testing/protocol.md` §2.
