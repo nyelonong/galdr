@@ -1,4 +1,4 @@
-## [Unreleased]
+## 0.9.0 — 2026-07-23
 
 - auto (model, effort) tiering — `docs/agents/galdr.md` §Models gains a `(model, effort)` row schema with an inherit rule; `setup` writes model+effort defaults and adds a suspect-combo confirm check; `waves` assigns each task a (tier, effort) binding, escalates on 2 consecutive fails through a ladder ending at `top@max`, and records the effective binding in the ledger (`tier=`/`model=`/`effort=`, `attempt=` EV lines, effort-rejection fallback); `plan` supports a per-task `**Model tier:** <tier> [@ <effort>]` override; `shape` dispatches spec-review as an independent step (Workflow-mode only).
 
