@@ -130,6 +130,17 @@ a problem and leave it for later:
      editing `docs/agents/roles-and-journeys.md` yourself in-session; that file is
      only ever written by `setup`.
 
+On a session with the Workflow tool: after the inline fixes above, dispatch one
+independent reviewer at the `spec-review` binding from the repo's
+`docs/agents/galdr.md` §Models — an activity row that names a tier, resolved through
+that tier's own binding. Input: the draft spec and its decision log. Return: findings
+against the same five points above. Fix its findings inline, the same way the five
+points are fixed, before the spec is shown for approval — the reviewer is a second
+opinion from a context that did not write the spec, which is the point.
+
+On any runtime without the Workflow tool: skip the dispatch. The self-review above is
+the whole review, unchanged.
+
 ### Hard gate
 
 No implementation action — no code, no plan file, no wave dispatch — happens

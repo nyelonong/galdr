@@ -16,6 +16,19 @@ reference files.
 All three run the same dispatch procedure, status contract, and review gate from
 `skills/waves/SKILL.md`. The runtime only changes how the calls go out.
 
+## Effort support by dispatch mechanism
+
+Whether a binding's effort half reaches the dispatch, per mechanism:
+
+- **Workflow tool** — effort settable per agent; pinned alongside the model when the
+  wave is written as a script.
+- **Agent tool** — not settable. The dispatch carries model only; the WIP line and any
+  EV line record `effort=n/a`.
+- **Codex subagents** — not settable. The AGENT-BRIEF carries model only; the WIP line
+  and any EV line record `effort=n/a`.
+- **Antigravity `start_subagent`** — not settable. The dispatch carries model only; the
+  WIP line and any EV line record `effort=n/a`.
+
 ## Claude: Workflow vs Agent tool
 
 Check once per wave: does a Workflow tool appear in the available tools this session?

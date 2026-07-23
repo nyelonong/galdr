@@ -99,7 +99,7 @@ What keeps it honest:
 | [`prototype`](skills/prototype/SKILL.md) | Answer a design question with throwaway working code instead of a spec. |
 | [`rearchitect`](skills/rearchitect/SKILL.md) | Map an architecture pain area read-only, rank it, exit into a plan. |
 | [`backlog`](skills/backlog/SKILL.md) | Owns `docs/backlog.md` — captures, lists, and resolves deferred work. |
-| [`setup`](skills/setup/SKILL.md) | Writes this repo's `docs/agents/galdr.md` — gates, invariants, models, smoke. |
+| [`setup`](skills/setup/SKILL.md) | Writes this repo's `docs/agents/galdr.md` — gates, invariants, model+effort tiers, smoke. |
 | [`core`](skills/core/SKILL.md) | Installs, removes, or checks the always-on core rules block per agent (Claude, Codex, Antigravity). |
 | [`usage-bridge`](skills/usage-bridge/SKILL.md) | Installs the statusline bridge for real 5h/7d usage % on any machine. |
 | [`authoring`](skills/authoring/SKILL.md) | The meta-skill — write or edit galdr skills through its checks. |
@@ -164,6 +164,8 @@ per wave) → review (spec + quality) → branches (gate, smoke sheet, merge dec
 ```
 
 Every wave dispatches subagents that commit their own atomic red-green pairs; every return is reviewed against its brief before it's trusted; every gate writes `EV` lines. galdr's own `0.2`–`0.5` releases — the budget guard, live progress + usage reporting, the [usage-bridge](skills/usage-bridge/SKILL.md) installer, and the self-managing [backlog](skills/backlog/SKILL.md) — were each built exactly this way, start to finish.
+
+Each dispatch runs at a tier binding — `<model> [@ <effort>]` — read from this repo's own `docs/agents/galdr.md`; a binding with no `@ <effort>` suffix inherits the session's own effort. A task that keeps failing escalates one rung at a time: mechanical → standard → top → top@max, then the wave stops rather than escalate further. On the Workflow runtime, `shape` adds one more independent check: a draft spec gets a second opinion from a reviewer dispatched at the repo's `spec-review` binding (max effort by default) before you see it.
 
 ## Proven, not promised
 
@@ -230,7 +232,7 @@ galdr runs on three runtimes — Claude Code, OpenAI Codex, and Google Antigravi
 
 ### After install (all runtimes)
 
-1. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes `docs/agents/galdr.md` — gate commands, invariants, model tiers, thresholds, smoke config).
+1. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes `docs/agents/galdr.md` — gate commands, invariants, model+effort tiers, thresholds, smoke config).
 2. Optional, once per machine (Claude Code only): [`/galdr:usage-bridge install`](skills/usage-bridge/SKILL.md) — real 5h/7d usage % and the quota-threshold park, even where your statusline doesn't already write the cache.
 
 Then just work. The router picks the right path on every substantive request.

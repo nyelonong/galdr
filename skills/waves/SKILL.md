@@ -42,8 +42,9 @@ For each task in the wave's frontier:
    the in-flight window; once any dispatch is out, the git-discipline rule below applies
    as written.
 2. Before dispatching, append a WIP dispatch line to memory-progress.md (continue skill
-   format): `**WIP** dispatched <brief path> @<base sha> scope=<paths> — next: review
-   on return`.
+   format): `**WIP** dispatched <brief path> @<base sha> scope=<paths> tier=<tier>
+   model=<id> effort=<level|inherit|n/a> — next: review on return`. Effective values:
+   `inherit` = mechanism supports effort but binding sets none; `n/a` = accepts none.
 3. Dispatch with the declared write-scope as the only paths the subagent may touch.
 4. On return, run the two-verdict review below before acting on anything the report
    claims.
@@ -83,22 +84,25 @@ time:
 2. What's needed to unblock or decide.
 3. One recommendation — a single option with brief reasoning, not a menu.
 
-## Model tiers
+## Model and effort tiers
 
-- Mechanical tasks (brief marked `mechanical: true`) → haiku.
-- Standard implementation and per-task review → sonnet.
-- Planning, wave-gate review, and debug → the session model.
-
-Failure escalation at a single task:
-
-1. First failure: retry on the same tier.
-2. Second failure at the same task: escalate one model tier, retry once.
-3. Third failure at the same task: stop the wave. This is one of the four STOP
-   conditions below — the escalation path ends here, at two tries.
-
-Tier→model-id bindings (which literal model haiku/sonnet/session map to) are read from
-the repo's `docs/agents/galdr.md` config, written by setup; defaults are named in setup
-itself (task 3.4), not here — models change, skill text shouldn't.
+- Task → tier: briefs marked `mechanical: true` → mechanical; implementation and per-task
+  review → standard; planning, wave-gate review, and debug → top. A plan task's
+  `**Model tier:** <tier> [@ <effort>]` line, when present, overrides this; omitted
+  effort means the tier's binding.
+- Tier → (model, effort): rows in `docs/agents/galdr.md` §Models (setup-written; row
+  syntax and defaults named in setup, not here — models change, skill text shouldn't).
+  No `@ <effort>` suffix means inherit — the session effort governs. Effort applies only
+  where the mechanism accepts it (`references/runtime-dispatch.md`); elsewhere it's
+  dropped — the ledger records `effort=n/a`.
+- Ladder: `mechanical → standard → top → top@max` — one rung per escalation, whole binding
+  taken. First failure: retry same binding; second: up one rung, retry once; third: stop
+  the wave (STOP condition below). No-effort runtimes lack the `top@max` rung — a top-tier
+  task's second failure stops the wave. `EV [waves] <task-id> attempt=<n> <tier>@<effort>
+  → failed: <reason>`; `EV [waves] <task-id> attempt=2 escalate <old>@<eff> → <new>@<eff>`.
+- Effort rejection: a config problem, not a task failure — re-dispatch the same
+  model, no effort, same attempt. `EV [waves] <task-id> effort=<level> rejected →
+  re-dispatched effort=n/a`.
 
 ## Proportional review
 
@@ -237,8 +241,7 @@ Dispatch, the status contract, and the review gate all apply unchanged.
 
 ## Reference
 
-`references/agent-brief-template.md` — the brief template every dispatch fills in
-before it goes out.
+`references/agent-brief-template.md` — the brief template every dispatch fills in.
 
 `references/progress-and-usage.md` — the exact rate-limit cache read, staleness and
 fallback logic, and the gate/run-end usage report layout.
