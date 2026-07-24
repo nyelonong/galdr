@@ -71,7 +71,7 @@ Finishing a branch runs this sequence, in order:
    marker that `continue` §7's rotation boundary scans for — and advance the spec's
    `Lifecycle status:` line to `shipped` — which marks the branch's work finished, not
    that it merged (merge and push stay separate, below). This is the default outcome
-   every time — finishing does not merge and does not push (see Consent below).
+   every time — finishing does not merge and does not push (see Consent below). At a `RELEASED` closeout, also propose running `/galdr:retro` on the fresh ledger — a proposal in the report only, never auto-run.
 6. **Progress-log rotation** — after the closeout line is written, rotate
    `memory-progress.md` per `skills/continue/SKILL.md` §7 (Progress-log rotation).
 

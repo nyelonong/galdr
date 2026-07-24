@@ -4,8 +4,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.12.0-22d3ee?style=flat-square" alt="version 0.12.0"></a>
-  <a href="skills/"><img src="https://img.shields.io/badge/skills-18-34d399?style=flat-square" alt="18 skills"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.13.0-22d3ee?style=flat-square" alt="version 0.13.0"></a>
+  <a href="skills/"><img src="https://img.shields.io/badge/skills-20-34d399?style=flat-square" alt="20 skills"></a>
   <img src="https://img.shields.io/badge/build-none_·_pure_Markdown-64748b?style=flat-square" alt="no build step">
   <img src="https://img.shields.io/badge/discipline-TDD_first-f59e0b?style=flat-square" alt="TDD first">
 </p>

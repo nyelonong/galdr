@@ -1,5 +1,27 @@
-## 0.12.0 – 2026-07-24
+## 0.13.0 – 2026-07-24
 
+- `/galdr:doctor` + `scripts/galdr-doctor.sh`: a wiring diagnostic, 6 checks
+  (enabled-flag, hook-registered, emission, version, usage-bridge, repo-config),
+  exit 1 only when wiring is genuinely broken (a FAIL), exit 0 on OK-only or
+  ADVISE/N/A-only runs; the script never remediates, every non-OK detail line
+  names the exact fix command for the user to run. Proven by an 8-fixture TDD
+  harness (`testing/galdr-doctor-test.sh`), each fixture a fresh `mktemp -d` tree,
+  never touching the real `$HOME` or plugin root.
+- backlog `list` action gains an OVERDUE aging flag: an Open item ages when its
+  target provably lies in the past, a version target against the repo's version
+  source (`plugin.json`, else the newest semver git tag) at target ≤ current
+  version, or a date target before today; free-text targets ("later", "only if
+  ever needed") and version targets in a repo with no version source are
+  exempted, never flagged. The flag marks the listing line
+  `OVERDUE (target <t>, now <v>)` and never edits or auto-resolves the item.
+- `/galdr:retro`: reads `memory-progress.md` and `memory-progress-archive.md` back
+  in aggregate across closed cycles and reports five metric families (tier
+  escalations, review verdicts, trust gap, interruptions, spend), proposes at
+  most 3 recommendation-first tunings each naming its exact target line, and
+  applies nothing to the repo or its config on its own.
+- `branches` finish now proposes running `/galdr:retro` on the fresh ledger at a
+  `RELEASED` closeout, a proposal in the report only, never auto-run.
+- roster: 18 → 20 skills (`doctor`, `retro`).
 - auto (model, effort) tiering removed, one release after it shipped in 0.9.0. Three reasons, in the order they hurt: dispatches were rejected over their effort value, the tier defaults picked worse effort levels than the session dial would have, and the surface it added (a config suffix, three ledger fields, a fourth ladder rung, a rejection-fallback rule, and a per-mechanism support table) cost more to carry than it returned. The session's own `/effort` dial governs every dispatch again.
 - `docs/agents/galdr.md` §Models rows go back to `tier → model`. A row that still carries an `@ <effort>` suffix from an older config is read by ignoring the suffix: no error, no warning, no migration pass. `setup` drops it the next time it rewrites the section.
 - the escalation ladder is `mechanical → standard → top` with a uniform three-attempt budget at every tier: retry, then escalate one tier and retry once, or retry at the same tier when already at `top`. Every runtime reads it the same way; the `top@max` rung and its no-effort-runtime carve-out are both gone.

@@ -59,6 +59,18 @@ that was once tracked silently disappears.
 the one-line why, in file order. Never include Resolved items in this listing: a user
 asking what's in the backlog wants what's still outstanding, not the history.
 
+An Open item ages only when its target provably lies in the past:
+- a **version target**, when the repo has an unambiguous version source (a manifest
+  such as `plugin.json` or `package.json`, else the newest semver git tag) and
+  target ≤ current version;
+- a **date target**, when the date is before today.
+
+Free-text targets ("later", "only if ever needed") never age; version targets in a
+repo with no version source never age. When an item ages, mark it
+`OVERDUE (target <t>, now <v>)` in the listing — this marker appears in every listing,
+plain `/galdr:backlog` and the branch-finish report alike. The flag never edits or
+auto-resolves the item; Resolve above still requires an explicit done statement.
+
 ## Append-on-defer
 
 This is the rule `shape`, `plan`, `waves`, `branches`, and `review` each reference
