@@ -4,6 +4,45 @@
 # (or renders a minimal status if none is saved). Never errors, never blocks.
 set -u
 
+# `status`: report installed/cache/original state as three fixed lines and exit,
+# without ever touching stdin. Any other invocation (including no args) falls
+# through unchanged to the statusLine wrapper path below.
+if [ "${1:-}" = "status" ]; then
+  settings="${GALDR_CLAUDE_SETTINGS:-$HOME/.claude/settings.json}"
+  status_cache="${GALDR_RATE_LIMITS_CACHE:-$HOME/.claude/rate-limits-cache.json}"
+  status_original="${GALDR_ORIGINAL_STATUSLINE:-$HOME/.claude/galdr/original-statusline}"
+
+  cmd=""
+  if [ -f "$settings" ]; then
+    cmd=$(jq -r '.statusLine.command // empty' "$settings" 2>/dev/null)
+  fi
+  case "$cmd" in
+    *usage-bridge.sh*) printf 'installed: yes\n' ;;
+    *) printf 'installed: no\n' ;;
+  esac
+
+  if [ -f "$status_cache" ]; then
+    cached_at=$(jq -r '.cached_at // empty' "$status_cache" 2>/dev/null)
+    cached_at_int="${cached_at%%.*}"
+    if printf '%s' "$cached_at_int" | grep -Eq '^[0-9]+$'; then
+      age=$(( $(date +%s) - cached_at_int ))
+      printf 'cache: present, age %ss (%s)\n' "$age" "$status_cache"
+    else
+      printf 'cache: present, age unknown (%s)\n' "$status_cache"
+    fi
+  else
+    printf 'cache: absent (%s)\n' "$status_cache"
+  fi
+
+  if [ -f "$status_original" ]; then
+    printf 'original: saved\n'
+  else
+    printf 'original: none\n'
+  fi
+
+  exit 0
+fi
+
 # Read ALL of stdin (the statusLine JSON Claude Code pipes in).
 input=$(cat)
 

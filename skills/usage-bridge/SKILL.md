@@ -85,3 +85,9 @@ Report, without writing anything:
 - **Wrapper path:** `~/.claude/galdr/usage-bridge.sh` (note if the file is missing).
 - **Cache freshness:** the `cached_at` age from `~/.claude/rate-limits-cache.json` —
   how many seconds old the cached rate limits are (note if the cache file is missing).
+
+The wrapper script also answers this directly: `bash scripts/usage-bridge.sh status`
+prints the same three facts as fixed lines and exits 0 without reading stdin —
+`installed: yes|no`, `cache: present, age <N>s (<path>)` or `cache: absent (<path>)`,
+and `original: saved|none`. galdr-doctor's check 5 shells out to this subcommand
+rather than narrating it.

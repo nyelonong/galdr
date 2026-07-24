@@ -1,3 +1,23 @@
+## 0.14.0 – 2026-07-24
+
+- `release.sh`: dev-only, repo root, the whole release sequence behind five
+  preflight checks (clean working tree; version consistency read from the
+  branch's own files across plugin.json, the README badge, and the CHANGELOG
+  heading; tag-collision, local and origin; main-not-diverged; the full gate
+  suite) then, unless stopped, ff-merge, a post-merge re-gate, an annotated
+  tag, a push, `./publish.sh`, and a bookkeeping reminder. `--preflight` runs
+  every check and stops before any mutation, exit 0. Proven by an 11-fixture
+  TDD harness (`testing/release-test.sh`), each fixture a disposable mktemp
+  dev repo plus bare origin, never touching the real repo or its remotes.
+- `usage-bridge status` subcommand: `scripts/usage-bridge.sh status` reports
+  three fixed lines (installed, cache, original statusline) and exits, never
+  reading stdin. `/galdr:doctor` check 5 now reports the real install state
+  through this subcommand; the doctor script itself is unchanged.
+- the 5 retrieval spot-checks owed since the auto-effort revert cycle are
+  cleared: all 5 run clean-room per `testing/protocol.md` §2 (fresh subagents,
+  no path-based rule injection), 3 passing first-pass and 2 on a fresh re-probe
+  after a narrower first reading.
+
 ## 0.13.0 – 2026-07-24
 
 - `/galdr:doctor` + `scripts/galdr-doctor.sh`: a wiring diagnostic, 6 checks
