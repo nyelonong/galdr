@@ -1,4 +1,4 @@
-## [Unreleased]
+## 0.10.0 – 2026-07-24
 
 - two-level park: soft (waves' pre-dispatch budget guard: stop before the next dispatch, in-flight work finishes) and hard (continue §6: flush in under two minutes, never wait), resolving the standing contradiction between waves' "in-flight dispatches always finish" rule and continue's under-two-minutes target.
 - ledger-scan crash detection: continue §3 gains a file-order scan before acting on any `next:` line: a WIP line with no closure later in the file means the previous session died unplanned and crash recovery runs first; a clean park still leaves zero open WIP, so normal resume is unaffected.
