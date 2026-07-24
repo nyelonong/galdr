@@ -52,7 +52,8 @@ config change, a conflict resolution — follow the same atomic rule as task com
 logical change per commit, conventional prefix
 (`feat`/`fix`/`refactor`/`test`/`docs`/`chore`), never mixed. Task commits inside a wave
 already get this from tdd and the brief's commit rules; `wip:` stays reserved for
-parking unfinished state (see continue).
+parking unfinished state and crash salvage (`wip: park — <state>`,
+`wip: crash-salvage — <desc>`; see continue).
 
 ## Finish procedure
 

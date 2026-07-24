@@ -45,7 +45,8 @@ Nothing outside this list. If the work needs a file not listed here, stop and re
   split, never bundled with a second pair.
 - Conventional prefix (`feat`/`fix`/`refactor`/`test`/`docs`/`chore`) matching the change.
 - Commit only inside the write-scope above. No exceptions.
-- `wip:` commits are reserved for session parking, not for task work.
+- `wip:` commits are reserved for session parking and crash salvage
+  (`wip: park — <state>`, `wip: crash-salvage — <desc>`), never for task work.
 
 ## Return contract
 

@@ -22,12 +22,9 @@ one usage reader; the detail table is in `references/runtime-dispatch.md`.
 - **Antigravity** — `start_subagent` for dispatch (dynamic subagents, isolated context,
   parallel); agent view for the progress tree; usage reader N/A.
 
-### Antigravity returns are reviewable code diffs
-
-On Antigravity, subagent returns surface as native reviewable code diffs. Two binding
-rules: the `EV`/`memory-progress.md` ledger is still written (a diff is not evidence),
-and the hard gate is not skipped by an "Always Proceed" policy — review the diff against
-the brief's acceptance criteria before marking the task `complete`.
+Antigravity returns surface as native reviewable code diffs — detail in
+`references/runtime-dispatch.md`. Two binding rules stay: the ledger is still written
+(a diff is not evidence), and the hard gate is not skipped by an "Always Proceed" policy.
 
 ## Dispatch procedure
 
@@ -48,6 +45,11 @@ For each task in the wave's frontier:
 3. Dispatch with the declared write-scope as the only paths the subagent may touch.
 4. On return, run the two-verdict review below before acting on anything the report
    claims.
+5. After the review (or the mechanical diff sanity check), and before the next dispatch
+   goes out, append the closure line to memory-progress.md: `EV [waves] <task-id>
+   return reviewed status=<status> @<sha>` — `<task-id>` is the id from the brief
+   filename recorded in the dispatch WIP line; `@<sha>` is the reviewed head commit at
+   closure time, never the dispatch's base sha.
 
 ## Two-verdict review — distrust the report
 
@@ -192,26 +194,29 @@ reader is Claude-only (N/A on Codex and Antigravity). Treat the data as **unavai
 the `rate-limits-max-age` key (seconds). Exact read, staleness, and fallback steps:
 `references/progress-and-usage.md`.
 
-## Pre-dispatch budget guard
+## Soft park — the pre-dispatch budget guard
 
-Before each not-yet-started dispatch, waves may park instead of dispatching. Three
-triggers:
+Before each not-yet-started dispatch, waves may soft park instead of dispatching.
+Soft park's triggers are exactly these three:
 
 - **Usage limit warning** — a usage limit warning appears this session.
-- **User says "park it".**
 - **Quota threshold (Claude only)** — the rate-limit reader shows
   `five_hour.used_percentage` at or above the `five-hour-park-pct` key, or
   `seven_day.used_percentage` at or above the `seven-day-park-pct` key (`## Budget`
-  section — cite the config, never a literal). This trigger depends on the statusline
-  rate-limit cache, so it is Claude-only; on Codex and Antigravity it is inactive. The
-  other two triggers above apply on all runtimes.
+  section — cite the config, never a literal). Statusline-cache dependent, so it is
+  Claude-only and inactive on Codex/Antigravity; the other two apply on all runtimes.
+- **User says "park it".**
 
-Park is graceful: in-flight dispatches always finish — reviewed, gated, committed —
-before the next dispatch parks; never interrupt one in flight.
+Soft park is graceful: in-flight dispatches always finish — reviewed, gated, committed
+— before the next dispatch parks; never interrupt one in flight. That waiting rule is
+scoped to soft park alone. Urgent triggers — a battery/shutdown warning, a hard limit
+already hit, user says "park now" — are continue's hard park (`skills/continue/SKILL.md`
+§6), which never waits. Park (soft or hard) is a session end, not a stop condition —
+it sits outside the four-condition stop list above.
 
 On park, waves emits one inline line naming the wave and task it parked at plus "run
 `/galdr:continue` after your limit resets". The durable resume header is written by
-continue's limit-park (`skills/continue/SKILL.md` §6), not here.
+continue's hard park (`skills/continue/SKILL.md` §6), not here.
 
 ## Git discipline
 
@@ -223,21 +228,16 @@ continue's limit-park (`skills/continue/SKILL.md` §6), not here.
 - Subagents never push. Subagents never open a pull request. No exceptions.
 - While any dispatched agent is in flight in a repo, the controller performs no git
   operations in that repo — no commits, no checkouts, no merges — until every dispatch
-  in the wave has returned. This rule keeps the controller from colliding with the
-  subagents' own commits; it is not a reason to defer committing to the end.
+  in the wave has returned. One stated exception: a hard park's `wip:` commit — the
+  session is about to die; the collision risk is accepted and recorded via the
+  `LOST-RISK` lines. This rule keeps the controller from colliding with the subagents'
+  own commits; it is not a reason to defer committing to the end.
 
 ## Research-brief variant
 
-When a task is a research task rather than an implementation task, its brief adds:
-
-- **Primary-source ownership** — cite the primary source itself, not a summary of it,
-  wherever a primary source exists.
-- **Per-claim citation** — every claim in the returned artifact carries its source
-  inline, not gathered into a bibliography at the end.
-- **Artifact committed to the repo** — the research output is a file committed at a
-  path the write-scope names, not left only in the subagent's transcript.
-
-Dispatch, the status contract, and the review gate all apply unchanged.
+Research-task briefs add primary-source ownership, per-claim citation, and a committed
+artifact — the three bullets are in `references/runtime-dispatch.md`. Dispatch, the
+status contract, and the review gate all apply unchanged.
 
 ## Reference
 

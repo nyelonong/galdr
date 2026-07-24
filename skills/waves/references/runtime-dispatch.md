@@ -2,8 +2,8 @@
 
 The per-runtime detail for waves: dispatch mechanism, progress-tree mechanism, and
 usage reader. The `waves/SKILL.md` body names one concrete mechanism per runtime inline;
-this file holds the full table and the per-runtime recipes. It is one hop — no further
-reference files.
+this file holds the full table, the per-runtime recipes, and detail the body points
+here for its line budget. It is one hop — no further reference files.
 
 ## Per-runtime table
 
@@ -62,7 +62,7 @@ skill body still apply: the `EV`/`memory-progress.md` ledger is written, and the
 gate is not skipped by an "Always Proceed" policy. Review each diff against the brief's
 acceptance criteria before the task can be marked `complete`.
 
-## Park-trigger portability
+## Soft-park trigger portability
 
 - **Usage limit warning** — applies on all three runtimes (reactive).
 - **User says "park it"** — applies on all three runtimes (reactive).
@@ -70,5 +70,19 @@ acceptance criteria before the task can be marked `complete`.
   cache. On Codex and Antigravity this trigger is inactive; the other two still apply.
 
 On Claude Workflow mode, waves also stops launching not-yet-started `agent()` calls
-once a park trigger fires. Dispatches already in flight always finish and are reviewed,
-gated, and committed first.
+once a soft-park trigger fires. Dispatches already in flight always finish and are
+reviewed, gated, and committed first — soft park's waiting rule; continue's hard park
+never waits.
+
+## Research-brief variant
+
+When a task is a research task rather than an implementation task, its brief adds:
+
+- **Primary-source ownership** — cite the primary source itself, not a summary of it,
+  wherever a primary source exists.
+- **Per-claim citation** — every claim in the returned artifact carries its source
+  inline, not gathered into a bibliography at the end.
+- **Artifact committed to the repo** — the research output is a file committed at a
+  path the write-scope names, not left only in the subagent's transcript.
+
+Dispatch, the status contract, and the review gate all apply unchanged.

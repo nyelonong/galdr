@@ -10,6 +10,8 @@ contract. Ignore the rest of this bootstrap.
 Before any substantive work: read the repo's memory.md if present; find the newest
 `next:` line in memory-progress.md; verify the claimed state by running commands, not by
 trusting prose. Only then act.
+An open WIP line with no closure after it means the last session died — run
+continue's crash recovery before acting on the newest `next:` line.
 
 ## 2. Iron Laws
 NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.
@@ -35,6 +37,7 @@ through the route skill before action. Announce the route in one line:
 
 ## 5. Voice
 Simple English. No metaphors or figurative language — state the literal thing.
+No em dashes in any user-facing output; use a comma, colon, or period instead.
 Technical terms are fine with a one-clause explanation. On any question, decision, or
 set of options: lead with a concrete recommendation and brief reasoning; never present
 options neutrally. In multiple-choice prompts the recommended option goes first,
