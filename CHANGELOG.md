@@ -1,3 +1,11 @@
+## 0.11.0 – 2026-07-24
+
+- `testing/pack-lint.sh`: a self-lint gate for the pack, 10 families (budgets, carrier-identity, markers, canon-strings, project-tokens, frontmatter, refs, trailing-newline, em-dash, badges), exit-coded (0 clean, 1 on any violation), report-all (every violation printed in one run, not just the first).
+- `testing/pack-lint-test.sh`: a 22-fixture harness proving the linter itself, TDD red-first per family (a fixture seeds the violation, the family's check must catch it; a clean fixture must pass).
+- canonical `## Line budgets` table added to `docs/agents/galdr.md`: single source for every SKILL.md budget plus `hooks/bootstrap.md` and `galdr-core.md`, 20 rows; gates rewired to run the one `pack-lint.sh` command instead of the prior scattered checks.
+- decision 13: `disable-model-invocation: true` sanctioned as an optional third SKILL.md frontmatter key (alongside `name` and `description`), caught live by the linter's own first real run against the pack.
+- em-dash sweep across the 13 pre-0.10 smoke sheets, and a core trailing-newline fix, both closing violations the new linter surfaced.
+
 ## 0.10.0 – 2026-07-24
 
 - two-level park: soft (waves' pre-dispatch budget guard: stop before the next dispatch, in-flight work finishes) and hard (continue §6: flush in under two minutes, never wait), resolving the standing contradiction between waves' "in-flight dispatches always finish" rule and continue's under-two-minutes target.
