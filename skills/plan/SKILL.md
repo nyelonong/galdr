@@ -19,8 +19,8 @@ Every plan file has, in order:
 - **Waves**: one section per DAG level (see "Waves are DAG levels"), each ending in a
   wave gate.
 - **Per task**: Files (create/modify), write-scope, Consumes/Produces, seams, test
-  list, acceptance checkboxes, and a model tier line, `<tier> [@ <effort>]`, only when
-  it overrides the default — an omitted effort means the tier's configured binding.
+  list, acceptance checkboxes, and a model tier line naming a tier, only when it
+  overrides the default — the tier resolves via `docs/agents/galdr.md` §Models.
 
 Example task entry (compressed; a real one also has step-by-step checkboxes):
 
@@ -32,7 +32,7 @@ Example task entry (compressed; a real one also has step-by-step checkboxes):
 **Produces:** ListUsers(ctx) ([]User, error) — used by Task 3.1
 **Seams:** repository boundary — integration test against the real store
 **Tests:** TestListUsers_Empty, TestListUsers_Paginated
-**Model tier:** top @ max (hardest task in the plan)
+**Model tier:** top (hardest task in the plan)
 - [ ] Step 1: ...
 ```
 

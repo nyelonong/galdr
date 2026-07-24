@@ -1,3 +1,13 @@
+## 0.12.0 – 2026-07-24
+
+- auto (model, effort) tiering removed, one release after it shipped in 0.9.0. Three reasons, in the order they hurt: dispatches were rejected over their effort value, the tier defaults picked worse effort levels than the session dial would have, and the surface it added (a config suffix, three ledger fields, a fourth ladder rung, a rejection-fallback rule, and a per-mechanism support table) cost more to carry than it returned. The session's own `/effort` dial governs every dispatch again.
+- `docs/agents/galdr.md` §Models rows go back to `tier → model`. A row that still carries an `@ <effort>` suffix from an older config is read by ignoring the suffix: no error, no warning, no migration pass. `setup` drops it the next time it rewrites the section.
+- the escalation ladder is `mechanical → standard → top` with a uniform three-attempt budget at every tier: retry, then escalate one tier and retry once, or retry at the same tier when already at `top`. Every runtime reads it the same way; the `top@max` rung and its no-effort-runtime carve-out are both gone.
+- the dispatch WIP line carries `tier=` and `model=` only, and `attempt=` EV lines carry the tier with no effort suffix. The effort-rejection EV line is removed with the rule it recorded.
+- `plan`'s per-task override is `**Model tier:** <tier>`, only when it overrides the default.
+- kept, with only the effort half dropped: `shape`'s independent spec-review dispatch, and activity rows in §Models. The row reads `spec-review: top` and resolves through the top tier's model.
+- `setup`'s confirm step no longer flags suspect (model, effort) pairings; the check existed only for effort.
+
 ## 0.11.0 – 2026-07-24
 
 - `testing/pack-lint.sh`: a self-lint gate for the pack, 10 families (budgets, carrier-identity, markers, canon-strings, project-tokens, frontmatter, refs, trailing-newline, em-dash, badges), exit-coded (0 clean, 1 on any violation), report-all (every violation printed in one run, not just the first).

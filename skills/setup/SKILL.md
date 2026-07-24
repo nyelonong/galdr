@@ -19,9 +19,7 @@ destroys a hand-edited config.
    markers and the defaults below. Show the draft in full.
 3. **Confirm.** Ask before writing. If `docs/agents/galdr.md` already exists, diff the
    draft against it section by section — see "Human edits" below for the extra rule
-   that applies to Gates and Invariants specifically. Also flag here any suspect
-   (model, effort) pairing in the §Models draft, from your own current knowledge of
-   what each model supports — never from an allowed-combos table in skill text.
+   that applies to Gates and Invariants specifically.
 4. **Write.** Write the confirmed config, then update the CLAUDE.md galdr block
    (below). Nothing is written before step 3's confirmation.
 
@@ -51,19 +49,17 @@ Exactly these sections, in this order, every time — no more, no fewer:
 - **`## Fast path`** — overrides to route's fast-path criteria, if this repo needs any.
 - **`## Review sources`** — Standards-axis docs (a design doc, a style guide, a
   mirror-pair rule) the review skill should read.
-- **`## Models`** — tier → `<model> [@ <effort>]`. Defaults:
-  - `mechanical: claude-haiku-4-5 @ low`
+- **`## Models`** — tier → model. Defaults:
+  - `mechanical: claude-haiku-4-5`
   - `standard: claude-sonnet-5`
   - `top: session model`
-  - `spec-review: top @ max`
+  - `spec-review: top`
 
-  A row with no `@ <effort>` suffix means inherit — no effort is set at dispatch, the
-  session effort governs; this also keeps a config written before effort existed valid,
-  unmigrated, on re-run (the Human-edits protection below still governs Gates and
-  Invariants specifically — this inherit rule needs no diff-and-confirm step of its
-  own). Activity rows (like `spec-review`) name a tier, not a model id, and resolve
-  through that tier's whole binding. Keep these defaults unless the repo names a
-  different binding.
+  A row maps a tier to a model and carries nothing else. Activity rows (like
+  `spec-review`) name a tier, not a model id, and resolve through that tier's own row. A
+  row still carrying an `@ <effort>` suffix from an older config is read by ignoring the
+  suffix, and setup drops it the next time it rewrites this section. Keep these defaults
+  unless the repo names a different binding.
 - **`## Worktree notes`** — package manager, env files to copy, and service
   dependencies (docker compose, external services) each worktree needs.
 - **`## Smoke`** — launch command, base URL, test account / seed-data notes, and the

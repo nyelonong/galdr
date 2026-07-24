@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.11.0-22d3ee?style=flat-square" alt="version 0.11.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.12.0-22d3ee?style=flat-square" alt="version 0.12.0"></a>
   <a href="skills/"><img src="https://img.shields.io/badge/skills-18-34d399?style=flat-square" alt="18 skills"></a>
   <img src="https://img.shields.io/badge/build-none_·_pure_Markdown-64748b?style=flat-square" alt="no build step">
   <img src="https://img.shields.io/badge/discipline-TDD_first-f59e0b?style=flat-square" alt="TDD first">
@@ -100,7 +100,7 @@ What keeps it honest:
 | [`prototype`](skills/prototype/SKILL.md) | Answer a design question with throwaway working code instead of a spec. |
 | [`rearchitect`](skills/rearchitect/SKILL.md) | Map an architecture pain area read-only, rank it, exit into a plan. |
 | [`backlog`](skills/backlog/SKILL.md) | Owns `docs/backlog.md`: captures, lists, and resolves deferred work. |
-| [`setup`](skills/setup/SKILL.md) | Writes this repo's `docs/agents/galdr.md`: gates, invariants, model+effort tiers, smoke. |
+| [`setup`](skills/setup/SKILL.md) | Writes this repo's `docs/agents/galdr.md`: gates, invariants, model tiers, smoke. |
 | [`core`](skills/core/SKILL.md) | Installs, removes, or checks the always-on core rules block per agent (Claude, Codex, Antigravity). |
 | [`usage-bridge`](skills/usage-bridge/SKILL.md) | Installs the statusline bridge for real 5h/7d usage % on any machine. |
 | [`authoring`](skills/authoring/SKILL.md) | The meta-skill: write or edit galdr skills through its checks. |
@@ -166,7 +166,7 @@ per wave) → review (spec + quality) → branches (gate, smoke sheet, merge dec
 
 Every wave dispatches subagents that commit their own atomic red-green pairs; every return is reviewed against its brief before it's trusted; every gate writes `EV` lines. galdr's own `0.2`–`0.5` releases (the budget guard, live progress + usage reporting, the [usage-bridge](skills/usage-bridge/SKILL.md) installer, and the self-managing [backlog](skills/backlog/SKILL.md)) were each built exactly this way, start to finish.
 
-Each dispatch runs at a tier binding (`<model> [@ <effort>]`) read from this repo's own `docs/agents/galdr.md`; a binding with no `@ <effort>` suffix inherits the session's own effort. A task that keeps failing escalates one rung at a time: mechanical → standard → top → top@max, then the wave stops rather than escalate further. On the Workflow runtime, `shape` adds one more independent check: a draft spec gets a second opinion from a reviewer dispatched at the repo's `spec-review` binding (max effort by default) before you see it.
+Each dispatch runs at a model tier read from this repo's own `docs/agents/galdr.md`, which maps each tier to a model. A failing task gets three attempts: retry, then escalate one tier (mechanical → standard → top) and retry once, then the wave stops rather than grind. On the Workflow runtime, `shape` adds one more independent check: a draft spec gets a second opinion from a reviewer dispatched at the repo's `spec-review` tier before you see it.
 
 ## Proven, not promised
 
@@ -233,7 +233,7 @@ galdr runs on three runtimes: Claude Code, OpenAI Codex, and Google Antigravity.
 
 ### After install (all runtimes)
 
-1. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes `docs/agents/galdr.md`: gate commands, invariants, model+effort tiers, thresholds, smoke config).
+1. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes `docs/agents/galdr.md`: gate commands, invariants, model tiers, thresholds, smoke config).
 2. Optional, once per machine (Claude Code only): [`/galdr:usage-bridge install`](skills/usage-bridge/SKILL.md): real 5h/7d usage % and the quota-threshold park, even where your statusline doesn't already write the cache.
 
 Then just work. The router picks the right path on every substantive request.
