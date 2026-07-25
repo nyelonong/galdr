@@ -1,3 +1,14 @@
+## 0.15.1 – 2026-07-25
+
+- README accessibility for new visitors: tagline rewritten in plain English,
+  new "Who is this for" section (5 pain-point bullets), "Why I built this"
+  rewritten problem-first, real wave-gate output block added to the
+  "idea to merged branch" example, "Under the hood" links to skills/ and
+  testing/, skill count 18 -> 20 in three places, "pack" -> "methodology"
+  for consistency.
+- LICENSE: MIT, added to the repo and to publish.sh's FILES array so it
+  syncs to the public mirror.
+
 ## 0.15.0 – 2026-07-25
 
 - **Unified Spec Recap**: Added a unified Spec Recap to the `branches` finish procedure, replacing standalone walkthroughs with a consolidated recap of all wave tasks, spec compliance, and quality verification.
