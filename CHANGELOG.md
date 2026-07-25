@@ -1,3 +1,8 @@
+## 0.15.0 – 2026-07-25
+
+- **Unified Spec Recap**: Added a unified Spec Recap to the `branches` finish procedure, replacing standalone walkthroughs with a consolidated recap of all wave tasks, spec compliance, and quality verification.
+- **Wave Recap Trigger**: Updated `waves` skill to trigger the final wave Spec Recap at plan completion.
+
 ## 0.14.0 – 2026-07-24
 
 - `release.sh`: dev-only, repo root, the whole release sequence behind five
