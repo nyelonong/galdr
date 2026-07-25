@@ -297,3 +297,7 @@ Skills stay generic; each repo's specifics live in `docs/agents/galdr.md` from [
 | [CHANGELOG](CHANGELOG.md) | Every release, `0.1` onward. |
 
 The full design spec, testing protocol, and router-accuracy set live in the private development repo, which is the canonical source this methodology is published from.
+
+## Acknowledgments
+
+galdr stands on the shoulders of two projects that shaped its thinking: [obra/superpowers](https://github.com/obra/superpowers) (MIT) and [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Both proved that a skills pack can carry a real engineering methodology, not just prompts. galdr is an independent implementation with its own design, but the idea that this format works at all owes them credit.
