@@ -13,9 +13,9 @@
 <h1 align="center">galdr</h1>
 
 <p align="center">
-  <b>One methodology pack that takes a rough idea all the way to a reviewed, merged branch:<br>
-  a failing test before every line, fresh evidence before every "done,"<br>
-  and a memory that survives a dead session.</b>
+  <b>A plugin that makes AI coding agents disciplined:<br>
+  every feature starts with a failing test, every "done" needs fresh evidence,<br>
+  and every session can stop and resume without losing work.</b>
 </p>
 
 <p align="center">
@@ -29,17 +29,31 @@
 </p>
 
 <p align="center">
-  <i>galdr</i>: Old Norse for "incantation." A personal engineering methodology for Claude Code:
+  <i>galdr</i>: Old Norse for "incantation." A plugin for Claude Code, OpenAI Codex, and Google Antigravity:
   routed requests, wave-based TDD-first plans, evidence gates, subagent execution, and durable memory.
 </p>
 
 ---
 
+## Who is this for
+
+You use Claude Code, OpenAI Codex, or Google Antigravity to write code, and one or more of these is true:
+
+- your agent writes code without tests, and you find bugs it said it fixed;
+- your agent says "done" but you can't tell if it actually ran the tests;
+- you've lost work when a session died, hit a limit, or you ran `/clear`;
+- you're burning through API budget because the agent doesn't know when to stop;
+- you want structure without bureaucracy: TDD, evidence gates, clean handoffs, but not a heavyweight framework.
+
+If you just want an AI to scaffold a quick prototype, galdr has a `/galdr:prototype` on-ramp for that. But if you want it to ship reviewed, tested code that survives a dead session, this is the plugin.
+
 ## Why I built this
 
-I was running multiple skill packs at once: overlapping bootstraps, competing conventions, and a standing context cost I paid on every single session. Neither matched how I actually work: shape an idea into a spec, turn it into a wave-based TDD plan, run it with subagents behind evidence gates, and keep durable memory so nothing is lost across a `/clear` or a dead session.
+Most AI coding agents have one mode: run until something breaks. They don't write tests first, they don't verify their own work, they don't stop before your budget burns out, and when a session dies mid-task, the work is gone.
 
-So I built one pack that *is* that method, small enough to leave on all the time, and held to the same standard it holds your code to: every discipline rule was tested against an agent that didn't have it before it shipped.
+I was using Claude Code with multiple skill packs at once. Overlapping bootstraps, competing conventions, a standing context cost I paid on every session. None of them matched how I actually work: shape an idea into a spec, turn it into a wave-based TDD plan, run it with subagents behind evidence gates, and keep durable memory so nothing is lost across a `/clear` or a dead session.
+
+So I built one plugin that *is* that method, small enough to leave on all the time, and held to the same standard it holds your code to: every discipline rule was tested against an agent that didn't have it before it shipped.
 
 ## The flow
 
@@ -70,7 +84,7 @@ What keeps it honest:
 
 ## The skills
 
-18 skills, each also a slash command (`/galdr:<name>`).
+20 skills, each also a slash command (`/galdr:<name>`).
 
 **Always on: inside every session and task** (injected by the [bootstrap](hooks/bootstrap.md))
 
@@ -157,20 +171,41 @@ That spec **is** the prompt: unambiguous, testable, and impossible to build two 
 
 ## Example: idea to merged branch
 
-The full loop:
+The full loop, with real output from a galdr run:
 
 ```
 route → shape (spec) → plan (wave DAG) → waves (subagents, RED-first, evidence gate
 per wave) → review (spec + quality) → branches (gate, smoke sheet, merge decision)
 ```
 
-Every wave dispatches subagents that commit their own atomic red-green pairs; every return is reviewed against its brief before it's trusted; every gate writes `EV` lines. galdr's own `0.2`–`0.5` releases (the budget guard, live progress + usage reporting, the [usage-bridge](skills/usage-bridge/SKILL.md) installer, and the self-managing [backlog](skills/backlog/SKILL.md)) were each built exactly this way, start to finish.
+Every wave dispatches subagents that commit their own atomic red-green pairs; every return is reviewed against its brief before it's trusted; every gate writes `EV` lines. galdr's own `0.2`-`0.5` releases (the budget guard, live progress + usage reporting, the [usage-bridge](skills/usage-bridge/SKILL.md) installer, and the self-managing [backlog](skills/backlog/SKILL.md)) were each built exactly this way, start to finish.
+
+Here's what a wave gate looks like in practice. The run hit 91% of its 5-hour limit, so the guard parked before the next wave. Every in-flight task was already committed. Nothing was half-done:
+
+```
+Wave 1 complete and gated. Parked before Wave 2 at task 2.1
+- 5h usage is 91%, above this repo's 90% park threshold.
+- Run /galdr:continue after your limit resets at 18:00 WIB.
+
+Nothing is half-done: all four tasks returned, were reviewed,
+gated and committed before the guard fired.
+
+Tokens
+- Wave 1 dispatches 674,706
+- Cumulative 674,706
+
+Usage limits (5h window resets 18:00 WIB)
+- 5h 91% <- at/above the 90% park threshold
+- 7d 76%
+```
+
+When the limit resets, you type `/galdr:continue`. galdr reads its ledger, verifies the last state, and picks up at Wave 2. No lost context, no half-finished files, no guessing.
 
 Each dispatch runs at a model tier read from this repo's own `docs/agents/galdr.md`, which maps each tier to a model. A failing task gets three attempts: retry, then escalate one tier (mechanical → standard → top) and retry once, then the wave stops rather than grind. On the Workflow runtime, `shape` adds one more independent check: a draft spec gets a second opinion from a reviewer dispatched at the repo's `spec-review` tier before you see it.
 
 ## Proven, not promised
 
-Every rule in this pack was tested against an agent that didn't have it: the same protocol the pack prescribes for your code, applied to the pack itself.
+Every rule in this plugin was tested against an agent that didn't have it: the same protocol the plugin prescribes for your code, applied to the plugin itself.
 
 <details>
 <summary><b>The receipts</b>: pressure tests, router accuracy, reviews, line budgets</summary>
@@ -209,7 +244,7 @@ galdr runs on three runtimes: Claude Code, OpenAI Codex, and Google Antigravity.
 
 ### OpenAI Codex
 
-1. Land the 18 skills:
+1. Land the 20 skills:
    ```
    npx skills add nyelonong/galdr
    ```
@@ -221,7 +256,7 @@ galdr runs on three runtimes: Claude Code, OpenAI Codex, and Google Antigravity.
 
 ### Google Antigravity
 
-1. Land the 18 skills:
+1. Land the 20 skills:
    ```
    npx skills add nyelonong/galdr
    ```
@@ -257,6 +292,8 @@ Skills stay generic; each repo's specifics live in `docs/agents/galdr.md` from [
 | | |
 |---|---|
 | [Bootstrap](hooks/bootstrap.md) | The ~46-line context block injected every session. |
+| [Skills](skills/) | 20 skills, each also a slash command (`/galdr:<name>`). |
+| [Testing protocol](testing/) | The pressure-test protocol every skill passed before shipping. |
 | [CHANGELOG](CHANGELOG.md) | Every release, `0.1` onward. |
 
-The full design spec, testing protocol, and router-accuracy set live in the private development repo, which is the canonical source this pack is published from.
+The full design spec, testing protocol, and router-accuracy set live in the private development repo, which is the canonical source this plugin is published from.
