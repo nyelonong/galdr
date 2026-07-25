@@ -1,2 +1,5 @@
 hooks/enabled
 docs/briefs/
+.agents/
+skills-lock.json
+

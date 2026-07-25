@@ -1,0 +1,80 @@
+.routeLab {
+  border: 1px solid var(--line);
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.eyebrow,
+.result dt,
+.selected {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+}
+
+.routeLab h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  margin: 0;
+  max-width: 18ch;
+}
+
+.tabs {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.tab {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  text-align: left;
+}
+
+.tab[aria-selected="true"] {
+  border-color: currentColor;
+  font-weight: 700;
+}
+
+.tab:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.selected {
+  border-inline-start: 1px solid currentColor;
+  margin-inline-start: 1rem;
+  padding-inline-start: 0.6rem;
+}
+
+.result {
+  border-top: 1px solid var(--line);
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+.result dl {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.result dt {
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.result dd {
+  margin: 0;
+}

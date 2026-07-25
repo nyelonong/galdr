@@ -65,7 +65,7 @@ Finishing a branch runs this sequence, in order:
 2. **Invariant checks** from `docs/agents/galdr.md`'s `## Invariants` section, if any
    are configured for this repo.
 3. **Branch-level review** (the review skill) — both axes, forced verdicts.
-4. **Smoke sheet** (below).
+4. **Spec Recap** (below).
 5. **Default outcome**: keep the branch, write the finish report, append a closeout
    line to memory-progress.md — beginning with the `CLOSEOUT` (or, at release, `RELEASED`)
    marker that `continue` §7's rotation boundary scans for — and advance the spec's
@@ -79,63 +79,64 @@ When you defer something at finish rather than fixing it now, append it to the b
 per /galdr:backlog (skills/backlog/SKILL.md) — don't restate the format here.
 
 The finish report shown to the user contains, inline and in this order: (a) a change
-summary — the commit list, files touched, and what changed behaviorally, in a few
-plain sentences; (b) both review verdicts; (c) the smoke sheet's full content, not
-just its file path — the user walks it from the report, without opening files; (d) the
+summary — code modifications, commit list, files touched; (b) automated test execution
+paths and verdicts; (c) both review verdicts; (d) the Spec Recap's full content, not
+just its file path — the user walks it from the report, without opening files; (e) the
 open backlog items, listed via /galdr:backlog (skills/backlog/SKILL.md), with an offer
-to pick one up next — never auto-start one. The sheet is still written to its file (the
+to pick one up next — never auto-start one. The recap is still written to its file (the
 durable copy); the report is where it is read.
 
 A Critical finding from steps 1-3 stops the sequence there: fix it before producing the
-smoke sheet or the report.
+Spec Recap or the report.
 
-## Smoke sheet
+## Spec Recap
 
-After gates and review pass, produce a smoke sheet — a file a person can read and click
-through to confirm the change actually works, because a green suite does not prove the
-UI or the API behaves correctly.
+After gates and review pass, produce a Spec Recap — a single unified document merging
+technical code modifications, automated test execution paths, and manual smoke verification
+click-paths so a person can review the changes and confirm the feature works.
 
-**Location:** the path named in `docs/agents/galdr.md`'s `## Smoke` section, under
-"smoke-sheet output dir." Default when unset: `docs/agents/smoke/<date>-<branch>.md`.
+**Location:** `docs/recaps/<date>-<topic>.md` (or path configured in `docs/agents/galdr.md`'s `## Smoke` / `## Recap` section; default fallback when topic is unset: `docs/recaps/<date>-<branch>.md`).
 
 **Contents, in this order:**
 
 1. Launch instructions, copied verbatim from `## Smoke` (launch command, base URL, test
    account / seed-data notes). Copy them exactly; don't paraphrase a command.
-2. User-visible changes, ranked biggest-first: the change a person would notice first
+2. Code modifications: concise change summary, files touched, architectural rationale, key diffs.
+3. Automated test paths: unit and integration test commands run, test files created or modified, and verification results.
+4. User-visible changes & click paths, ranked biggest-first: the change a person would notice first
    (the "WOW item") goes at the top; cosmetic or backend-only changes go at the bottom.
-3. For each item, an exact click path: URL, route or page, panel or component name —
+5. For each user-visible item, an exact click path: URL, route or page, panel or component name —
    specific enough to follow without re-deriving it from the diff.
-4. Test-data prerequisites per item, when the click path needs one (a seeded account, a
+6. Test-data prerequisites per item, when the click path needs one (a seeded account, a
    specific product, a feature flag).
-5. **API-only fallback**: when a change has no user-visible surface at all
+7. **API-only fallback**: when a change has no user-visible surface at all
    (backend-only, internal refactor, migration), skip the click-path list and give a
    curl example per changed endpoint or behavior instead — one example request and its
    expected response.
-6. Screenshots, attached when browser tooling is available this session; when it isn't,
+8. Screenshots, attached when browser tooling is available this session; when it isn't,
    say "screenshots not available this session" rather than leaving the point silent.
 
-The finish report's last line is always: "open `<base URL>` and walk the sheet" — the
+The finish report's last line is always: "open `<base URL>` and walk the recap" — the
 actual base URL from the config, not a placeholder.
 
-A change with zero user-visible surface still gets a sheet — item 5 above is what makes
-it non-empty. Never skip the smoke sheet because "nothing to click."
+A change with zero user-visible surface still gets a recap — item 7 above is what makes
+it non-empty. Never skip the Spec Recap because "nothing to click."
 
-## Antigravity: Walkthrough as the smoke sheet
+## Antigravity: Native Recap artifact
 
-On Antigravity, the smoke sheet is emitted as the native Walkthrough instead of a
-standalone file under the smoke-sheet output dir — same contents, same order, native
-surface. Two rules bind this case and do not relax for the format change:
+On Antigravity, the Spec Recap is also emitted as the native Recap/Walkthrough artifact alongside the
+file under `docs/recaps/` — same contents, same order, native surface. Two rules bind this case and do not relax for the format change:
 
-1. **The EV/memory-progress.md ledger is still written.** Producing a Walkthrough does
+1. **The EV/memory-progress.md ledger is still written.** Producing a Recap artifact does
    not replace the closeout line, the gate evidence, or any `EV [...]` line the finish
-   procedure requires; the ledger is the durable record, the Walkthrough is the
+   procedure requires; the ledger is the durable record, the Recap is the
    readable one, and on Antigravity both are produced.
 2. **The hard gate is not skipped by an "Always Proceed" policy.** Antigravity's
    "Always Proceed" setting is a default for advancing past prompts, not a substitute
    for the full gate manifest, the invariant checks, or the review verdicts in steps
    1-3 of the finish procedure. A Critical finding still stops the sequence there,
    "Always Proceed" or not.
+
 
 ## Consent: merge and push
 

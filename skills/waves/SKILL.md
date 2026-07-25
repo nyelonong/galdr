@@ -110,7 +110,7 @@ Review depth follows the brief's own classification, not a fixed ceremony:
 
 ## Wave gate
 
-Before opening the next wave:
+Before opening the next wave (or finishing the plan):
 
 1. Run the verify skill against the full gate manifest — not the in-task tiered
    cadence, the full suite.
@@ -120,10 +120,12 @@ Before opening the next wave:
    memory-progress.md, **and** print the usage report (below) in your response to the
    user — the ledger line and the printed report are both required; neither substitutes
    for the other.
+4. **Final wave Spec Recap**: when the wave gate completes the final wave of a plan (100% of tasks finished), generate the consolidated Spec Recap document at `docs/recaps/<date>-<topic>.md` (and emit the native Antigravity Recap artifact). This ensures a Spec Recap exists even if the workflow does not explicitly invoke `branches`.
 
 A wave gate that produced no EV lines has not happened, regardless of what the dispatch
 reports said. Defer a task to a later cycle? Append it to the backlog per /galdr:backlog
 (skills/backlog/SKILL.md).
+
 
 ## Live progress table
 

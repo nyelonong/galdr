@@ -1,0 +1,65 @@
+.chooser {
+  display: grid;
+  gap: 1rem;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tab,
+.copyButton {
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.tab {
+  padding: 0.5rem 0.75rem;
+}
+
+.tab[aria-selected="true"] {
+  background: currentColor;
+  color: Canvas;
+}
+
+.panel,
+.commandGroup {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.panel {
+  gap: 1.25rem;
+}
+
+.commandHeader {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.commandHeader h3 {
+  font: inherit;
+  margin: 0;
+}
+
+.copyButton {
+  padding: 0.35rem 0.5rem;
+}
+
+.command {
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.copyStatus {
+  margin: 0;
+  min-height: 1.5em;
+}
