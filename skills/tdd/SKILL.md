@@ -122,5 +122,24 @@ describe("parseAmount", () => {
 });
 ```
 
+Rust, cargo test with inline tests:
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parses_valid_rupiah() {
+        assert_eq!(parse_amount("Rp10.000"), Ok(10000));
+    }
+
+    #[test]
+    fn rejects_empty_string() {
+        assert!(parse_amount("").is_err());
+    }
+}
+```
+
 For TypeScript work, load `references/ts-conventions.md` before writing test doubles or
 parsing at a boundary.

@@ -99,7 +99,7 @@ A Spec-axis finding sometimes traces back to a wrong plan line, not wrong code. 
 that's the root cause, say so and route back to the plan — don't patch code to satisfy
 a plan line that is itself the error.
 
-## Go/TS smell list (Standards axis, 11 items)
+## Go/TS/Rust smell list (Standards axis, 11 items)
 
 Fowler smells kept for this stack. A documented repo standard always overrides one of
 these; each is a judgement call, not a hard violation; skip anything a linter already
@@ -128,7 +128,8 @@ enforces.
   real target direct.
 
 Dropped from the Fowler baseline for this stack: Refused Bequest — Go has no class
-inheritance to refuse. A repo's own configured Standards source may still flag it.
+inheritance to refuse. Rust has no inheritance either. A repo's own configured
+Standards source may still flag it.
 
 ## Output shape (what branches/finish consumes)
 

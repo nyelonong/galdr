@@ -35,7 +35,9 @@ destroys a hand-edited config.
   clean pass (see verify's skip-count rule).
 - **pnpm markers** (`pnpm-lock.yaml`, or a `packageManager` field in `package.json`) →
   Gates defaults: `pnpm lint`, `pnpm exec tsc --noEmit`, `pnpm test`.
-- **Both present** → both sets of defaults, in the same Gates section.
+- **Rust markers** (`Cargo.toml`) → Gates defaults: `cargo fmt --check`,
+  `cargo clippy -- -D warnings`, `cargo test`.
+- **Multiple present** → all sets of defaults, in the same Gates section.
 - **No markers matched** → leave the relevant Gates line as a placeholder and say so at
   the confirm step; do not invent a command for a stack that wasn't detected.
 
@@ -64,7 +66,8 @@ Exactly these sections, in this order, every time — no more, no fewer:
   dependencies (docker compose, external services) each worktree needs.
 - **`## Smoke`** — launch command, base URL, test account / seed-data notes, and the
   smoke-sheet output dir. Detected defaults: pnpm repo → `pnpm dev` and
-  `http://localhost:3000`; Go repo → the repo's make/run target and its API base URL.
+  `http://localhost:3000`; Go repo → the repo's make/run target and its API base URL;
+  Rust repo → `cargo run` and its API base URL.
 - **`## Briefs`** — whether waves' dispatch briefs under `docs/briefs/` are gitignored
   (the default) or committed. State the default explicitly rather than leaving it
   implied.

@@ -60,7 +60,7 @@ do not reach for the heaviest by default.
 
 1. A failing test that reproduces the bug
 2. `curl` against the endpoint
-3. A throwaway `tsx`/`go run` script
+3. A throwaway `tsx`/`go run`/`cargo run` script
 4. Grep across existing logs
 5. Bisect (`git bisect` or manual halving) to the introducing commit
 6. A minimal fixture that isolates the input

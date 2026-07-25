@@ -26,6 +26,8 @@ Per-repo setup notes come from `docs/agents/galdr.md`'s `## Worktree notes` sect
 
 - Frontend worktree: `pnpm install` before the first run — each worktree has its own
   `node_modules`, not shared with the main checkout.
+- Rust worktree: `cargo build` before the first run — each worktree has its own
+  `target/` dir, not shared with the main checkout.
 - Backend worktree: copy `.env` from the main checkout — it's untracked, so
   `git worktree add` does not carry it.
 - Docker-dependent repos: note which services each worktree needs. Multiple worktrees
@@ -174,10 +176,10 @@ When a merge or rebase hits a conflict:
 3. **Never invent behavior mid-merge.** If intent isn't clear from the archaeology,
    stop and ask. Writing new logic to paper over an unclear conflict is worse than
    leaving it unresolved.
-4. **Regenerate, don't hand-merge, generated artifacts.** Lockfiles (`pnpm-lock.yaml`),
-   generated code (`wire_gen.go`, generated API clients) never get hand-edited at a
-   conflict marker. Resolve the source inputs on both sides, then regenerate the
-   artifact with the tool that produces it.
+4. **Regenerate, don't hand-merge, generated artifacts.** Lockfiles (`pnpm-lock.yaml`,
+   `Cargo.lock`), generated code (`wire_gen.go`, generated API clients, `src/` under
+   `target/`) never get hand-edited at a conflict marker. Resolve the source inputs on
+   both sides, then regenerate the artifact with the tool that produces it.
 5. **Semantic-conflict gate.** A clean merge (no conflict markers) is not proof the
    result is correct — two branches can each pass their own tests and still break each
    other's assumptions. Re-run the full gate manifest on the merged result even when

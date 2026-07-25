@@ -86,6 +86,7 @@ When that file does not exist yet, use these literal fallbacks:
 
 - Go repo: `gofmt -l .`, `go vet ./...`, `go test ./...`
 - TS repo: `pnpm lint`, `pnpm exec tsc --noEmit`, `pnpm test`
+- Rust repo: `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test`
 
 ## EV line
 

@@ -41,6 +41,8 @@ separate scripts:
   the same route.
 - Go: a `-variant` flag, or a build tag (`//go:build variantA`), selecting between
   implementations from the same entry point.
+- Rust: a `#[cfg(feature = "variantA")]` / `#[cfg(feature = "variantB")]` Cargo
+  feature flag, or a `--variant` CLI arg, selecting between implementations.
 
 One switcher beats parallel scripts: the comparison only means something if every
 variant runs under identical conditions, and separately-hacked scripts drift apart in
