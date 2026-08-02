@@ -4,8 +4,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.15.1-22d3ee?style=flat-square" alt="version 0.15.1"></a>
-  <a href="skills/"><img src="https://img.shields.io/badge/skills-20-34d399?style=flat-square" alt="20 skills"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.16.0-22d3ee?style=flat-square" alt="version 0.16.0"></a>
+  <a href="skills/"><img src="https://img.shields.io/badge/skills-21-34d399?style=flat-square" alt="21 skills"></a>
   <img src="https://img.shields.io/badge/build-none_·_pure_Markdown-64748b?style=flat-square" alt="no build step">
   <img src="https://img.shields.io/badge/discipline-TDD_first-f59e0b?style=flat-square" alt="TDD first">
 </p>
@@ -84,7 +84,7 @@ What keeps it honest:
 
 ## The skills
 
-20 skills, each also a slash command (`/galdr:<name>`).
+21 skills, each also a slash command (`/galdr:<name>`).
 
 **Always on: inside every session and task** (injected by the [bootstrap](hooks/bootstrap.md))
 
@@ -113,9 +113,12 @@ What keeps it honest:
 |---|---|
 | [`prototype`](skills/prototype/SKILL.md) | Answer a design question with throwaway working code instead of a spec. |
 | [`rearchitect`](skills/rearchitect/SKILL.md) | Map an architecture pain area read-only, rank it, exit into a plan. |
+| [`council`](skills/council/SKILL.md) | Puts one hard design question to four members who answer blind and in parallel, then critique each other. Returns one synthesis. |
 | [`backlog`](skills/backlog/SKILL.md) | Owns `docs/backlog.md`: captures, lists, and resolves deferred work. |
+| [`retro`](skills/retro/SKILL.md) | Reads the evidence ledger back in aggregate and reports escalations, review verdicts, trust gap, interruptions, and spend. |
 | [`setup`](skills/setup/SKILL.md) | Writes this repo's `docs/agents/galdr.md`: gates, invariants, model tiers, smoke. |
 | [`core`](skills/core/SKILL.md) | Installs, removes, or checks the always-on core rules block per agent (Claude, Codex, Antigravity). |
+| [`doctor`](skills/doctor/SKILL.md) | Checks galdr's install wiring on this machine or repo and reports the fix, without applying it. |
 | [`usage-bridge`](skills/usage-bridge/SKILL.md) | Installs the statusline bridge for real 5h/7d usage % on any machine. |
 | [`authoring`](skills/authoring/SKILL.md) | The meta-skill: write or edit galdr skills through its checks. |
 
@@ -244,7 +247,7 @@ galdr runs on three runtimes: Claude Code, OpenAI Codex, and Google Antigravity.
 
 ### OpenAI Codex
 
-1. Land the 20 skills:
+1. Land the 21 skills:
    ```
    npx skills add nyelonong/galdr
    ```
@@ -256,7 +259,7 @@ galdr runs on three runtimes: Claude Code, OpenAI Codex, and Google Antigravity.
 
 ### Google Antigravity
 
-1. Land the 20 skills:
+1. Land the 21 skills:
    ```
    npx skills add nyelonong/galdr
    ```
@@ -292,7 +295,7 @@ Skills stay generic; each repo's specifics live in `docs/agents/galdr.md` from [
 | | |
 |---|---|
 | [Bootstrap](hooks/bootstrap.md) | The ~46-line context block injected every session. |
-| [Skills](skills/) | 20 skills, each also a slash command (`/galdr:<name>`). |
+| [Skills](skills/) | 21 skills, each also a slash command (`/galdr:<name>`). |
 | [Testing protocol](testing/) | The pressure-test protocol every skill passed before shipping. |
 | [CHANGELOG](CHANGELOG.md) | Every release, `0.1` onward. |
 

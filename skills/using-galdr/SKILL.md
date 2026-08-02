@@ -5,7 +5,7 @@ description: Use when unsure which galdr skill to invoke, or when two skill name
 
 # Using galdr
 
-galdr is 15 skills covering the path from an idea to a merged branch, plus a small set
+galdr is 21 skills covering the path from an idea to a merged branch, plus a small set
 that runs inside every task. This file lists what each skill is for, how they connect,
 and which one to pick when two seem to overlap.
 
@@ -41,7 +41,8 @@ These apply inside whichever destination above is active, not as separate stops:
 
 ## User-only
 
-Outside routing: **authoring** (write/edit a skill) and **setup** (wire galdr into a repo).
+Outside routing: **authoring** (write/edit a skill), **setup** (wire galdr into a repo),
+and **council** (put one hard design question to four members at once).
 
 ## Telling confusable pairs apart
 
@@ -53,6 +54,10 @@ Outside routing: **authoring** (write/edit a skill) and **setup** (wire galdr in
   root cause first. tdd is for behavior that doesn't exist: write the failing test first.
 - **plan vs waves** — plan decides what the tasks are and how they depend on each other;
   waves executes those tasks and gates on evidence.
+- **council vs shape** — shape interviews you toward a written spec; council dispatches
+  four independent contexts that answer blind, then critique each other, and writes no file.
+- **council vs review** — review judges a diff that already exists; council answers the
+  question before there is one.
 
 ## Precedence and setup
 

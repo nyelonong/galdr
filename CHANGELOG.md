@@ -1,3 +1,26 @@
+## 0.16.0 – 2026-08-02
+
+- **`council`**, the 21st skill: user-only (`disable-model-invocation: true`), a consult
+  that puts one written question to four members (The Architect, The Skeptic, The
+  Pragmatist, The Researcher) who answer in parallel and blind, then run again holding
+  all four round-1 answers to critique each other and either revise or explicitly hold.
+  The main session synthesizes: one recommendation, every disagreement that survived
+  round 2, and what all four assumed without checking. Two fixed rounds, eight
+  dispatches. Members are read-only (search only, no write/edit/commit); only the
+  Researcher gets web search. With no parallel dispatch mechanism available, council
+  reports that and stops rather than simulating the four members itself. Output is one
+  synthesis in conversation plus a single `COUNCIL [<topic>] <question> → <recommendation>
+  (dissent: <member> | none)` ledger line; no spec, no plan, no file.
+- per-repo config: `docs/agents/galdr.md` gains a `skills/council/SKILL.md` line-budget
+  row and a `council: top` §Models activity row.
+- `using-galdr`: skill count corrected 15 → 21 (stale for several releases), council
+  added to the user-only list, and two disambiguation bullets added (council vs shape,
+  council vs review). Line budget moved 60 → 70: the file sat at exactly 60 of 60 and the
+  new bullets forced an unrelated line over budget.
+- README: skills badge and four prose counts moved 20 → 21, and the skills tables gained
+  rows for `council`, `doctor`, and `retro`. `doctor` and `retro` shipped in 0.13.0 and
+  had never been listed, so the tables had been showing 18 of 20.
+
 ## 0.15.1 – 2026-07-25
 
 - README accessibility for new visitors: tagline rewritten in plain English,
