@@ -1,4 +1,4 @@
-## Unreleased
+## 0.17.0 – 2026-08-07
 
 - `review`: new "Reviewers are read-only" section, both review subagents report
   findings only and never edit or fix code; a fix belongs in the implementation
