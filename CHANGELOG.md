@@ -1,3 +1,18 @@
+## Unreleased
+
+- `review`: new "Reviewers are read-only" section, both review subagents report
+  findings only and never edit or fix code; a fix belongs in the implementation
+  lane; any change made after a review invalidates that verdict, and a fresh review
+  is required before acting on it; the parent owns the fix and the re-review. Line
+  budget 150 → 155 (the added section, at 147/150, would otherwise overshoot).
+  Scenario `reviewers-are-read-only` added to `testing/scenarios/review.md`.
+- `review`: new "Primary model assumption" section, architecture, review, and
+  acceptance assume the session runs at the top model; before a final verdict, if the
+  session model cannot be confirmed at top, ask the user rather than assuming it, and
+  surface a downgraded session as lower-confidence instead of hiding it. Line budget
+  155 → 160. Scenario `primary-model-assumption` added to
+  `testing/scenarios/review.md`.
+
 ## 0.16.0 – 2026-08-02
 
 - **`council`**, the 21st skill: user-only (`disable-model-invocation: true`), a consult

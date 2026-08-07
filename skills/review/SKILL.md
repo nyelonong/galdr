@@ -93,6 +93,19 @@ verdicts, not an average or a pick-one-winner answer.
 - When findings conflict, this precedence decides: the user's word outranks this review's
   own subagent findings, which outrank an external reviewer or tool's findings.
 
+## Reviewers are read-only
+
+Both review subagents are read-only: they report findings, never edit or fix
+code. A fix belongs in the implementation lane (a wave task), not the
+reviewer. Any change made after a review invalidates its verdict; run a fresh
+review before acting on it. The parent owns the fix and the re-review.
+
+## Primary model assumption
+
+Architecture, review, and acceptance assume the session runs at the top model.
+Before a final verdict, if you cannot confirm it is still at top, ask the user.
+A downgraded session makes the verdict lower-confidence; surface that, never hide it.
+
 ## The plan can be the bug
 
 A Spec-axis finding sometimes traces back to a wrong plan line, not wrong code. When
