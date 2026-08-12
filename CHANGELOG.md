@@ -1,3 +1,18 @@
+## 0.19.0 – 2026-08-12
+
+- **bootstrap** §5 Voice grows from a four-sentence paragraph into a full output spec:
+  scope, mode, shape, instrument voice, diagrams, length, evidence, questions, pushback,
+  error handling, and how the spec itself is changed. It now states what an answer looks
+  like, not only the tone to write it in: verdict first then diagram then detail, a
+  ten-line budget counting prose and bullets with fences, tables and citations free, and a
+  drawing wherever three or more parts have a relationship.
+- **bootstrap** §6 Precedence names `AGENTS.md` alongside `CLAUDE.md` at equal rank, with
+  an explicit instruction to stop and ask where the two disagree with each other. Neither
+  outranks the other, and `AGENTS.md` appeared nowhere in the pack before this.
+- Line budget for `hooks/bootstrap.md` and `galdr-core.md` raised 60 to 95 to hold the
+  expanded section. The standing-context estimate moves from roughly 2,000 to 2,400 tokens.
+- `carriers/codex.md` and `carriers/antigravity.md` re-synced to the new §0 to §6 block.
+
 ## 0.18.0 – 2026-08-12
 
 - **`branches`** opens the finish procedure with `git fetch origin`. Every claim the
