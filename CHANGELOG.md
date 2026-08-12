@@ -1,3 +1,10 @@
+## 0.18.0 – 2026-08-12
+
+- **`branches`** opens the finish procedure with `git fetch origin`. Every claim the
+  procedure produces about merge state, divergence, or whether a commit exists is judged
+  against `origin/*`; a local ref is stale by default. `fetch` and `origin/` appeared
+  nowhere in the pack before this.
+
 ## 0.17.0 – 2026-08-07
 
 - `review`: new "Reviewers are read-only" section, both review subagents report

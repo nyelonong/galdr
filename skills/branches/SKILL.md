@@ -59,6 +59,10 @@ parking unfinished state and crash salvage (`wip: park — <state>`,
 
 ## Finish procedure
 
+Run `git fetch origin` before the sequence starts. Every claim it produces about merge
+state, divergence, or whether a commit exists is judged against `origin/*`; a local ref
+is stale by default.
+
 Finishing a branch runs this sequence, in order:
 
 1. **Full gate manifest** — the verify skill's branch-finish proportionality: full
