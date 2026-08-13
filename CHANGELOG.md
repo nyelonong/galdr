@@ -1,3 +1,17 @@
+## 0.20.0 – 2026-08-13
+
+- **bootstrap** §5 Voice gains **Handoff**: a reply that changed a repo ends with what
+  changed, one line per file, and a numbered **Next** of what the user does. Neither block
+  is dropped because it was said earlier in the reply.
+- **bootstrap** §5 trimmed from 51 lines to 46. Out: the table column and cell-width caps,
+  the bold-placement rule, the diagram-type enumeration, and the per-phase progress line.
+  The **Mode** block folds into **Scope** as one clause. Standing context drops ~96 tokens.
+- **bootstrap** §5 no longer bans emoji outright. The old rule contradicted `waves`, which
+  mandates a ⚠️ escalation marker on every `blocked` and `needs-decision` status. An emoji a
+  skill's output contract requires is no longer treated as decoration.
+- **bootstrap** §5 **Questions** no longer fires on every task past one step. The prompt
+  format still applies when a question is asked; it is no longer a trigger to ask one.
+
 ## 0.19.0 – 2026-08-12
 
 - **bootstrap** §5 Voice grows from a four-sentence paragraph into a full output spec:
