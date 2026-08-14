@@ -1,3 +1,7 @@
+## 0.21.1 – 2026-08-14
+
+- `publish.sh`: the shippable subset now carries `carriers/` and `galdr-core.md`. Both were omitted, and `scripts/core-install.sh` ships and reads them, so `/galdr:core install codex` and `install antigravity` were silent no-ops in every published release up to and including 0.21.0. Covered by a new `publish-site-test.sh` case, 4 cases to 5.
+
 ## 0.21.0 – 2026-08-14
 
 - `authoring`: the body/reference decision is now a written rule. §Two-loads accounting gains the criterion (a section that fires on every run stays in the body), an exhaustive carve-out (Iron Law, hard prohibition, rationalization table, or a halting step stays however conditional it reads), a three-verdict screen on whether branches are mutually exclusive, co-firing, or independent per-run booleans, and a 20-line floor derived from what a new reference file costs. §One-level-deep references gains the pointer-trigger rule and what a moved section does with its inbound and outbound references.
