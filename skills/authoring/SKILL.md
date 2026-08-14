@@ -56,6 +56,38 @@ Every skill spends two separate budgets:
 Before adding a paragraph, name which budget it's charged to. If it's the description,
 it must be a trigger, not an explanation of mechanics.
 
+### Which sections stay in the body
+
+A section stays in the body if it fires on every run of the skill. It moves to a
+reference only if it fires on some branch and not others. When it is arguably both, it
+stays. A section that changes the outcome in no branch is a deletion candidate under the
+no-op test above: raise it and stop.
+
+One carve-out overrides that, and it is exhaustive. However conditional it reads, a
+section stays in the body when it contains an Iron Law, a hard prohibition (all-caps or
+not, including the consent rules), a rationalization table under any heading, or a step
+that halts a sequence on failure. An inline "never" inside an otherwise conditional
+section does not trigger the carve-out. A section held in the body by it still counts as
+a co-firing partner, so anything a single run enters alongside it also stays.
+
+### Screen a section before splitting it
+
+A **run** is one invocation of the skill's body in one context window. Two conditional
+sections **co-fire** when a single run enters both, whether directly or through a
+delegation from another section. A section that fires on every run is part of the body
+and never counts toward this test. Three verdicts:
+
+- **Mutually exclusive** within one run: split. Only one ever loads.
+- **Co-firing:** no split. The run loads both anyway, so relocating adds overhead and
+  reduces nothing.
+- **Independent per-run boolean:** split only where the branch is gated on a named
+  platform, tool, host, or error path.
+
+Then check the floor. A new reference file costs 9 to 12 lines the original did not pay:
+title, blank, a short orienting intro, and a two-line pointer with its trigger. The floor
+is 20 lines, a margin above that break-even, because a marginal move buys a few lines and
+adds a retrieval step that can fail.
+
 ## Trigger-only descriptions
 
 The description says when to use the skill, never how it works inside. "Use when
@@ -69,6 +101,19 @@ A `references/` file may hold detail the body doesn't need on every run. It may 
 point to a `references/` file of its own — one hop from `SKILL.md`, no deeper. A
 reference file that needs its own reference means the skill is doing too much; split
 it instead.
+
+Every pointer names the condition that loads the file, in the same sentence that says
+what the file holds. The model is the Comments bullet in `skills/review/SKILL.md`
+§Go/TS/Rust smell list: it names the file, gives the trigger "whenever the diff touches
+comments", and says to paste the content into the subagent rather than hand over the
+path. A pointer with no trigger is a defect: an agent that cannot tell when to load the
+file acts on the router and skips the detail.
+
+When a section does move, it leaves its references behind. A pointer inside it is
+re-sited in the body; a pointer from it back into the body is re-sited to name the body
+section; and prose elsewhere that named the moved section is rewritten to its new
+location. The one-hop rule forbids repairing a prose mention that already sits inside
+another reference file, so that one is left alone and noted.
 
 ## Completion criterion in every procedure
 
@@ -98,7 +143,8 @@ A budget is a ceiling, not a target — don't pad a skill to reach it. Budget gr
 not a rewrite convenience: per spec §12, a discipline skill's budget grows only after
 it fails its pressure campaign at the current size, and that failure is the
 justification recorded in the commit. Growing a budget with no failed pressure run to
-point to is scope creep, not maintenance.
+point to is scope creep, not maintenance, unless an approved spec sanctions the growth
+and says why — a rule's carrier growing to carry a new rule is the case that earns it.
 
 ## Quarterly prune ritual
 

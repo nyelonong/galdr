@@ -1,3 +1,11 @@
+## 0.21.0 – 2026-08-14
+
+- `authoring`: the body/reference decision is now a written rule. §Two-loads accounting gains the criterion (a section that fires on every run stays in the body), an exhaustive carve-out (Iron Law, hard prohibition, rationalization table, or a halting step stays however conditional it reads), a three-verdict screen on whether branches are mutually exclusive, co-firing, or independent per-run booleans, and a 20-line floor derived from what a new reference file costs. §One-level-deep references gains the pointer-trigger rule and what a moved section does with its inbound and outbound references.
+- `pack-lint`: new eleventh family `reference-size` caps every `skills/*/references/*.md` at the row in `docs/agents/galdr.md` §Reference budget, currently 120 lines. A missing or unparseable section is itself a violation, so the check fails closed. The cap cannot live in §Line budgets, where family 1 lints every row against a real file and a glob scope reports a stale row.
+- `testing/protocol.md`: a spot-check now loads the SKILL.md plus any reference whose trigger the probe fires, and the evidence format carries a `refs=` field naming the paste set or `refs=none`.
+- `review`: the Standards smell list grows to 12 with **Comments**. Silence is the default, and a comment earns its place only where a reader would otherwise misread the intent or revert the code. New `skills/review/references/comment-placement.md` carries the per-level placement table (file, declaration, member, function body) and is pasted into the Standards subagent whenever a diff touches comments. Budget 160 → 170.
+- Scope note: six review rounds tested applying the body/reference rule across the pack. Every relocation set collapsed, the last on the carve-out this release adds, so the rule cycle relocated no skill body and created no reference file; it governs future edits. The one reference file this release ships, `comment-placement.md`, belongs to the `review` change above, which predates that rule.
+
 ## 0.20.0 – 2026-08-13
 
 - **bootstrap** §5 Voice gains **Handoff**: a reply that changed a repo ends with what

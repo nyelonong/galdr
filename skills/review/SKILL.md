@@ -112,13 +112,22 @@ A Spec-axis finding sometimes traces back to a wrong plan line, not wrong code. 
 that's the root cause, say so and route back to the plan — don't patch code to satisfy
 a plan line that is itself the error.
 
-## Go/TS/Rust smell list (Standards axis, 11 items)
+## Go/TS/Rust smell list (Standards axis, 12 items)
 
 Fowler smells kept for this stack. A documented repo standard always overrides one of
 these; each is a judgement call, not a hard violation; skip anything a linter already
 enforces.
 
 - **Mysterious Name** — a name doesn't reveal what it does or holds → rename it.
+- **Comments** — silence is the default. A comment earns its place only where a reader
+  would otherwise misread the intent or revert the code, and then it says why, not what,
+  in one line. Flag one that restates the code, stands in for a rename or an extracted
+  function, cites context outside the repo, or runs long enough to be a decision doc →
+  fix the code or write the doc, then cut the comment. Judge added and changed comment
+  lines in the diff, not the file's existing ones. Where a comment does clear the bar,
+  `references/comment-placement.md` says where it goes per level (file, declaration,
+  member, function body) and which placements are findings — paste it into the Standards
+  subagent whenever the diff touches comments.
 - **Duplicated Code** — the same logic shape appears in more than one hunk or file →
   extract the shared shape, call it from both.
 - **Feature Envy** — a function reaches into another type's data more than its own →
