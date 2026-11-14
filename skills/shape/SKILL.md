@@ -1,163 +1,83 @@
 ---
 name: shape
-description: Use when turning a fuzzy idea, a position to stress-test, or a set of already-clear requirements into a written spec — grill mode tests a position, explore mode is open-ended, synthesis mode drafts straight from clear requirements. Invoke via route or explicit command.
+description: Use when the user runs /galdr:shape to turn a fuzzy idea, a position to stress-test, or settled requirements into a written spec.
+disable-model-invocation: true
 ---
 
 # shape
 
-Turns an idea into a spec file. Three entry modes reach the same exit: a written
-spec, self-reviewed, waiting on approval. Route hands you a mode directly
-(`shape-synthesis`, `shape-grill`, `shape-explore`, `shape-wayfinder`); a request
-that names a mode itself — "grill me", "requirements are settled" — picks the mode
-the same way.
+Turns an idea into an approved spec at `docs/specs/<YYYY-MM-DD>-<topic>.md`.
 
-## Picking a mode, if not already told
+## Pick a mode
 
-- A position exists and needs stress-testing → grill.
-- Open-ended, no position yet → explore.
-- Requirements are already clear enough to state → synthesis.
-- The topic won't resolve in one sitting → wayfinder (below).
+- Requirements already settled → **synthesis**: no questions, write the spec.
+- A position to stress-test ("grill me") → **grill**.
+- No position yet → **explore**.
+
+## Settle facts by trying, not asking
+
+Before each question, check whether reading the code, docs or config, or running
+something, answers it. Such a fact goes into the spec with its source; it is never
+asked. Only decisions, choices among options that change what gets built, reach the
+user.
+
+## Question budget
+
+- One question per message, never a list.
+- Recommendation first: your pick and its one-line reason, then the question.
+
+  ```
+  Next: do "reviews" mean buyer reviews of a storefront, or reviews of the platform?
+  Recommend buyer reviews of a storefront: that noun is already in use, and platform
+  reviews are not a stated need.
+  ```
+
+- Synthesis and explore ask at most 3 questions before the draft. Every decision still
+  open goes into the spec as an assumption carrying your recommended choice.
+- Grill was asked for questions: keep going, one at a time, until the tree is resolved
+  or the user stops.
+- Default to the simplest design that meets the stated need. A heavier option (queue,
+  outbox, new service, new abstraction) appears only as a rejected alternative with its
+  reason, unless the user asked for it.
 
 ## Grill
 
-Stress-tests a position someone already holds.
-
-1. Build a decision tree of the open questions, ordered by dependency: which
-   decisions block which others. An early answer can change what the later
-   questions even are.
-2. Split each node into a fact or a decision. A fact is checkable — confirm it
-   (read the code, ask one direct question) and move on. A decision is a choice
-   among options — that gets the interview treatment below.
-3. Ask one decision at a time, in dependency order. Never put a list of questions
-   in one turn — the position gets stress-tested one decision at a time.
-4. Every question carries a concrete recommendation: state your pick and the
-   one-line reason before asking, then let the user confirm, override, or answer
-   differently. A bare question with no stance is not a grill question.
-
-   ```
-   Next: does "reviews" mean buyer reviews of a storefront, or reviews of the
-   platform itself? Recommend buyer reviews of a storefront — that's the noun
-   already in use, and "platform reviews" isn't a stated need yet.
-   ```
-
-5. The moment a decision confirms, append its line to memory-progress.md —
-   immediately, not batched for later. An interview is exactly the kind of work a
-   session dies mid-way through; a decision that only lives in the conversation
-   dies with it.
-
-   ```
-   DECISION [<topic>] <question> → <choice>
-   ```
-
-6. Keep going until every branch of the tree is resolved or explicitly deferred
-   with a named owner. "This got hard, let's stop" is not an exit — resolved or
-   deferred-with-an-owner are the only two ways out of grill. When you defer a
-   branch to a later cycle, append it to the backlog per /galdr:backlog
-   (skills/backlog/SKILL.md) — don't restate the format here.
-7. Once the tree is exhausted, continue to Synthesis.
+1. List the open decisions as a tree ordered by dependency: an early answer can change
+   the later questions.
+2. Ask them in that order, under the budget above.
+3. Write each confirmed decision into the spec's decision table as it lands, creating
+   the file at the first one, so a session that dies loses nothing.
+4. Done when every branch is decided or deferred with a named owner. Then synthesis.
 
 ## Explore
 
-Open-ended: no position exists yet to test.
-
-1. Read the project's context first — CLAUDE.md, memory.md, the existing code —
-   before proposing anything. An approach that ignores what's already there gets
-   rejected on the first read anyway.
-2. If the request spans more than one subsystem, decompose the scope: name each
-   subsystem's slice of the question separately before designing any of them.
-3. For each slice, present 2-3 approaches with a recommendation stated first, not
-   a neutral list, before going into design detail: the pick and why, then the
-   alternatives and their tradeoffs.
-4. Once a direction is picked for a slice, any open question left in it gets the
-   same treatment as grill: one at a time, recommendation first.
-5. Continue to Synthesis.
+1. Read the project's instructions and the existing code before proposing anything.
+2. If the request spans several subsystems, name each one's slice before designing any.
+3. For each slice, give 2 or 3 approaches, recommendation first, then the trade-offs.
+4. Open questions left in a slice follow the budget. Then synthesis.
 
 ## Synthesis
 
-The exit every mode reaches, and a mode in its own right.
+Write the spec with these sections, in order:
 
-- Entered directly (`shape-synthesis`, or the requirements are already stated as
-  clear): skip the interview entirely. Do not ask a clarifying question — the
-  request already said what's needed. Go straight to the spec draft.
-- Arrived here after grill or explore: the interview already happened; there is
-  nothing left to skip, just write.
+- **Goal**: one paragraph.
+- **Non-goals**: what is out of scope.
+- **Constraints**: rules every task must obey, written as rules.
+- **Decisions**: table `# | Decision | Choice | Source`, where Source is `asked`,
+  `found` (with where) or `assumed`.
+- **Acceptance criteria**: each decidable by a command or an observable check.
 
-Write the spec to `docs/specs/YYYY-MM-DD-<topic>.md` in the target repo. Near the
-header, carry a one-line `Lifecycle status:` field. It moves through four states
-over the spec's life — `shaped → planned → in-progress → shipped` — and shape
-sets it to `shaped` when it writes the spec.
+Then fix inline, before showing it:
 
-- **Goal** — what this spec is for, one paragraph.
-- **Non-goals** — what's explicitly out of scope, so it can't drift back in later.
-- **Constraints** — project-wide rules every task must obey (style, consent,
-  cross-repo invariants). The plan skill copies this section forward verbatim, so
-  write it as rules, not prose.
-- **Decision log** — every decision reached (grill/explore) or assumed (direct
-  synthesis), as a table: `# | Decision | Choice`.
-- **Acceptance criteria** — stated per future wave, so the downstream `plan` skill
-  has something concrete to check tasks against.
-- **Roles touched** — one line, `**Roles touched:** <comma-separated role names>` or
-  `**Roles touched:** none`. Names are roles cited from the target repo's
-  `docs/agents/roles-and-journeys.md`, if that doc exists; if the repo has no such
-  doc, the field is always `none`.
+1. Placeholders: no "TBD", "handle edge cases" or "similar to X".
+2. Contradictions between sections.
+3. Scope: no more and no less than was asked.
+4. Ambiguity: if two readers could build it two ways, sharpen it until one reading is
+   left.
 
-### 5-point self-review
+## Hard gate
 
-Before showing the spec, check it against these five and fix inline — don't flag
-a problem and leave it for later:
+No code, plan file or task starts until the user approves the spec. On approval, end
+with "Next: run `/galdr` to build it with the feature playbook."
 
-1. **Placeholders** — any "TBD", "handle edge cases", "similar to X"? Replace with
-   the actual content.
-2. **Contradictions** — do any two sections disagree with each other? Reconcile
-   them.
-3. **Scope** — does the spec match what was actually asked, no more and no less?
-   Trim anything that crept in.
-4. **Ambiguity** — could two different readers build this two different ways?
-   Sharpen the wording until one reading survives.
-5. **Roles drift** — check what "Roles touched" ended up being:
-   - No existing role named (the field is `none`, or names only roles absent from
-     `docs/agents/roles-and-journeys.md`): this point is done — the review is the
-     original four points, unchanged.
-   - An existing role is named and the spec's claims about that role's
-     capabilities/boundaries match the doc's `**Capabilities:**` /
-     `**Boundaries:**` lines for it: passes silently, same as any other point that
-     finds nothing wrong.
-   - An existing role is named and the spec's claims conflict with the doc (the
-     spec assumes a capability the doc's `**Boundaries:**` rules out, or contradicts
-     a stated `**Capabilities:**` line): stop synthesis before the spec is shown for
-     approval, and tell the user to either fix the spec to match the doc, or run
-     `setup`'s refresh to update the doc first — then resume. Never fix this by
-     editing `docs/agents/roles-and-journeys.md` yourself in-session; that file is
-     only ever written by `setup`.
-
-On a session with the Workflow tool: after the inline fixes above, dispatch one
-independent reviewer at the `spec-review` binding from the repo's
-`docs/agents/galdr.md` §Models — an activity row that names a tier, resolved through
-that tier's own binding. Input: the draft spec and its decision log. Return: findings
-against the same five points above. Fix its findings inline, the same way the five
-points are fixed, before the spec is shown for approval — the reviewer is a second
-opinion from a context that did not write the spec, which is the point.
-
-On any runtime without the Workflow tool: skip the dispatch. The self-review above is
-the whole review, unchanged.
-
-### Hard gate
-
-No implementation action — no code, no plan file, no wave dispatch — happens
-until the user has approved this spec. This is a hard rule, not a preference: an
-unapproved spec is a draft, and drafts don't get built.
-
-## Wayfinder
-
-When a topic won't reach a spec in one session — too many open branches, or the
-session runs out before the tree is exhausted — load `references/wayfinder.md`.
-It covers the multi-session fog map: what to record, what never to record, and
-how the map closes back out into a spec.
-
-## Notes
-
-- A memory-progress.md decision line and the spec's Decision log table are not
-  the same artifact: the line is written the moment a decision lands, mid-
-  interview; the table is the same decisions, collected, at the end.
-- Facts and decisions differ in treatment, not in stakes — a wrongly assumed fact
-  is still a spec bug, it just didn't need an interview to catch.
+Done when the spec file exists, passes the four checks, and the user has approved it.

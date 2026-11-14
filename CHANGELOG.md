@@ -1,3 +1,32 @@
+## 1.0.0 – 2026-11-14
+
+Breaking: galdr is now 7 skills (from 22), with no always-on hook.
+
+- New `galdr` entry skill (`/galdr`) with five playbooks: investigate, feature, bug, refactor, prototype. Investigate is the default for questions and critiques.
+- New question budget: facts are settled by reading or running, at most 3 questions before a plan or spec, and the simplest design by default.
+- New finish-the-action rule: an action the user approved is carried out, never handed back; approval covers that action only.
+- `review` gains the browser approval gate (copied from agent-workflow @62df619 into `skills/review/`), the comments-are-guilty keep list with KEEP/KILL/RESHAPE/OPEN, and simplest-structure and async-ownership checks.
+- `verify` gains the evidence ladder (said, cited, reasoned, ran, reproduced), evidence reuse, look-beyond-the-diff, and the document audit from `verify-doc`.
+- `tdd` gains test isolation: unit tests use no network, real clock, Docker, credentials or databases.
+- `handoff` replaces `continue`: a brief a fresh session can act on, a report back, and a Review fixes loop.
+- State lives in one plan file per piece of work; `memory.md`, `memory-progress.md` and `docs/agents/galdr.md` are no longer read. Repo commands come from the repo's `CLAUDE.md` or `AGENTS.md`.
+- New `SCOPE.md` and `.out-of-scope/`: changes need an observed failure and must fit the word budget.
+
+Migration:
+
+| 0.x | 1.0 |
+|---|---|
+| `/galdr:route`, `/galdr:using-galdr` | `/galdr` |
+| `/galdr:plan`, `/galdr:waves`, `/galdr:branches` | `/galdr` feature playbook (thorough mode for subagents) |
+| `/galdr:prototype` | `/galdr` prototype playbook |
+| `/galdr:rearchitect` | `/galdr` refactor playbook |
+| `/galdr:verify-doc` | `verify` (document audit) |
+| `/galdr:council` | `/galdr:review` independent reviewer |
+| `/galdr:continue` | `/galdr:handoff` |
+| `/galdr:core`, `~/.claude/galdr/enabled` | removed; no hook to enable |
+| `/galdr:backlog`, `/galdr:retro`, `/galdr:doctor`, `/galdr:setup`, `/galdr:usage-bridge`, `/galdr:authoring` | removed |
+| `/galdr:shape`, `/galdr:tdd`, `/galdr:verify`, `/galdr:debug`, `/galdr:review` | unchanged names, shorter bodies |
+
 ## 0.21.1 – 2026-08-14
 
 - `publish.sh`: the shippable subset now carries `carriers/` and `galdr-core.md`. Both were omitted, and `scripts/core-install.sh` ships and reads them, so `/galdr:core install codex` and `install antigravity` were silent no-ops in every published release up to and including 0.21.0. Covered by a new `publish-site-test.sh` case, 4 cases to 5.

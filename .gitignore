@@ -1,5 +1,4 @@
-hooks/enabled
 docs/briefs/
 .agents/
 skills-lock.json
-
+__pycache__/

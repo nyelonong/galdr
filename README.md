@@ -1,306 +1,154 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="galdr: routed, evidence-gated engineering methodology for Claude Code" width="100%">
+  <img src="assets/banner.svg" alt="galdr: evidence-gated engineering methodology for Claude Code" width="100%">
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.21.1-22d3ee?style=flat-square" alt="version 0.21.1"></a>
-  <a href="skills/"><img src="https://img.shields.io/badge/skills-21-34d399?style=flat-square" alt="21 skills"></a>
-  <img src="https://img.shields.io/badge/build-none_·_pure_Markdown-64748b?style=flat-square" alt="no build step">
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.0.0-22d3ee?style=flat-square" alt="version 1.0.0"></a>
+  <a href="skills/"><img src="https://img.shields.io/badge/skills-7-34d399?style=flat-square" alt="7 skills"></a>
   <img src="https://img.shields.io/badge/discipline-TDD_first-f59e0b?style=flat-square" alt="TDD first">
 </p>
 
 <h1 align="center">galdr</h1>
 
 <p align="center">
-  <b>A methodology that makes AI coding agents disciplined:<br>
-  every feature starts with a failing test, every "done" needs fresh evidence,<br>
-  and every session can stop and resume without losing work.</b>
+  <b>Seven small skills that make an AI coding agent work like a careful engineer:<br>
+  a failing test before code, fresh evidence before "done",<br>
+  and, when you ask, your approval of the real diff before it is committed.</b>
 </p>
 
 <p align="center">
-  <a href="#why-i-built-this">Why</a> ·
   <a href="#the-flow">Flow</a> ·
+  <a href="#the-review-gate">Review gate</a> ·
   <a href="#the-skills">Skills</a> ·
-  <a href="#example-a-rough-idea-made-buildable">Examples</a> ·
-  <a href="#proven-not-promised">Proven</a> ·
   <a href="#install">Install</a> ·
-  <a href="#use">Use</a>
+  <a href="#use">Use</a> ·
+  <a href="#how-it-was-tested">Tested</a>
 </p>
 
 <p align="center">
-  <i>galdr</i>: Old Norse for "incantation." A plugin for Claude Code, OpenAI Codex, and Google Antigravity:
-  routed requests, wave-based TDD-first plans, evidence gates, subagent execution, and durable memory.
+  <i>galdr</i>: Old Norse for "incantation." A plugin for Claude Code; the skills also
+  install into other agents as plain <code>SKILL.md</code> files.
 </p>
 
 ---
 
 ## Who is this for
 
-You use Claude Code, OpenAI Codex, or Google Antigravity to write code, and one or more of these is true:
+You use an AI agent to write code, and one of these is true:
 
-- your agent writes code without tests, and you find bugs it said it fixed;
-- your agent says "done" but you can't tell if it actually ran the tests;
-- you've lost work when a session died, hit a limit, or you ran `/clear`;
-- you're burning through API budget because the agent doesn't know when to stop;
-- you want structure without bureaucracy: TDD, evidence gates, clean handoffs, but not a heavyweight framework.
+- it writes code without tests, and bugs it "fixed" come back;
+- it says "done" and you cannot tell whether it ran anything;
+- it builds more than you asked for, or asks you ten questions before doing anything;
+- you want to approve the actual change, not the agent's summary of it.
 
-If you just want an AI to scaffold a quick prototype, galdr has a `/galdr:prototype` on-ramp for that. But if you want it to ship reviewed, tested code that survives a dead session, this is the methodology.
-
-## Why I built this
-
-Most AI coding agents have one mode: run until something breaks. They don't write tests first, they don't verify their own work, they don't stop before your budget burns out, and when a session dies mid-task, the work is gone.
-
-I was using Claude Code with multiple skill packs at once. Overlapping bootstraps, competing conventions, a standing context cost I paid on every session. None of them matched how I actually work: shape an idea into a spec, turn it into a wave-based TDD plan, run it with subagents behind evidence gates, and keep durable memory so nothing is lost across a `/clear` or a dead session.
-
-So I built one methodology that *is* that method, small enough to leave on all the time, and held to the same standard it holds your code to: every discipline rule was tested against an agent that didn't have it before it shipped.
+galdr costs nothing until you call it. There is no always-on hook: three discipline
+skills load when they apply, and everything else waits for a slash command.
 
 ## The flow
 
-galdr routes every substantive request to the right amount of process (no more, no less), then runs a disciplined path from idea to merge.
-
 ```mermaid
 flowchart LR
-    A([rough idea]) --> R{{route}} --> S[shape] --> P[plan] --> W[waves] --> V[review] --> B[branches] --> Z([reviewed, merged branch])
+    A([request]) --> G{{/galdr}} --> S[shape] --> P[plan file] --> B[build test-first] --> V[verify] --> R[review + gate] --> Z([committed, your call to push])
     classDef flow fill:#0b1120,stroke:#22d3ee,stroke-width:1px,color:#e0f2fe;
-    class A,R,S,P,W,V,B,Z flow;
+    class A,G,S,P,B,V,R,Z flow;
 ```
 
-> **Always on, inside every task:** [`tdd`](skills/tdd/SKILL.md) (failing test first) · [`verify`](skills/verify/SKILL.md) (fresh evidence, skip-count included) · [`debug`](skills/debug/SKILL.md) (root cause before any fix).
+`/galdr` reads the request and picks one playbook:
 
-- [**`shape`**](skills/shape/SKILL.md): turns a fuzzy idea into a written spec. Grills you one decision at a time, each with a recommendation, until nothing is ambiguous.
-- [**`plan`**](skills/plan/SKILL.md): turns the spec into a wave-based task DAG: write-scoped, independently testable tasks with declared dependencies.
-- [**`waves`**](skills/waves/SKILL.md): executes the tasks with subagents, wave by wave, gating each wave on real evidence, not a subagent's "done."
-- [**`review`**](skills/review/SKILL.md): a fresh-context reviewer checks the work against the spec first, then against code quality.
-- [**`branches`**](skills/branches/SKILL.md): finishes: full gate run, a manual smoke sheet, and a merge/push decision that is always yours.
+| Request | Playbook | Ends with |
+|---|---|---|
+| A question or a critique | `investigate` | A cited answer and one recommendation; nothing edited |
+| New or changed behavior | `feature` | Plan file, test-first tasks, review |
+| Behavior that is wrong | `bug` | Root cause, a reproducing test, the fix, review |
+| Structure or performance pain | `refactor` | One ranked finding fixed, tests unchanged, review |
+| A design question code can answer | `prototype` | A recorded decision and a test list; the prototype deleted |
 
-What keeps it honest:
+Each piece of work keeps one plan file in `docs/plans/` with its tasks, its evidence
+lines, and a `next:` line, so a new session picks up where the last one stopped.
 
-- **Evidence gates.** Every RED, GREEN, gate, and review verdict is a greppable `EV` line in `memory-progress.md`, tied to the commit that produced it.
-- **Durable memory.** State lives in `memory.md` and `memory-progress.md`. A new session reads them first and re-verifies claims with commands, so work survives `/clear`, compaction, and session death.
-- **Crash-safe.** Park is two explicit levels: soft (in-flight work finishes) and hard (flush in under two minutes, never wait). If a session dies with no warning (battery, network, a hard limit), the next session detects it from the ledger alone, salvages what landed, and resumes.
-- **Usage-aware.** A pre-dispatch guard parks the run before it burns past your 5-hour / 7-day limit and resumes cleanly; each wave reports tokens spent and your real usage %.
-- **A self-managing backlog.** Deferred work is captured automatically in `docs/backlog.md` and proposed back to you when a cycle finishes. Nothing gets forgotten.
+## The review gate
+
+[`/galdr:review`](skills/review/SKILL.md) checks a change against its spec first and
+code quality second, with two separate verdicts. When you ask for it, it opens a local
+page that shows you the real working-tree diff, not a description of it, and waits for
+your decision:
+
+- **approve** records an approval bound to that exact state;
+- **request changes** sends your line comments back to the agent;
+- any edit after approval voids it, so `verify` fails at commit time until you look again.
+
+It runs on Python 3.9 or newer with no installs; fonts and scripts are bundled, and the
+page loads nothing from the network.
 
 ## The skills
 
-21 skills, each also a slash command (`/galdr:<name>`).
+| Skill | Loads | What it does |
+|---|---|---|
+| [`galdr`](skills/galdr/SKILL.md) | `/galdr` | Picks the playbook, keeps the plan file, runs the tasks, finishes |
+| [`shape`](skills/shape/SKILL.md) | `/galdr:shape` | Turns an idea into a spec; checks facts itself and asks at most 3 questions |
+| [`tdd`](skills/tdd/SKILL.md) | on its own | No production code without a failing test first |
+| [`verify`](skills/verify/SKILL.md) | on its own | No "done" without fresh evidence, skip count included; audits docs against code |
+| [`debug`](skills/debug/SKILL.md) | on its own | No fix without a root cause; mitigate first in a live incident |
+| [`review`](skills/review/SKILL.md) | `/galdr:review` | Spec and quality verdicts, comments-are-guilty, the browser gate |
+| [`handoff`](skills/handoff/SKILL.md) | `/galdr:handoff` | A brief a fresh session can act on, and the report it writes back |
 
-**Always on: inside every session and task** (injected by the [bootstrap](hooks/bootstrap.md))
+## Example: a rough idea
 
-| Skill | What it does |
-|---|---|
-| [`route`](skills/route/SKILL.md) | Reads each request and picks the entry point, or none. Announces its choice in one line. |
-| [`tdd`](skills/tdd/SKILL.md) | No production code without a failing test first. |
-| [`verify`](skills/verify/SKILL.md) | No "done" without fresh evidence: skip-count included. |
-| [`continue`](skills/continue/SKILL.md) | Resume after a break, park cleanly (soft or hard) under a limit, and recover automatically after a crashed session. |
-| [`using-galdr`](skills/using-galdr/SKILL.md) | Tells confusable skill pairs apart when you're unsure which to use. |
+> "Track when a user opens the pricing page."
 
-**The main flow: idea to merge** (router- or command-invoked)
-
-| Skill | What it does |
-|---|---|
-| [`shape`](skills/shape/SKILL.md) | Fuzzy idea → a written, testable spec, one decision at a time. |
-| [`plan`](skills/plan/SKILL.md) | Spec → a wave-based DAG of write-scoped, testable tasks. |
-| [`waves`](skills/waves/SKILL.md) | Runs the tasks with subagents, gating each wave on real evidence. |
-| [`review`](skills/review/SKILL.md) | Fresh-context check: against the spec first, then against code quality. |
-| [`branches`](skills/branches/SKILL.md) | Finish: full gate run, smoke sheet, and a merge decision that's yours. |
-| [`debug`](skills/debug/SKILL.md) | Root cause before any fix. |
-
-**On demand: user-invoked on-ramps and tools**
-
-| Skill | What it does |
-|---|---|
-| [`prototype`](skills/prototype/SKILL.md) | Answer a design question with throwaway working code instead of a spec. |
-| [`rearchitect`](skills/rearchitect/SKILL.md) | Map an architecture pain area read-only, rank it, exit into a plan. |
-| [`council`](skills/council/SKILL.md) | Puts one hard design question to four members who answer blind and in parallel, then critique each other. Returns one synthesis. |
-| [`backlog`](skills/backlog/SKILL.md) | Owns `docs/backlog.md`: captures, lists, and resolves deferred work. |
-| [`retro`](skills/retro/SKILL.md) | Reads the evidence ledger back in aggregate and reports escalations, review verdicts, trust gap, interruptions, and spend. |
-| [`setup`](skills/setup/SKILL.md) | Writes this repo's `docs/agents/galdr.md`: gates, invariants, model tiers, smoke. |
-| [`core`](skills/core/SKILL.md) | Installs, removes, or checks the always-on core rules block per agent (Claude, Codex, Antigravity). |
-| [`doctor`](skills/doctor/SKILL.md) | Checks galdr's install wiring on this machine or repo and reports the fix, without applying it. |
-| [`usage-bridge`](skills/usage-bridge/SKILL.md) | Installs the statusline bridge for real 5h/7d usage % on any machine. |
-| [`authoring`](skills/authoring/SKILL.md) | The meta-skill: write or edit galdr skills through its checks. |
-
-## Example: a rough idea, made buildable
-
-Drop a half-formed idea:
-
-> "I think users should be able to export their data."
-
-[`/galdr:shape`](skills/shape/SKILL.md) doesn't start building. It grills, one decision at a time, each with a recommendation you confirm or override:
-
-```
-routing: shape-grill — a position to stress-test
-
-Next: which format: CSV, JSON, or both? Recommend CSV first: it's what a
-non-technical user opens in a spreadsheet; a JSON export can follow if an API
-consumer actually asks. Confirm, or do you need JSON now?
-  → CSV
-
-Next: whose data: the user's own records, or everything they can see (team /
-shared)? Recommend own records only: it's the clean privacy line and can't leak
-a teammate's data. Override?
-  → own records
-
-Next: delivery: a direct download, or an emailed link? Recommend a direct
-download under ~10k rows and an emailed async link above it: instant for most
-people, safe for the large accounts.
-  → agreed
-```
-
-…and out comes a spec precise enough to hand to any agent (or any engineer) and get exactly the right thing built:
-
-```markdown
-# Data export: spec
-Goal: let a signed-in user export their own records as a file.
-
-Non-goals: exporting other users' or team-shared data; scheduled / recurring exports.
-
-Constraints:
-- own-records-only: an export never includes a row owned by another user.
-- format is CSV.
-- direct download under 10,000 rows; emailed async link at or above 10,000.
-
-Decisions: format = CSV-first · scope = own-records · delivery = sync-with-async-fallback
-
-Acceptance criteria:
-- a user with < 10k rows gets a CSV of exactly their records, nothing else;
-- a user with ≥ 10k rows gets an emailed link within the async budget;
-- no export ever contains a row owned by a different user.
-```
-
-That spec **is** the prompt: unambiguous, testable, and impossible to build two different ways. Everything downstream ([`plan`](skills/plan/SKILL.md) → [`waves`](skills/waves/SKILL.md) → [`review`](skills/review/SKILL.md)) is checked against it.
-
-## Example: idea to merged branch
-
-The full loop, with real output from a galdr run:
-
-```
-route → shape (spec) → plan (wave DAG) → waves (subagents, RED-first, evidence gate
-per wave) → review (spec + quality) → branches (gate, smoke sheet, merge decision)
-```
-
-Every wave dispatches subagents that commit their own atomic red-green pairs; every return is reviewed against its brief before it's trusted; every gate writes `EV` lines. galdr's own `0.2`-`0.5` releases (the budget guard, live progress + usage reporting, the [usage-bridge](skills/usage-bridge/SKILL.md) installer, and the self-managing [backlog](skills/backlog/SKILL.md)) were each built exactly this way, start to finish.
-
-Here's what a wave gate looks like in practice. The run hit 91% of its 5-hour limit, so the guard parked before the next wave. Every in-flight task was already committed. Nothing was half-done:
-
-```
-Wave 1 complete and gated. Parked before Wave 2 at task 2.1
-- 5h usage is 91%, above this repo's 90% park threshold.
-- Run /galdr:continue after your limit resets at 18:00 WIB.
-
-Nothing is half-done: all four tasks returned, were reviewed,
-gated and committed before the guard fired.
-
-Tokens
-- Wave 1 dispatches 674,706
-- Cumulative 674,706
-
-Usage limits (5h window resets 18:00 WIB)
-- 5h 91% <- at/above the 90% park threshold
-- 7d 76%
-```
-
-When the limit resets, you type `/galdr:continue`. galdr reads its ledger, verifies the last state, and picks up at Wave 2. No lost context, no half-finished files, no guessing.
-
-Each dispatch runs at a model tier read from this repo's own `docs/agents/galdr.md`, which maps each tier to a model. A failing task gets three attempts: retry, then escalate one tier (mechanical → standard → top) and retry once, then the wave stops rather than grind. On the Workflow runtime, `shape` adds one more independent check: a draft spec gets a second opinion from a reviewer dispatched at the repo's `spec-review` tier before you see it.
-
-## Proven, not promised
-
-Every rule in this methodology was tested against an agent that didn't have it: the same protocol the methodology prescribes for your code, applied to the methodology itself.
-
-<details>
-<summary><b>The receipts</b>: pressure tests, router accuracy, reviews, line budgets</summary>
-
-<br>
-
-- **Pressure-tested discipline.** Every discipline skill ran RED first: a baseline agent, no skill, real fixtures. The baselines failed the way real sessions fail: edited production code on a "tests after" nudge, retrofitted tests around untested code, mocked on request without a seam, investigated a live payments incident without ever mitigating it. With the skill loaded, every one of those failures reversed: 12/12 GREEN scenarios, zero forbidden behaviors.
-- **A router that earns its overhead.** 16/16 routing accuracy on the full request set, zero fast-path violations across every run, including the negatives (i18n, registry, migration, cross-repo) designed to tempt it into skipping ceremony. When a run disagreed with the answer key, the key was wrong: the router had applied the spec more faithfully than its own test.
-- **Reviewed like it reviews you.** Every skill went through fresh-context two-verdict review (spec compliance, then quality). The reviews caught real defects (a project binding hardcoded into a generic skill, an interface mismatch between siblings, a missing file convention), and every fix was re-reviewed to RESOLVED.
-- **Lean enough to always be on.** The v0.1 core was 15 skills + bootstrap in 1,934 lines (superpowers spent 3,150 on 14), with a standing context cost of ~1,240 tokens: the bootstrap and one-line triggers are all a session carries until a skill actually fires.
-- **An audit trail, not a changelog claim.** Every RED, GREEN, review verdict, and gate lives as a greppable `EV` line in `memory-progress.md`, tied to the commit that produced it.
-- **Built by itself.** Releases `0.2` through `0.5` were each shaped, planned, wave-executed, reviewed, and shipped through galdr's own flow, with adversarial review at every gate.
-
-</details>
+`/galdr:shape` reads the code first, so it does not ask which database you use. It
+proposes the simplest design that meets the need, a direct write, and lists an event
+queue only as a rejected alternative. You get one question at a time, each with a
+recommendation, and a spec whose acceptance criteria a command can check.
 
 ## Install
 
-galdr runs on three runtimes: Claude Code, OpenAI Codex, and Google Antigravity. Pick the one you use; the skills land the same way on all three. Only the always-on core hook differs per runtime, wired by `/galdr:core install <runtime>`.
-
 ### Claude Code
 
-1. Add the marketplace and install the plugin:
-   ```
-   /plugin marketplace add nyelonong/galdr
-   /plugin install galdr@nyelonong
-   ```
-2. **Enable the always-on core** (optional, one-time). Skills work as slash commands the
-   moment you install. The `SessionStart` [hook](hooks/session-start) (which injects the Iron Laws, routing, and
-   voice into *every* session and re-applies them after `/clear`) ships **disabled**, so
-   installing galdr doesn't silently take over all your sessions or collide with another
-   pack's hook. Flip it on once. The config lives at a stable path, so it survives plugin
-   updates:
-   ```
-   /galdr:core install claude
-   ```
+```
+/plugin marketplace add nyelonong/galdr
+/plugin install galdr@nyelonong
+```
 
-### OpenAI Codex
+### Other agents
 
-1. Land the 21 skills:
-   ```
-   npx skills add nyelonong/galdr
-   ```
-2. Enable the always-on core (optional, one-time). This writes the marked core block into
-   `~/.codex/AGENTS.md`:
-   ```
-   /galdr:core install codex
-   ```
+```
+npx skills add nyelonong/galdr
+```
 
-### Google Antigravity
+The skills are plain `SKILL.md` files. The review gate travels inside
+`skills/review/`, so it works wherever the skill lands.
 
-1. Land the 21 skills:
-   ```
-   npx skills add nyelonong/galdr
-   ```
-2. Enable the always-on core (optional, one-time). This writes the marked core block into
-   `~/.gemini/AGENTS.md`:
-   ```
-   /galdr:core install antigravity
-   ```
+### Upgrading from 0.x
 
-### After install (all runtimes)
-
-1. Wire each repo once: [`/galdr:setup`](skills/setup/SKILL.md) (writes `docs/agents/galdr.md`: gate commands, invariants, model tiers, thresholds, smoke config).
-2. Optional, once per machine (Claude Code only): [`/galdr:usage-bridge install`](skills/usage-bridge/SKILL.md): real 5h/7d usage % and the quota-threshold park, even where your statusline doesn't already write the cache.
-
-Then just work. The router picks the right path on every substantive request.
+1.0 is a breaking release: 22 skills became 7 and the always-on hook is gone. The
+[CHANGELOG](CHANGELOG.md) maps every old command to its replacement. Your existing
+`memory.md` and `memory-progress.md` files are left alone and no longer read.
 
 ## Use
 
-With the hook enabled, the [router](skills/route/SKILL.md) runs on any substantive request and announces its pick in one line (`routing: <destination> — <reason>`); one word from you overrides it. Every skill is also a slash command (`/galdr:<name>`), so you can enter the flow directly at any point.
+- Start work with `/galdr <request>`.
+- Repo-specific commands come from your repo's `CLAUDE.md` or `AGENTS.md`; galdr has no
+  config file of its own.
+- galdr never pushes, merges, deploys or publishes without your go for that action, and
+  once you give it, it finishes that action instead of handing it back.
 
-- **Direct on-ramps:** [`/galdr:debug`](skills/debug/SKILL.md) (a reported bug: root cause before fix), [`/galdr:prototype`](skills/prototype/SKILL.md) (a design question faster answered by a throwaway build than a spec), [`/galdr:rearchitect`](skills/rearchitect/SKILL.md) (architecture pain with no specific feature).
-- **Review the backlog:** [`/galdr:backlog`](skills/backlog/SKILL.md) lists open deferred work; the deferring skills append to it automatically, and [`branches`](skills/branches/SKILL.md) finish proposes it back to you.
-- **Not sure which skill?** [`/galdr:using-galdr`](skills/using-galdr/SKILL.md) tells confusable pairs apart (shape vs prototype, review vs verify, debug vs tdd, plan vs waves).
+## How it was tested
 
-Skills stay generic; each repo's specifics live in `docs/agents/galdr.md` from [`/galdr:setup`](skills/setup/SKILL.md).
+Every 1.0 skill was tested before release, with and without its text loaded:
 
-## Usage bridge
-
-[`/galdr:usage-bridge install|uninstall|status`](skills/usage-bridge/SKILL.md) installs a statusline wrapper that writes `~/.claude/rate-limits-cache.json`, so the real 5h/7d usage % and the quota-threshold park work on any machine, not just where the official statusline already populates that cache. It wraps whatever statusline you already have non-destructively (delegating to it after writing the cache) and is fully reversible: `install` sets it up, `uninstall` restores your original statusline, `status` reports which state you're in.
-
-## Under the hood
-
-| | |
-|---|---|
-| [Bootstrap](hooks/bootstrap.md) | The ~46-line context block injected every session. |
-| [Skills](skills/) | 21 skills, each also a slash command (`/galdr:<name>`). |
-| [Testing protocol](testing/) | The pressure-test protocol every skill passed before shipping. |
-| [CHANGELOG](CHANGELOG.md) | Every release, `0.1` onward. |
-
-The full design spec, testing protocol, and router-accuracy set live in the private development repo, which is the canonical source this methodology is published from.
+- **Discipline skills under pressure.** `tdd` 4/4, `debug` 2/2 and `verify` 2/2
+  scenarios pass with the skill loaded, zero forbidden behaviors. The earlier runs
+  without the skill had edited code on a "tests after" nudge, wrapped tests around
+  untested code, and mocked on request.
+- **Retrieval checks.** `galdr` routed 5/5 requests to the right playbook, `shape`
+  5/5 and `review` 4/4 probes pass, and a `handoff` brief let a fresh agent finish a
+  task with no other context.
+- **The gate.** 230 Python and 28 JavaScript tests, run on Python 3.9 and 3.13.
 
 ## Acknowledgments
 
-galdr stands on the shoulders of two projects that shaped its thinking: [obra/superpowers](https://github.com/obra/superpowers) (MIT) and [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Both proved that a skills pack can carry a real engineering methodology, not just prompts. galdr is an independent implementation with its own design, but the idea that this format works at all owes them credit.
+galdr builds on ideas from [obra/superpowers](https://github.com/obra/superpowers) (MIT)
+and [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). It is an
+independent implementation.
