@@ -1,21 +1,43 @@
-# Migrations
+# Schema and migrations
 
-Read before writing any schema change or migration.
+Read this file before you design a schema or write a migration.
 
-1. Find the migration directory, the runner, how it orders migrations, and how it
-   records which ones ran.
-2. Confirm the version or sequence number you plan to use is not taken.
-3. Trace each changed table or column through every writer, reader, query and
-   validation that touches it.
-4. Edit an existing migration only while it has never run outside your machine;
-   otherwise add a new one, and ask when you cannot tell. Never rewrite applied history.
-5. Keep a change that live code depends on backward compatible across a deploy: add the
-   new column or table first, backfill, switch the code, and drop the old one in a later
-   migration.
-6. Keep destructive steps (drop, narrowing a type, deleting rows) in their own migration,
-   and say in the plan how the data could be recovered.
-7. Test the migration against an isolated real database, applying it from the previous
-   version, not against mocks.
+## Design
 
-Done when the plan names the migration's version, the readers and writers it affects,
-and the database it was tested against.
+- Design tables only for approved current features.
+- Keep in the database only the constraints that it must protect alone: identity,
+  ownership, authorization, references, uniqueness and enforced invariants.
+- Keep states, transitions, formats and version rules in application code. Move one to
+  the database only for an approved correctness requirement.
+- Prefer soft deletion for business records. Keep their foreign keys and ownership
+  constraints. Add a hard-delete cascade only for an approved retention, privacy or
+  correctness need.
+- Add a check, constraint or index only for a current correctness requirement, a
+  current query, a uniqueness requirement or a measured need. Do not add two guarantees
+  that do the same thing.
+
+## History
+
+1. Find the migration directory, the runner, its order of migrations, and its record of
+   the migrations that ran.
+2. Make sure that nothing uses the version number that you plan to use.
+3. Trace each changed table and column through its writers, readers, queries and
+   validation.
+4. Edit a migration only while it never ran outside your machine. If it ran elsewhere,
+   add a new migration. If you do not know, ask. Never rewrite applied history.
+5. For a change that live code depends on, keep compatibility across one deploy. Add the
+   new column or table, fill it, switch the code, and drop the old one later.
+6. Put each destructive step (drop, narrower type, deleted rows) in its own migration.
+   Write in the plan how to recover the data.
+
+## Proof
+
+1. Run the migration linter or runner of the repository, if one exists.
+2. Apply the migration from the previous version on an isolated real database. Do not
+   use mocks.
+3. Read the resulting schema. Make sure that the necessary constraints and indexes exist.
+4. Test rollback only where the repository supports it and depends on it.
+5. Never change tests or checks to make a schema check pass.
+
+The work is complete when the plan names the version, the affected readers and writers,
+and the database of the test.

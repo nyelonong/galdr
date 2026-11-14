@@ -1,6 +1,27 @@
+## 2.0.0 – 2026-11-14
+
+Breaking. One proof skill, closeout of each logical unit, and an ASD-STE100 voice.
+
+- `prove` replaces `tdd` and `verify`. It holds test-first for bugs, a named proof for new behavior, the four test kinds (unit, integration, contract, smoke), checks found from CI then scripts then `CLAUDE.md`/`AGENTS.md`, per-language default checks, and fresh evidence before "done".
+- `galdr` closes out each logical unit itself: it decides how deep to review and whether the change needs an independent reviewer, from the defect the change can cause, and states the decision in one line. It commits each unit after its closeout, without internal IDs, AI attribution or `Co-Authored-By` lines.
+- `review` blocks when it judges independent review necessary and no reviewer is available, ranks findings P0/P1 (block) and P2 (optional), checks beyond the diff, and loads the installed skill for the code's language.
+- Plans: a clear routine change needs no plan file; other plans stay local and uncommitted unless the repository commits them. The plan format names its diagram kinds and adds a Risks line.
+- Repository sync on entry, safe resume (no repeated write with an unknown result), schema design rules, and an optional read-only architect in `shape`.
+- Voice: ASD-STE100 Simplified Technical English. All skill text passes an ASD-STE100 linter with zero hard findings.
+- Word cap 7,200 for the six skills and their references.
+
+Migration:
+
+| 1.x | 2.0 |
+|---|---|
+| `/galdr:tdd`, `/galdr:verify` | `/galdr:prove` |
+| Review only through `/galdr:review` at the end | `/galdr` closes out each unit; `/galdr:review` for an explicit review or the browser gate |
+| Commit after each test loop | Commit each logical unit after its closeout |
+| Plan file for every change | No file for a clear routine change; other plans local and uncommitted by default |
+
 ## 1.1.0 – 2026-11-14
 
-galdr now describes and enforces the method its author actually uses: plan first, a named proof for every change, test-first for bugs.
+Plan first, a named proof for every change, test-first for bugs.
 
 - `tdd`: the Iron Law (no production code without a failing test first) now covers bug fixes, regressions, and changes the user asks to be test-first. New behavior names its proof before coding, gets tests written from the requirement at a public boundary (before or alongside the code), and must show each new test can fail once.
 - README, banner, site and manifests lead with plan-first and proof-first instead of test-first.
@@ -19,7 +40,7 @@ Breaking: galdr is now 7 skills (from 22), with no always-on hook.
 - New `galdr` entry skill (`/galdr`) with five playbooks: investigate, feature, bug, refactor, prototype. Investigate is the default for questions and critiques.
 - New question budget: facts are settled by reading or running, at most 3 questions before a plan or spec, and the simplest design by default.
 - New finish-the-action rule: an action the user approved is carried out, never handed back; approval covers that action only.
-- `review` gains the browser approval gate (copied from agent-workflow @62df619 into `skills/review/`), the comments-are-guilty keep list with KEEP/KILL/RESHAPE/OPEN, and simplest-structure and async-ownership checks.
+- `review` gains the browser approval gate (in `skills/review/`), the comments-are-guilty keep list with KEEP/KILL/RESHAPE/OPEN, and simplest-structure and async-ownership checks.
 - `verify` gains the evidence ladder (said, cited, reasoned, ran, reproduced), evidence reuse, look-beyond-the-diff, and the document audit from `verify-doc`.
 - `tdd` gains test isolation: unit tests use no network, real clock, Docker, credentials or databases.
 - `handoff` replaces `continue`: a brief a fresh session can act on, a report back, and a Review fixes loop.

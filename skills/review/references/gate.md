@@ -1,36 +1,37 @@
 # Browser approval gate
 
-A local page shows the human the real working-tree change and records an approval
-bound to exactly that state. Run it only when the user asks. It needs `python3` (3.9
-or newer) and a git repository; the client is `scripts/task_review.py` in this skill's
-directory, never a script inside the repo under review.
+A local page shows the human the real working-tree change. The gate records an approval
+for exactly that state. Run it only when the user asks. It needs `python3` (3.9 or
+newer) and a git repository. The client is `scripts/task_review.py` in the folder of
+this skill. Never use a script from the repository under review.
 
 ## Diff
 
-1. After the last focused check and before committing, run:
+1. After the last focused check and before the commit, run:
 
    ```sh
    python3 <skill dir>/scripts/task_review.py review --criterion "<what the user approved this change to do>" --repo <repo root> [--paths a,b] --recovery-dir <new directory outside the repo>
    ```
 
-2. It opens the page and blocks until the human decides; the URL is in
+2. The page opens and the command waits for the human decision. The URL is in
    `<recovery dir>/browser-url.txt` and on stderr. Never paste or summarize the diff for
-   approval, and never drive the page yourself. `TASK_REVIEW_TIMEOUT` (default 1800
-   seconds) bounds the wait.
-3. Act on the exit:
+   approval. Never operate the page yourself. `TASK_REVIEW_TIMEOUT` (default 1800
+   seconds) sets the longest wait.
+3. Act on the result:
    - `approve` (exit 0): continue.
-   - `request-changes`: apply the annotations in scope, rerun the focused checks, run
-     the gate again.
-   - `return-to-planning`: the criterion was wrong; stop and go back to the plan.
+   - `request-changes`: apply the annotations in scope, run the focused checks again,
+     and run the gate again.
+   - `return-to-planning`: the criterion was wrong. Stop and go back to the plan.
    - `cancelled`: stop.
-   - anything else (timeout, malformed result, tree changed during review): report it
-     and stop. Never route around a failed gate.
-4. Run `verify --repo <root> [--paths a,b]` right before staging; any change since
-   approval fails it, and that failure needs a new review. Run `consume --repo <root>`
-   after the commit so one approval never covers two commits.
+   - Any other result (timeout, bad result, tree changed during the review): report it
+     and stop. Never go around a failed gate.
+4. Run `verify --repo <root> [--paths a,b]` immediately before the commit. A change
+   after the approval makes it fail, and that failure needs a new review. Run
+   `consume --repo <root>` after the commit. Then one approval never covers two commits.
 
-An optional guide (`--guide <json outside the repo>`) adds a guided view; check it
-first with `preflight` and the same arguments. If it fails twice, review without it.
+An optional guide (`--guide <json outside the repo>`) adds a guided view. Test the
+guide first with `preflight` and the same arguments. If it fails two times, review
+without it.
 
 ## Plan document
 
@@ -40,9 +41,9 @@ python3 <skill dir>/scripts/task_review.py verify-doc --doc <path>
 python3 <skill dir>/scripts/task_review.py consume-doc --doc <path>
 ```
 
-Comments come back with source line ranges; revise and run `review-doc` again, since an
-edit after approval voids it.
+Each comment comes back with its source line range. Change the document and run
+`review-doc` again. An edit after the approval cancels it.
 
-The recovery directory must be new or empty; the client creates it privately and
-refuses to overwrite one. Approvals are recorded in the repository's git directory
-(`task-review-approval.jsonl`).
+The recovery directory must be new or empty. The client makes it private and does not
+overwrite an existing one. The client writes each approval to the git directory of the
+repository (`task-review-approval.jsonl`).

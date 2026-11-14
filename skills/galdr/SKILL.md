@@ -1,96 +1,146 @@
 ---
 name: galdr
-description: Use when the user runs /galdr to start or resume a piece of engineering work, or asks which galdr flow fits a request.
+description: Use when the user runs /galdr to start or continue a piece of engineering work, or asks which galdr flow fits a request.
 disable-model-invocation: true
 ---
 
 # galdr
 
-Entry point for engineering work: pick one playbook, load it, follow it to its last step.
+galdr is the entry point for engineering work. Pick one playbook, load it, and do its
+steps to the end.
 
-## 1. Pick the playbook
+## 1. Start
 
-| Request | Playbook |
-|---|---|
-| Question, critique, "what do you think", anything not clearly a change | `investigate` |
-| New behavior, or a change to existing behavior | `feature` |
-| Existing behavior is wrong | `bug` |
-| Structure or performance pain, no new behavior | `refactor` |
-| A design question that throwaway code answers faster than discussion | `prototype` |
+1. Before you work in a repository, read `git status` and the remotes. Fetch the
+   upstream if one exists. Never discard work. Never invent an upstream.
+2. Pick the playbook:
 
-Announce it in one line, `galdr: <playbook>, <reason>`, then read
-`references/playbook-<playbook>.md` (only the one picked) and follow it to its last
-step. If the user names another playbook, switch without arguing.
+   | Request | Playbook |
+   |---|---|
+   | A question, a critique, "what do you think", or anything that is not clearly a change | `investigate` |
+   | New behavior, or a change to existing behavior | `feature` |
+   | Existing behavior that is wrong | `bug` |
+   | Structure or performance pain, with no new behavior | `refactor` |
+   | A design question that throwaway code answers faster than discussion | `prototype` |
 
-## 2. Skills the user must call
+3. Write one line: `galdr: <playbook>, <reason>`. Then read
+   `references/playbook-<playbook>.md`, and only that one. If the user names a different
+   playbook, use it.
+
+## 2. Skills that the user calls
 
 `shape`, `review` and `handoff` are user-only, so you cannot load them. When a playbook
-reaches one, stop and give the exact command: "Next: run `/galdr:review`." `tdd`,
-`verify` and `debug` load on their own; follow them whenever they fire.
+needs one, stop and give the exact command, for example "Next: run `/galdr:shape`."
+`prove` and `debug` load when they apply. Obey them.
 
-## 3. Plan file
+## 3. Plan
 
-Change playbooks keep one plan file per piece of work, written before code. When writing
-or resuming one, read `references/plan-format.md` and follow it; keep what `shape`
-wrote. No "TBD", "similar to task N" or "handle edge cases": write each one out.
+- A clear routine change that the user asked for needs no plan file. Write the approach
+  and a task checklist in your reply, then start.
+- Other work has one plan file. Keep it local and do not commit it, unless the
+  repository commits its plans. When you write or continue a plan, read
+  `references/plan-format.md` and use it. Keep the sections that `shape` wrote.
+- Write each item in full. Do not write "TBD", "similar to task N" or "handle edge
+  cases".
 
-Implementation starts after one approval of the whole plan. A clear request for a small
-local change is that approval, and its plan can be three lines. A material change to
-scope or risk needs approval again. Keep the status line, checkboxes and Progress
-current; a new session resumes from `next:` after checking the claimed state.
+Code starts after one approval of the whole plan. A clear request for a routine change
+is that approval. A material change to scope or risk needs a new approval.
 
-## 4. Run the tasks
+Before you continue earlier work, read the state: the status line, `git status`, and
+each recovery folder. Never repeat a write if you do not know its result. If a review
+is pending, recover it before you start a new one. Then continue from `next:`. Keep the
+status line, the checkboxes and Progress current.
 
-**Cheap mode** (default): do the tasks yourself, in order.
+## 4. Do the tasks
 
-**Thorough mode**, for independent tasks that need their own context, or on request:
-one subagent per task, briefed with the goal, the only files it may touch, the tests,
-the acceptance commands, the base commit, and the return contract: one status (`complete`, `blocked`, `needs-decision`,
-`failed`) plus evidence lines, and commits unless browser approval was asked for. Tasks
-that touch the same file never run in
-parallel. On return, the report is a claim: read the diff, check it against the brief
-first and quality second, and rerun the checks yourself.
+**Cheap mode** (default): do the tasks yourself, in order. Each task follows `prove`.
 
-Keep going until all tasks are done. Stop only when blocked on a decision only the user
-can make, when the plan contradicts itself or the code, when one task has failed three
-times, or when the user interrupts. A passing check or a commit is not a stopping point,
-and a reply never ends on a plan to act instead of the act.
+**Thorough mode**: use it for independent tasks that need their own context, or when
+the user asks. Give each task to one subagent. Its brief holds the goal, the only files
+that it can change, the tests, the acceptance commands, the base commit and the return
+contract. The return contract is one status (`complete`, `blocked`, `needs-decision`,
+`failed`) and evidence lines. Do not give the same file to two parallel subagents. Give
+mechanical tasks (renames, moves, generated code) a cheaper model when the runtime lets
+you choose. A subagent report is a claim. Read the diff and compare it with the brief.
+Then examine quality and run the checks yourself.
 
-## 5. Engineering rules
+Continue until you complete all tasks. Stop only for these events:
 
-- **Cheapest solution first:** no change, then existing code, standard library, a
-  platform or database feature, an installed dependency, and only then new code. Read
-  the real code path and its callers before choosing.
-- **Simplest structure:** no interface only for mocks or a hypothetical second
-  implementation. Local duplication is fine when the copies can change independently,
-  never for one shared rule. Add concurrency, caches, queues or generalization only
-  for a stated need.
-- **Scope:** build only what was approved, and change only the code, callers, tests and
-  docs it needs. Report unrelated defects instead of fixing them.
-- **Questions:** only what changes what gets built and cannot be settled by reading,
-  running or a sensible default. One per message, recommendation first, at most 3 before
-  the plan; the rest become assumed decisions. Default to the simplest design.
-- **Schema or migration change:** read `references/migrations.md` before writing it.
-- **External actions:** ask before anything that changes data outside the repo, costs
-  money, exposes private data, contacts a person, deploys, publishes, pushes or merges.
-  Never ask for a secret in chat.
-- **Finish the action:** once the user approved a specific action, carry it out
-  yourself, in the browser if needed, instead of handing the last step back. That
-  approval covers that exact action only, never the next one, and never approving your
-  own review gate.
+- a decision that only the user can make
+- a plan that contradicts itself or the code
+- a task that failed three times
+- a necessary independent review with no reviewer available (§5 step 2)
+- a browser approval that the user asked for (§5 step 4)
+- a user interrupt
 
-Repo-specific commands come from the repo's `CLAUDE.md` or `AGENTS.md`. Precedence: user
-instruction, then repo instructions, then galdr, then default behavior.
+A passing check or a commit is not a stop. Never end a reply with a plan to act. Do the
+act.
 
-## 6. Finish
+## 5. Close out each logical unit
 
-1. Run the repo's full check list fresh; state failed and skipped counts.
-2. Stop with "Next: run `/galdr:review`." Resume at step 3 once review approves.
-3. Commit each verified logical unit not yet committed: task-owned files only, a short
-   subject, at most two body lines. Any change after approval voids it.
-4. Report: what changed (one line per file), the evidence, and **Next** as numbered acts
-   or commands.
+A logical unit is one change that you can review and commit alone. After each unit, do
+these steps:
 
-The default outcome keeps the branch and reports. Merge, push, open a PR, or delete a
-branch only on an explicit go for that action. After any merge, rerun the full checks;
-regenerate lockfiles rather than hand-merge them.
+1. Read `SKILL.md` in the `review` skill folder next to this one. Decide the depth. For
+   prose, configuration or a mechanical edit, a direct check is sufficient. For a
+   behavior change, apply its Spec and Quality checks to the unit.
+2. Decide on independent review as review §2 tells you. Write the decision and its
+   reason in one line in Progress, or in the report when no plan file exists.
+3. Fix the gaps in scope. Run the affected checks again. P0 and P1 findings block. P2
+   findings are optional.
+4. Commit the unit. Commit only the files of the task. Write a short subject and two
+   body lines at most. Do not add internal IDs, AI attribution, `Co-Authored-By` lines
+   or generated-with footers. If the user asked for browser approval, stop with "Next:
+   run `/galdr:review`" before the commit. When the gate approves, commit as the gate
+   tells you, then do step 5.
+5. Add the evidence to Progress (or to the report), move `next:` forward, and start the
+   next unit.
+
+## 6. Engineering rules
+
+- **Cheapest solution first:** no change, then existing code, the standard library, a
+  platform or database feature, an installed dependency, and new code last. Read the
+  real code path and its callers before you choose.
+- **Simplest structure:** add no interface only for mocks or for an imagined second
+  implementation. Copy code locally only when the copies can change independently,
+  never for one shared rule. Add concurrency, caches, queues or generalization only for
+  a stated need.
+- **Structure before edits:** decide where the change goes, which boundary it crosses,
+  which interface it exposes and who owns its state.
+- **Scope:** build only the approved work. Change only the code, callers, tests and docs
+  that it needs. Report unrelated defects. Do not fix them.
+- **Questions:** ask only what changes the result and what reading, running or a
+  sensible default cannot settle. Ask one question in each message, with your
+  recommendation first. Ask at most 3 before the plan. The other decisions become
+  assumed decisions. Prefer the simplest design.
+- **Schema or migration:** read `references/migrations.md` before you design it.
+- **External actions:** ask before an action that changes data outside the repository,
+  costs money, exposes private data, contacts a person, deploys, publishes, pushes or
+  merges. Never ask for a secret in chat.
+- **Finish the action:** when the user approves a specific action, do it yourself, in
+  the browser if necessary. Do not give the last step back. The approval covers only
+  that action. It never covers the next action or an approval of your own review gate.
+- **Voice:** write in ASD-STE100 Simplified Technical English. Use the strict form for
+  briefs, procedures and errors. In the strict form, each sentence has one instruction
+  and 20 words at most. Use active voice, simple tenses, no phrasal verbs and no
+  semicolons. Replies, plans and
+  reports use the same sentence rules with a free vocabulary. Explain each ID and commit
+  SHA. Give a recommendation and its reason. Do not use em dashes.
+
+Checks and commands for a repository come from its CI configuration, its scripts and
+its `CLAUDE.md` or `AGENTS.md`, as `prove` §5 tells you. The order of priority is: user
+instruction, repository instructions, galdr, default behavior.
+
+## 7. Finish
+
+1. Examine the full result against the plan. Checks for each task do not prove how the
+   parts work together.
+2. Run the full check set that `prove` names. State the failed and skipped counts.
+3. If the whole result needs one independent review, do it now, unless an earlier
+   closeout covered it.
+4. Report what changed (one line for each file), the evidence, the risks and **Next**
+   (acts or commands).
+
+The default result keeps the branch. Merge, push, open a PR or delete a branch only when
+the user gives the go for that action. After a merge, run the full checks again. Make
+lockfiles again with their tool. Do not merge them by hand.

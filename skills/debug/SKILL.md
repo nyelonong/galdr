@@ -1,58 +1,59 @@
 ---
 name: debug
-description: Use when diagnosing a bug, flaky test, unexpected behavior, or production incident, before proposing or writing any fix.
+description: Use when you diagnose a bug, a flaky test, unexpected behavior or a production incident, before you propose or write a fix.
 ---
 
 # Debug
 
 NO FIXES WITHOUT ROOT CAUSE.
 
-This is a hard rule, not a preference. A fix without a root cause is a guess that
-happened to change the symptom. If you are about to change code to make a bug go away
-and you cannot state the root cause it addresses, stop.
+This is a hard rule. A fix without a root cause is a guess that changed the symptom. If
+you want to change code to remove a bug and you cannot state its root cause, stop.
 
 ## Do not
 
-- Change code as a fix before a repro exists that reproduces the bug on demand.
-- Claim any behavior (what happens, when, how often) without pasting the exact command
-  and its output in the same message.
-- Try a fourth fix at a site that has already failed three times; the defect is
-  upstream, so step back to the design.
-- Close a production incident without an open root-cause item that names an owner and
-  a next step. Mitigation is never the end state.
+- Do not change code as a fix before a repro exists. A repro shows the bug on demand.
+- Do not claim a behavior (what happens, when, how often) without the exact command and
+  its output in the same message.
+- Do not try a fourth fix at a site where three fixes failed. The defect is upstream.
+  Go back to the design.
+- Do not close a production incident without an open root-cause item. The item names an
+  owner and a next step. Mitigation is never the end.
 
-## Feedback loop first
+## Make a repro first
 
-Before theorizing, build a repro: a command whose output differs depending on which
-hypothesis is true; pick the cheapest that tells them apart (a failing test, `curl`, a
-log grep, `git bisect`). A subagent's claim
-about the bug is re-run before it is repeated.
+Before you make a theory, build a repro. A repro is a command whose output changes with
+the hypothesis that is true. Use the cheapest one that separates the hypotheses, for
+example a failing test, `curl`, a log search or `git bisect`. Run a subagent's claim
+about the bug again before you repeat it.
 
 ## Hypotheses
 
-Write each hypothesis down as it is formed, in the plan file or the report:
+Write each hypothesis when you make it, in the plan file or in the report:
 
 ```
 HYP <n>: <hypothesis> → <experiment> → <result>
 ```
 
-Instrument at the boundary whose two sides you are trying to tell apart. Tag temporary
-logging `DBG-<topic>`, and before any commit run `grep -rn "DBG-" <path>` until it
-returns nothing. Thirty minutes without a narrowed hypothesis: write down the state you
-have and re-read the code path from the top before another attempt. End every session
-with the hypothesis state written, even "no narrowed hypothesis yet".
+- Add instruments at the boundary between the two sides that you want to separate.
+- Mark temporary logs with `DBG-<topic>`. Before each commit, run
+  `grep -rn "DBG-" <path>` until it finds nothing.
+- After thirty minutes without a narrower hypothesis, write down the current state.
+  Then read the code path again from the top before the next attempt.
+- At the end of each session, write the state of the hypotheses, even "no narrower
+  hypothesis yet".
 
 ## Incident: stabilize first
 
-When failures are happening in production now, mitigate before diagnosing: flag off,
-roll back, or pause the queue, whichever stops the failures fastest. Then open the
-root-cause item, with an owner and a concrete next step.
+When failures occur in production now, stop the failures before you diagnose. Use the
+fastest method: turn a flag off, roll back, or pause the queue. Then open the root-cause
+item with an owner and a specific next step.
 
 ## Rationalizations
 
 | Thought | Reality |
 |---|---|
-| "The fix is obvious, skip root cause" | Symptom fixes recur; find the cause |
-| "One more print will crack it" | No hypothesis, no instrument — write the HYP line first |
-| "It's in prod, just ship the real fix now" | Mitigate first; root cause follows as an owned item, never skipped |
-| "I've patched this spot before, one more try" | Three strikes here means the defect is upstream — stop patching, escalate |
+| "The fix is obvious, skip root cause" | Symptom fixes come back. Find the cause. |
+| "One more print will crack it" | No hypothesis, no instrument. Write the HYP line first. |
+| "It's in prod, just ship the real fix now" | Stop the failures first. The root cause comes next, as an owned item. Never skip it. |
+| "I've patched this spot before, one more try" | Three failed fixes here mean the defect is upstream. Stop the patches. Go up to the design. |

@@ -1,20 +1,21 @@
 # Playbook: investigate
 
-For questions, critiques and "what do you think" requests. Read-only: no edits, no plan
-file, no commits.
+Use this playbook for questions, critiques and "what do you think" requests. Do not edit
+files. Do not write a plan file. Do not commit.
 
-1. Start from the question as asked. Restate it only when two readings would lead to
-   different answers.
-2. Gather evidence: read the code, docs, config and logs it depends on, and run
-   read-only commands. Settle facts by checking, not by asking the user.
+1. Start from the question as the user asked it. Restate it only when two readings lead
+   to different answers.
+2. Collect evidence. Read the code, docs, config and logs that the question depends on.
+   Run read-only commands. Find facts yourself. Do not ask the user for them.
 3. Answer in this order:
-   - The verdict, one line.
-   - The support: every claim cited as `path:line`, trimmed command output, or a link.
-     Mark anything you did not check as unverified.
-   - The critique: what is weak, risky or more complex than the need, and the simplest
-     alternative.
+   - The verdict, in one line.
+   - The support. Cite each claim as `path:line`, as a short command output, or as a
+     link. Mark each claim that you did not check as unverified.
+   - The critique: what is weak, what is risky, or what is more complex than the need.
+     Give the simplest alternative.
    - One recommendation, with its reason.
-4. If the recommendation is a change and the user agrees, switch to the playbook that
-   fits it (`feature`, `bug`, `refactor`) and carry the decision into its plan file.
+4. If the recommendation is a change and the user agrees, go to the playbook for that
+   change (`feature`, `bug` or `refactor`). Write the decision into its plan.
 
-Done when the user has a cited answer that ends in one recommendation.
+The playbook is complete when the user has a cited answer that ends with one
+recommendation.

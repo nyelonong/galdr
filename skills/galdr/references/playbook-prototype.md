@@ -1,24 +1,30 @@
 # Playbook: prototype
 
-For one design question that throwaway code answers faster than discussion.
+Use this playbook for one design question that throwaway code answers faster than
+discussion.
 
-1. Write the question down in one sentence before any code. No question, no prototype:
-   use `feature` instead.
-2. Put the logic the question is about in a pure core (no database, network or
-   framework) and run it from a shell named as throwaway (`main.throwaway.ts`).
-3. Compare variants behind one switch in the same build, so all run under the same
-   conditions. A new question gets a new prototype, not a patched one.
+1. Write the question in one sentence before you write code. If you have no question,
+   use the `feature` playbook.
+2. Put the logic of the question in a pure core with no database, network or framework.
+   Run it from a shell with a throwaway name, for example `main.throwaway.ts`.
+3. Compare variants behind one switch in the same build. Then all variants run under the
+   same conditions. A new question gets a new prototype. Do not patch the old one.
 
-NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST does not apply inside a prototype, and
-only while all three hold: the code never merges, it is never adapted into production,
-and it is deleted at the end. If any stops holding, delete the code and restart from a
-failing test.
+NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST does not apply inside a prototype. This
+exception holds only while three conditions are true:
 
-Exit, in order:
+- The prototype code never merges.
+- Nobody adapts the prototype code into production.
+- You delete the prototype at the end.
 
-1. Record `DECISION <question> → <choice>` in the plan or the report, noting the
-   prototype was deleted.
-2. Turn each proven behavior into one test, delete the prototype, and build the real
-   thing with the `feature` playbook from those tests.
+If one condition stops being true, delete the code and start again from a failing test.
 
-Done when the decision line is written and the prototype is gone.
+When the prototype answers the question, do these steps:
+
+1. Record `DECISION <question> → <choice>` in the plan or in the report. Note that you
+   deleted the prototype.
+2. Turn each behavior that the prototype proved into one test.
+3. Delete the prototype. Build the real feature with the `feature` playbook from those
+   tests.
+
+The playbook is complete when the decision line exists and the prototype is gone.

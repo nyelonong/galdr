@@ -1,8 +1,9 @@
 # Plan format
 
-One file per piece of work, `docs/plans/<YYYY-MM-DD>-<topic>.md`. `shape` writes the
-top half (title to Decisions); playbooks add the rest. Leave out a section that
-would be empty, except Done when, Tasks and Progress.
+Each piece of work has one file, `docs/plans/<YYYY-MM-DD>-<topic>.md`. The file stays
+local and uncommitted, unless the repository commits its plans. `shape` writes the top
+half, from the title to Decisions. Playbooks add the rest. Leave out a section that has
+no content. Always keep Done when, Tasks and Progress.
 
 ```markdown
 # <Title: the outcome, in plain words>
@@ -15,22 +16,24 @@ Repo: <repo>. Parent: <plan path, if any>. Replaces: <task or plan, if any>.
 One paragraph: what changes for whom, and why.
 
 ## Out of scope
-- <what is deliberately not done>
+- <work that this plan does not do>
 
 ## Done when
-- <each decidable by a command or an observable check>
+- <each item decidable by a command or an observable check>
 
 ## Design
-<diagram when three or more parts talk to each other>
+<one diagram for each material decision>
 
 | Piece | What it does |
 |---|---|
-| `<path>` | <one line; contracts, storage, limits and safety go here or below> |
+| `<path>` | <one line: contracts, storage, limits and safety go here or below> |
 
 ## Decisions
 | # | Decision | Choice | Why / trade-off | Source |
 |---|---|---|---|---|
-| 1 | <question> | <choice> | <why, and what it costs> | asked · found (`path:line`) · assumed · <owner> to decide |
+| 1 | <question> | <choice> | <why, and the cost> | asked · found (`path:line`) · assumed · <owner> to decide |
+
+Risks: <changed contracts, permissions, sensitive data, lifecycle, migration or recovery>
 
 ## Before building
 | Check | Finding | Effect |
@@ -42,14 +45,22 @@ One paragraph: what changes for whom, and why.
 
 ## Tasks
 - [ ] <task> · Proof: `<command>`
-- [ ] You: <step only the user can do>
+- [ ] You: <step that only the user can do>
 
 ## Review
-<independent review needed or not, and why; who opens PRs>
+<independent review necessary or not, and the reason. The person who opens PRs.>
 
 ## Progress
-- <date>: <what happened; a decision that changed names the section it supersedes>
+- <date>: <event. A changed decision names the section that it replaces.>
 - EV [<scope>] <command> → <verdict> <counts> @<sha>
 ```
 
-Every check run is an `EV` line in Progress, with skip counts.
+Select each diagram for its purpose:
+
+- **Architecture**: components and boundaries.
+- **Sequence**: ordered interactions, with the important failure paths.
+- **Swimlanes**: ownership and handoffs.
+- **ERD**: changed entities, keys and cardinality.
+
+Do not show the same flow in two diagrams, or in a diagram and in prose. Write each check
+run as an `EV` line in Progress, with its skip count.

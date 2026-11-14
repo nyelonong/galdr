@@ -1,29 +1,32 @@
 # Playbook: refactor
 
-For structure or performance pain with no new behavior. Behavior stays the same: the
-existing tests pass before and after.
+Use this playbook for structure or performance pain with no new behavior. The behavior
+does not change. The existing tests pass before and after.
 
 ## Structure
 
-1. Name the pain area that hurts current work; with none, there is nothing to refactor.
-2. Map it read-only: one line per finding (what, where, why it hurts), skipping what the
-   repo's issues already track.
-3. Rank each: blocking current work, compounding, or cosmetic. Take only the top one,
-   confirmed with the user; cosmetic findings never get their own change.
-4. Agree any new domain name before renaming code.
-5. Write the plan (SKILL.md §3). A move across several call sites uses expand, migrate,
-   contract: new path beside the old, callers moved one at a time behind their tests,
-   old path deleted once a search shows zero callers.
-6. Report improvements noticed along the way, and the findings not taken, one line each;
-   none go into this change.
+1. Name the area that hurts current work. If no area hurts, do not refactor.
+2. Map the area read-only. Write one line for each finding: what it is, where it is,
+   and why it hurts. Skip findings that the issues of the repository already track.
+3. Rank each finding: it blocks current work, its cost grows each time, or it is
+   cosmetic. Take only the top finding, after the user confirms it. A cosmetic finding
+   never gets its own change.
+4. Agree on each new domain name before you rename code.
+5. Write the plan (SKILL.md §3). A move across many call sites uses three steps:
+   - Expand: add the new path next to the old path.
+   - Migrate: move the callers one at a time, each with its tests.
+   - Contract: delete the old path when a search shows zero callers.
+6. Report the improvements that you saw and the findings that you did not take, one
+   line each. Do not put them in this change.
 
 ## Performance
 
-Only for a stated requirement or measured evidence of a real problem.
+Use this section only for a stated requirement or for measured evidence of a real
+problem.
 
-1. Find the actual bottleneck by measuring, not by reading.
-2. Record a baseline, change one thing, and repeat the same measurement.
-3. Keep the simpler code when the result is inconclusive.
+1. Find the actual bottleneck with a measurement. Do not guess from the code.
+2. Record a baseline. Change one thing. Do the same measurement again.
+3. If the result is not clear, keep the simpler code.
 
-Finish (SKILL.md §6). Done when the tests are unchanged and passing, the target finding
-or measurement is resolved, and review has approved.
+Close out each unit (SKILL.md §5), then finish (SKILL.md §7). The playbook is complete
+when the tests pass without changes and you resolve the target finding or measurement.

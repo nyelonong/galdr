@@ -1,33 +1,34 @@
 <p align="center">
-  <img src="assets/banner.png" alt="galdr: plan-first engineering for coding agents. Shape, plan, build, verify, review, handoff." width="100%">
+  <img src="assets/banner.png" alt="galdr: plan-first engineering for coding agents. Shape, plan, build, prove, review, handoff." width="100%">
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.1.0-22d3ee?style=flat-square" alt="version 1.1.0"></a>
-  <a href="skills/"><img src="https://img.shields.io/badge/skills-7-34d399?style=flat-square" alt="7 skills"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.0.0-22d3ee?style=flat-square" alt="version 2.0.0"></a>
+  <a href="skills/"><img src="https://img.shields.io/badge/skills-6-34d399?style=flat-square" alt="6 skills"></a>
   <img src="https://img.shields.io/badge/discipline-proof_first-f59e0b?style=flat-square" alt="proof first">
+  <img src="https://img.shields.io/badge/voice-ASD--STE100-64748b?style=flat-square" alt="ASD-STE100 voice">
 </p>
 
 <h1 align="center">galdr</h1>
 
 <p align="center">
-  <b>Seven small skills that make an AI coding agent work like a careful engineer:<br>
+  <b>Six small skills that make an AI coding agent work like a careful engineer:<br>
   a plan and a named proof before code, fresh evidence before "done",<br>
-  and, when you ask, your approval of the real diff before it is committed.</b>
+  a review at each logical unit, and your approval of the real diff when you ask.</b>
 </p>
 
 <p align="center">
   <a href="#the-flow">Flow</a> ·
-  <a href="#the-review-gate">Review gate</a> ·
   <a href="#the-skills">Skills</a> ·
+  <a href="#the-review-gate">Review gate</a> ·
   <a href="#install">Install</a> ·
   <a href="#use">Use</a> ·
   <a href="#how-it-was-tested">Tested</a>
 </p>
 
 <p align="center">
-  <i>galdr</i>: Old Norse for "incantation." A plugin for Claude Code; the skills also
+  <i>galdr</i>: Old Norse for "incantation." A plugin for Claude Code. The skills also
   install into other agents as plain <code>SKILL.md</code> files.
 </p>
 
@@ -35,73 +36,71 @@
 
 ## Who is this for
 
-You use an AI agent to write code, and one of these is true:
+You use an AI agent to write code, and one of these statements is true:
 
-- it writes code without tests, and bugs it "fixed" come back;
-- it says "done" and you cannot tell whether it ran anything;
-- it builds more than you asked for, or asks you ten questions before doing anything;
-- you want to approve the actual change, not the agent's summary of it.
+- It writes code without tests, and the bugs that it "fixed" come back.
+- It says "done", and you cannot tell if it ran anything.
+- It builds more than you asked for, or it asks ten questions before it starts.
+- You want to approve the actual change, not the agent's summary of it.
 
-galdr costs nothing until you call it. There is no always-on hook: three discipline
-skills load when they apply, and everything else waits for a slash command.
+galdr costs nothing until you use it. It has no always-on hook. Two discipline skills
+load when they apply. The other skills wait for a slash command.
 
 ## The flow
 
 ```mermaid
 flowchart LR
-    A([request]) --> G{{/galdr}} --> S[shape] --> P[plan file] --> B[build against proofs] --> V[verify] --> R[review + gate] --> Z([committed, your call to push])
+    A([request]) --> G{{/galdr}} --> S[shape] --> P[plan file] --> B[build against proofs] --> C[close out each unit] --> F[finish] --> Z([committed, your call to push])
     classDef flow fill:#0b1120,stroke:#22d3ee,stroke-width:1px,color:#e0f2fe;
-    class A,G,S,P,B,V,R,Z flow;
+    class A,G,S,P,B,C,F,Z flow;
 ```
 
 `/galdr` reads the request and picks one playbook:
 
 | Request | Playbook | Ends with |
 |---|---|---|
-| A question or a critique | `investigate` | A cited answer and one recommendation; nothing edited |
-| New or changed behavior | `feature` | Plan file, tasks with proofs, review |
-| Behavior that is wrong | `bug` | Root cause, a reproducing test, the fix, review |
-| Structure or performance pain | `refactor` | One ranked finding fixed, tests unchanged, review |
-| A design question code can answer | `prototype` | A recorded decision and a test list; the prototype deleted |
+| A question or a critique | `investigate` | A cited answer and one recommendation. Nothing is edited |
+| New or changed behavior | `feature` | A plan file, tasks with proofs, a closeout for each unit |
+| Behavior that is wrong | `bug` | The root cause, a failing test, the fix |
+| Structure or performance pain | `refactor` | One ranked finding fixed, with the tests unchanged |
+| A design question that code can answer | `prototype` | A recorded decision and a test list. The prototype is deleted |
 
-Each piece of work keeps one plan file in `docs/plans/`: the goal and decisions, the
-tasks, the evidence lines, and a `next:` line. There is no separate spec, so a new session picks up where the last one stopped.
+A clear routine change needs no plan file. Other work keeps one local plan file in
+`docs/plans/`: the goal and decisions, the design, the tasks, the evidence lines and a
+`next:` line. A new session continues from `next:`.
 
-## The review gate
-
-[`/galdr:review`](skills/review/SKILL.md) checks a change against its plan first and
-code quality second, with two separate verdicts. When you ask for it, it opens a local
-page that shows you the real working-tree diff, not a description of it, and waits for
-your decision:
-
-- **approve** records an approval bound to that exact state;
-- **request changes** sends your line comments back to the agent;
-- any edit after approval voids it, so `verify` fails at commit time until you look again.
-
-It runs on Python 3.9 or newer with no installs; fonts and scripts are bundled, and the
-page loads nothing from the network.
+After each logical unit, galdr closes it out. It decides how deep to review, and if the
+change needs an independent reviewer. It decides from the defect that the change can
+cause, and it states the decision in one line. Then it commits the unit.
 
 ## The skills
 
 | Skill | Loads | What it does |
 |---|---|---|
-| [`galdr`](skills/galdr/SKILL.md) | `/galdr` | Picks the playbook, keeps the plan file, runs the tasks, finishes |
-| [`shape`](skills/shape/SKILL.md) | `/galdr:shape` | Turns an idea into the plan's goal and decisions; checks facts itself and asks at most 3 questions |
-| [`tdd`](skills/tdd/SKILL.md) | on its own | Every change ships with a test that proves it; bugs start from a failing test |
-| [`verify`](skills/verify/SKILL.md) | on its own | No "done" without fresh evidence, skip count included; audits docs against code |
-| [`debug`](skills/debug/SKILL.md) | on its own | No fix without a root cause; mitigate first in a live incident |
-| [`review`](skills/review/SKILL.md) | `/galdr:review` | Spec and quality verdicts, comments-are-guilty, the browser gate |
-| [`handoff`](skills/handoff/SKILL.md) | `/galdr:handoff` | A brief a fresh session can act on, and the report it writes back |
+| [`galdr`](skills/galdr/SKILL.md) | `/galdr` | Picks the playbook, keeps the plan, does the tasks, closes out each unit, finishes |
+| [`shape`](skills/shape/SKILL.md) | `/galdr:shape` | Turns an idea into the goal and decisions of the plan. Finds facts itself and asks at most 3 questions |
+| [`prove`](skills/prove/SKILL.md) | on its own | A named proof for each change, test-first for bugs, checks from CI, fresh evidence before "done" |
+| [`debug`](skills/debug/SKILL.md) | on its own | No fix without a root cause. Stops a live incident first |
+| [`review`](skills/review/SKILL.md) | `/galdr:review` | Spec and quality verdicts, comments-are-guilty, the installed language skill, the browser gate |
+| [`handoff`](skills/handoff/SKILL.md) | `/galdr:handoff` | A brief that a new session can use, and the report that comes back |
 
-## Example: a rough idea
+All skill text follows ASD-STE100 Simplified Technical English: one instruction in each
+sentence, active voice, simple tenses, one meaning for each word.
 
-> "Track when a user opens the pricing page."
+## The review gate
 
-`/galdr:shape` reads the code first, so it does not ask which database you use. It
-proposes the simplest design that meets the need, a direct write, and lists an event
-queue only as a rejected alternative. You get one question at a time, each with a
-recommendation, and the top half of one plan file, whose acceptance checks a command
-can decide. `/galdr` adds the tasks to that same file, and you approve it once.
+[`/galdr:review`](skills/review/SKILL.md) checks a change against its plan first and
+against code quality second. It gives two separate verdicts. When you ask for it, it
+opens a local page. The page shows the real working-tree diff, not a description of it,
+and waits for your decision:
+
+- **approve** records an approval for that exact state.
+- **request changes** sends your line comments back to the agent.
+- An edit after the approval cancels it. Then the gate's verify step fails at commit
+  time until you look again.
+
+It runs on Python 3.9 or newer with no installs. The fonts and scripts are bundled, and
+the page loads nothing from the network.
 
 ## Install
 
@@ -118,38 +117,37 @@ can decide. `/galdr` adds the tasks to that same file, and you approve it once.
 npx skills add nyelonong/galdr
 ```
 
-The skills are plain `SKILL.md` files. The review gate travels inside
-`skills/review/`, so it works wherever the skill lands.
+The skills are plain `SKILL.md` files. The review gate is inside `skills/review/`, so it
+works wherever the skill goes.
 
-### Upgrading from 0.x
+### Upgrading from 1.x
 
-1.0 is a breaking release: 22 skills became 7 and the always-on hook is gone. The
-[CHANGELOG](CHANGELOG.md) maps every old command to its replacement. Your existing
-`memory.md` and `memory-progress.md` files are left alone and no longer read.
+2.0 is a breaking release. `tdd` and `verify` became one skill, `prove`. galdr now closes
+out and commits each logical unit itself. The [CHANGELOG](CHANGELOG.md) maps each old
+command to its replacement.
 
 ## Use
 
 - Start work with `/galdr <request>`.
-- Repo-specific commands come from your repo's `CLAUDE.md` or `AGENTS.md`; galdr has no
-  config file of its own.
-- galdr never pushes, merges, deploys or publishes without your go for that action, and
-  once you give it, it finishes that action instead of handing it back.
+- galdr finds the checks in your CI configuration first, then in your scripts, then in
+  your `CLAUDE.md` or `AGENTS.md`. It has no configuration file of its own.
+- galdr never pushes, merges, deploys or publishes without your go for that action.
+  When you give the go, it finishes the action. It does not give the last step back.
 
 ## How it was tested
 
-Every 1.0 skill was tested before release, with and without its text loaded:
+Each skill was tested before release, with and without its text loaded:
 
-- **Discipline skills under pressure.** `tdd` 4/4, `debug` 2/2 and `verify` 2/2
-  scenarios pass with the skill loaded, zero forbidden behaviors. The earlier runs
-  without the skill had edited code on a "tests after" nudge, wrapped tests around
-  untested code, and mocked on request.
-- **Retrieval checks.** `galdr` routed 5/5 requests to the right playbook, `shape`
-  5/5 and `review` 4/4 probes pass, and a `handoff` brief let a fresh agent finish a
-  task with no other context.
-- **The gate.** 230 Python and 28 JavaScript tests, run on Python 3.9 and 3.13.
+- **Discipline skills under pressure.** The `prove` and `debug` scenarios pass with the
+  skill loaded, with zero forbidden behaviors.
+- **Retrieval checks.** `galdr` routes requests to the right playbook and makes its own
+  review decisions. `shape`, `review` and `handoff` pass their probes.
+- **Voice.** Each skill file passes the ASD-STE100 linter with zero hard findings.
+- **The gate.** 230 Python and 28 JavaScript tests, on Python 3.9 and 3.13.
 
 ## Acknowledgments
 
 galdr builds on ideas from [obra/superpowers](https://github.com/obra/superpowers) (MIT)
 and [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). It is an
-independent implementation.
+independent implementation. The STE linter in its tests comes from
+[danyuchn/asd-ste100-skill](https://github.com/danyuchn/asd-ste100-skill) (MIT).
