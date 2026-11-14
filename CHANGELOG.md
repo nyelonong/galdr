@@ -1,3 +1,11 @@
+## 2.0.1 – 2026-11-14
+
+- `galdr` loads the installed skill for the main language of the work before any design or edit.
+- Plan approval, "approved" or "continue" is no longer a go to merge, push, open a PR or deploy. galdr asks for that action by name.
+- `prove`: a test that passes and fails without a code change is a finding. galdr runs it a few more times, reports it, and fixes it in the same change only when it blocks that change's proof.
+- `review`: findings are resolved once, then one focused follow-up review. A new serious problem after that needs a new decision or the user.
+- New `agents/reviewer.md`: the independent reviewer that `review` and closeout use. It has no tool that writes files. Its rule against writes through the shell is an instruction, because tests showed that `permissionMode: plan` does not block a subagent's shell writes.
+
 ## 2.0.0 – 2026-11-14
 
 Breaking. One proof skill, closeout of each logical unit, and an ASD-STE100 voice.

@@ -1,6 +1,6 @@
 {
   "name": "galdr",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Engineering methodology for coding agents: plan first, a named proof for every change, fresh evidence before done, and browser approval of the real diff.",
   "author": {
     "name": "Muhammad Zaki Al-Afrani"

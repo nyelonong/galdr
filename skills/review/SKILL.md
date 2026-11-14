@@ -36,9 +36,12 @@ If you are not sure, treat that doubt as a reason for independent review. Write 
 decision in one line, for example "Independent review: necessary. The migration can
 delete rows." or "Independent review: not necessary. Only README text changed."
 
-For an independent review, give each axis to a new read-only subagent. Put the diff,
-the plan and the checks of this skill in its prompt. Do not give it a path to obey. The
-reviewer reports findings and does not edit.
+For an independent review, give each axis to a new instance of the galdr `reviewer`
+agent. It has no Edit or Write tool. It still has Bash, and only its instructions
+forbid writes through the shell. If the runtime does not have that agent, use a new subagent and tell it to
+stay read-only. Put the diff, the plan and the checks of this
+skill in its prompt. Do not give it a path to obey. The reviewer reports findings and
+does not edit.
 
 If independent review is necessary and no subagent is available, stop. Tell the user
 the reason. Continue only when a reviewer is available or the user waives the review.
@@ -114,5 +117,8 @@ When the user asks for browser approval of a diff or a plan document, read
 
 A finding is a claim. Examine it against the code before you fix it. If two findings
 conflict, the user has priority over this review. This review has priority over an
-external tool. A change after a verdict or an approval cancels it. Fix the change, run
-the focused checks again, and review again.
+external tool. A change after a verdict or an approval cancels it.
+
+Resolve the findings once. After a fix that changes reviewed behavior, run the focused
+checks and one focused follow-up review. A new P0 or P1 finding in that follow-up needs a
+new decision or the user. Do not start a third round on your own.

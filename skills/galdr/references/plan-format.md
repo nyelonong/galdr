@@ -62,5 +62,5 @@ Select each diagram for its purpose:
 - **Swimlanes**: ownership and handoffs.
 - **ERD**: changed entities, keys and cardinality.
 
-Do not show the same flow in two diagrams, or in a diagram and in prose. Write each check
+Show each flow only once, in one diagram or in prose. Write each check
 run as an `EV` line in Progress, with its skip count.

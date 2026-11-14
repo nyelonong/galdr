@@ -50,9 +50,7 @@ reference. Start again from a failing test.
 - Test the behavior that a caller can see. Do not test configuration values or private
   internals.
 - Use a mock only at a boundary that you can name, with the reason that the real
-  dependency cannot run there. Prefer the real dependency or an in-memory fake. A test
-  that only counts mock calls, copies the implementation, or keeps a snapshot without a
-  stated purpose proves nothing.
+  dependency cannot run there. Prefer the real dependency or an in-memory fake.
 
 ## 4. Claim "done" only with fresh evidence
 
@@ -66,6 +64,9 @@ NO COMPLETION CLAIMS WITHOUT FRESH EVIDENCE.
   Put the fix back. Watch the test pass. Report the two runs.
 - Use an earlier result only if no related edit came after it. Run again only the checks
   that are old or missing.
+- A test that passes and fails without a code change is a finding. Run it a few more
+  times and report it. If it blocks the proof of this change, it is P1: fix it here.
+  If not, it is P2.
 
 The evidence ladder is: said, cited (`path:line`), reasoned, ran, reproduced. "Done"
 needs **ran**. "Fixed" needs **reproduced**. Name the rung when a claim is below ran.

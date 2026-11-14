@@ -16,7 +16,7 @@ these sections in this order:
 
 1. **Goal**: one paragraph about the outcome, not the steps.
 2. **Approved scope**: what can change, and what must not change.
-3. **Read first**: the paths to the plan file and the code. Do not copy their content.
+3. **Read first**: paths to the plan file and the code, not copies.
 4. **State**: each claim with the command that proved it in this session. A claim that
    you did not check in this session starts with `UNVERIFIED:`.
 5. **Checks**: the exact commands that decide if the work is complete.
@@ -39,6 +39,5 @@ work. Give the user the command that opens the new session on it.
 
 ## Continue later
 
-A later session starts from the newest brief. First it reads the state and runs the
-checks again. It never repeats a write if it does not know the result. If a review is
-pending, it recovers that review before it starts a new one.
+A later session starts from the newest brief. It reads the state and runs the checks
+again first, and it obeys the resume rules of galdr §3.

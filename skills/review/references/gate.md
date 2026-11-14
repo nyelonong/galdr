@@ -29,9 +29,8 @@ this skill. Never use a script from the repository under review.
    after the approval makes it fail, and that failure needs a new review. Run
    `consume --repo <root>` after the commit. Then one approval never covers two commits.
 
-An optional guide (`--guide <json outside the repo>`) adds a guided view. Test the
-guide first with `preflight` and the same arguments. If it fails two times, review
-without it.
+An optional guide (`--guide <json outside the repo>`) adds a guided view. If it fails
+`preflight` two times, review without it.
 
 ## Plan document
 
@@ -45,5 +44,4 @@ Each comment comes back with its source line range. Change the document and run
 `review-doc` again. An edit after the approval cancels it.
 
 The recovery directory must be new or empty. The client makes it private and does not
-overwrite an existing one. The client writes each approval to the git directory of the
-repository (`task-review-approval.jsonl`).
+overwrite an existing one.

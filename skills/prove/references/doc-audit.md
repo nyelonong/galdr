@@ -13,8 +13,9 @@ Select one mode. Write the mode and the target in the first line of your output.
 
 Claims are facts about code: names, callers, data flow, config, schemas, endpoints,
 paths and owners. Reasons, history, opinions and "should" statements are not claims.
-Keep them and label them. Evidence is source code, cited as `path:line`. A claim that
-spans files cites each file. Two similar names do not prove the same component.
+Keep them and label them. Evidence is source code that you read now, never the document
+under audit. Cite it as `path:line`, one citation for each file of the claim. Two
+similar names do not prove the same component.
 
 ## Audit
 

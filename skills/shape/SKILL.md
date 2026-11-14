@@ -27,9 +27,8 @@ only about decisions: choices that change the result.
 - Give your recommendation first, with a one-line reason. Then ask the question.
 
   ```
-  Next: do "reviews" mean buyer reviews of a storefront, or reviews of the platform?
-  Recommend buyer reviews of a storefront. That noun is already in use, and nobody
-  asked for platform reviews.
+  Next: storefront reviews by buyers, or reviews of the platform? Recommend
+  storefront reviews: that noun is already in use.
   ```
 
 - In synthesis and explore, ask at most 3 questions before the draft. Each open decision

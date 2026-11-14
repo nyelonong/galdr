@@ -13,7 +13,9 @@ steps to the end.
 
 1. Before you work in a repository, read `git status` and the remotes. Fetch the
    upstream if one exists. Never discard work. Never invent an upstream.
-2. Pick the playbook:
+2. If the runtime has a skill for the main language of the work, load it before you
+   design or edit anything.
+3. Pick the playbook:
 
    | Request | Playbook |
    |---|---|
@@ -23,7 +25,7 @@ steps to the end.
    | Structure or performance pain, with no new behavior | `refactor` |
    | A design question that throwaway code answers faster than discussion | `prototype` |
 
-3. Write one line: `galdr: <playbook>, <reason>`. Then read
+4. Write one line: `galdr: <playbook>, <reason>`. Then read
    `references/playbook-<playbook>.md`, and only that one. If the user names a different
    playbook, use it.
 
@@ -57,9 +59,8 @@ status line, the checkboxes and Progress current.
 
 **Thorough mode**: use it for independent tasks that need their own context, or when
 the user asks. Give each task to one subagent. Its brief holds the goal, the only files
-that it can change, the tests, the acceptance commands, the base commit and the return
-contract. The return contract is one status (`complete`, `blocked`, `needs-decision`,
-`failed`) and evidence lines. Do not give the same file to two parallel subagents. Give
+that it can change, the tests, the acceptance commands and the base commit. It returns
+one status (`complete`, `blocked`, `needs-decision`, `failed`) and evidence lines. Do not give the same file to two parallel subagents. Give
 mechanical tasks (renames, moves, generated code) a cheaper model when the runtime lets
 you choose. A subagent report is a claim. Read the diff and compare it with the brief.
 Then examine quality and run the checks yourself.
@@ -101,18 +102,15 @@ these steps:
 - **Cheapest solution first:** no change, then existing code, the standard library, a
   platform or database feature, an installed dependency, and new code last. Read the
   real code path and its callers before you choose.
-- **Simplest structure:** add no interface only for mocks or for an imagined second
-  implementation. Copy code locally only when the copies can change independently,
-  never for one shared rule. Add concurrency, caches, queues or generalization only for
-  a stated need.
+- **Simplest structure:** obey the Structure item of review §4. Copy code locally only
+  when the copies can change independently.
 - **Structure before edits:** decide where the change goes, which boundary it crosses,
   which interface it exposes and who owns its state.
 - **Scope:** build only the approved work. Change only the code, callers, tests and docs
   that it needs. Report unrelated defects. Do not fix them.
 - **Questions:** ask only what changes the result and what reading, running or a
-  sensible default cannot settle. Ask one question in each message, with your
-  recommendation first. Ask at most 3 before the plan. The other decisions become
-  assumed decisions. Prefer the simplest design.
+  default cannot settle. Ask one question in each message, with your recommendation
+  first, and at most 3 before the plan. The other decisions become assumed decisions.
 - **Schema or migration:** read `references/migrations.md` before you design it.
 - **External actions:** ask before an action that changes data outside the repository,
   costs money, exposes private data, contacts a person, deploys, publishes, pushes or
@@ -120,6 +118,8 @@ these steps:
 - **Finish the action:** when the user approves a specific action, do it yourself, in
   the browser if necessary. Do not give the last step back. The approval covers only
   that action. It never covers the next action or an approval of your own review gate.
+  Plan approval, "approved" or "continue" is not a go to merge, push, open a PR or
+  deploy. Ask for that action by name.
 - **Voice:** write in ASD-STE100 Simplified Technical English. Use the strict form for
   briefs, procedures and errors. In the strict form, each sentence has one instruction
   and 20 words at most. Use active voice, simple tenses, no phrasal verbs and no
@@ -133,8 +133,7 @@ instruction, repository instructions, galdr, default behavior.
 
 ## 7. Finish
 
-1. Examine the full result against the plan. Checks for each task do not prove how the
-   parts work together.
+1. Examine the full result against the plan, not only each task.
 2. Run the full check set that `prove` names. State the failed and skipped counts.
 3. If the whole result needs one independent review, do it now, unless an earlier
    closeout covered it.
@@ -143,4 +142,4 @@ instruction, repository instructions, galdr, default behavior.
 
 The default result keeps the branch. Merge, push, open a PR or delete a branch only when
 the user gives the go for that action. After a merge, run the full checks again. Make
-lockfiles again with their tool. Do not merge them by hand.
+lockfiles again with their tool, not by hand.
