@@ -5,22 +5,17 @@ existing tests pass before and after.
 
 ## Structure
 
-1. Name the pain area. Without a named area that hurts current work, there is nothing
-   to refactor.
-2. Map it read-only (subagents may help; nobody edits): one line per finding, saying
-   what it is, where, and why it hurts. Check the repo's backlog or issues first; a
-   tracked finding is not new.
-3. Rank each finding: blocking current work, compounding (costs more each time the area
-   is touched), or cosmetic. Take only the top one; cosmetic findings never get their
-   own change.
-4. Confirm with the user that the top finding is worth doing, recommendation first.
-5. Agree any new domain name before renaming code.
-6. Write the plan file (SKILL.md §3). A move that touches several call sites or repos
-   uses expand, migrate, contract: add the new path beside the old, move callers one at
-   a time behind their tests, delete the old path once a search shows zero callers.
-7. Improvements noticed along the way go into the report, not into this change.
-8. List the findings not taken, one line each, so the next pass does not rediscover
-   them.
+1. Name the pain area that hurts current work; with none, there is nothing to refactor.
+2. Map it read-only: one line per finding (what, where, why it hurts), skipping what the
+   repo's issues already track.
+3. Rank each: blocking current work, compounding, or cosmetic. Take only the top one,
+   confirmed with the user; cosmetic findings never get their own change.
+4. Agree any new domain name before renaming code.
+5. Write the plan (SKILL.md §3). A move across several call sites uses expand, migrate,
+   contract: new path beside the old, callers moved one at a time behind their tests,
+   old path deleted once a search shows zero callers.
+6. Report improvements noticed along the way, and the findings not taken, one line each;
+   none go into this change.
 
 ## Performance
 

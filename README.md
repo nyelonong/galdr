@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="galdr: evidence-gated engineering methodology for Claude Code" width="100%">
+  <img src="assets/banner.png" alt="galdr: test-first engineering for coding agents. Shape, plan, build, verify, review, handoff." width="100%">
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.0.0-22d3ee?style=flat-square" alt="version 1.0.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.0.1-22d3ee?style=flat-square" alt="version 1.0.1"></a>
   <a href="skills/"><img src="https://img.shields.io/badge/skills-7-34d399?style=flat-square" alt="7 skills"></a>
   <img src="https://img.shields.io/badge/discipline-TDD_first-f59e0b?style=flat-square" alt="TDD first">
 </p>
@@ -64,12 +64,12 @@ flowchart LR
 | Structure or performance pain | `refactor` | One ranked finding fixed, tests unchanged, review |
 | A design question code can answer | `prototype` | A recorded decision and a test list; the prototype deleted |
 
-Each piece of work keeps one plan file in `docs/plans/` with its tasks, its evidence
-lines, and a `next:` line, so a new session picks up where the last one stopped.
+Each piece of work keeps one plan file in `docs/plans/`: the goal and decisions, the
+tasks, the evidence lines, and a `next:` line. There is no separate spec, so a new session picks up where the last one stopped.
 
 ## The review gate
 
-[`/galdr:review`](skills/review/SKILL.md) checks a change against its spec first and
+[`/galdr:review`](skills/review/SKILL.md) checks a change against its plan first and
 code quality second, with two separate verdicts. When you ask for it, it opens a local
 page that shows you the real working-tree diff, not a description of it, and waits for
 your decision:
@@ -86,7 +86,7 @@ page loads nothing from the network.
 | Skill | Loads | What it does |
 |---|---|---|
 | [`galdr`](skills/galdr/SKILL.md) | `/galdr` | Picks the playbook, keeps the plan file, runs the tasks, finishes |
-| [`shape`](skills/shape/SKILL.md) | `/galdr:shape` | Turns an idea into a spec; checks facts itself and asks at most 3 questions |
+| [`shape`](skills/shape/SKILL.md) | `/galdr:shape` | Turns an idea into the plan's goal and decisions; checks facts itself and asks at most 3 questions |
 | [`tdd`](skills/tdd/SKILL.md) | on its own | No production code without a failing test first |
 | [`verify`](skills/verify/SKILL.md) | on its own | No "done" without fresh evidence, skip count included; audits docs against code |
 | [`debug`](skills/debug/SKILL.md) | on its own | No fix without a root cause; mitigate first in a live incident |
@@ -100,7 +100,8 @@ page loads nothing from the network.
 `/galdr:shape` reads the code first, so it does not ask which database you use. It
 proposes the simplest design that meets the need, a direct write, and lists an event
 queue only as a rejected alternative. You get one question at a time, each with a
-recommendation, and a spec whose acceptance criteria a command can check.
+recommendation, and the top half of one plan file, whose acceptance checks a command
+can decide. `/galdr` adds the tasks to that same file, and you approve it once.
 
 ## Install
 

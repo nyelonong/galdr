@@ -50,7 +50,7 @@ dependencies. List every fact you could not prove as an explicit risk.
 ## Checks and records
 
 Take the check commands from the repo's `CLAUDE.md` or `AGENTS.md`; otherwise use the
-language's format, lint, type-check and test commands. Record each run in the plan file:
+language's format, lint, type-check and test commands. Record each run in the plan's Progress:
 
 ```
 EV [<scope>] <command> → <verdict> <key numbers> @<sha>

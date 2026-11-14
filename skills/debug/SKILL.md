@@ -24,9 +24,8 @@ and you cannot state the root cause it addresses, stop.
 ## Feedback loop first
 
 Before theorizing, build a repro: a command whose output differs depending on which
-hypothesis is true. Pick the cheapest that tells them apart: a failing test, `curl`, a
-throwaway script, a log grep, `git bisect`, a minimal fixture, one dependency run
-alone, the race detector, a browser trace, a stream client dump. A subagent's claim
+hypothesis is true; pick the cheapest that tells them apart (a failing test, `curl`, a
+log grep, `git bisect`). A subagent's claim
 about the bug is re-run before it is repeated.
 
 ## Hypotheses

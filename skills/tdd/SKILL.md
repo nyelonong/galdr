@@ -29,8 +29,8 @@ code and no failing test exists for that change yet, stop and write the test fir
 7. Commit the test and the code together: one logical change, conventional prefix. When
    the user asked for browser approval, leave it uncommitted until the gate approves.
 
-In the loop, run only the focused test and the type checker. Run the full suite before
-any completion claim.
+In the loop, run only the focused test and type checker; the full suite runs before any
+completion claim.
 
 ## If code exists before its test
 

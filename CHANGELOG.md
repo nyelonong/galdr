@@ -1,3 +1,10 @@
+## 1.0.1 – 2026-11-14
+
+- One document per piece of work: `shape` writes the goal, constraints and decisions into the plan file instead of a separate spec, `/galdr` adds the tasks to the same file, and the user approves it once. `docs/specs/` is no longer written.
+- New plan format (`skills/galdr/references/plan-format.md`), taken from real plans: one status line with where the work is and `next:`, a header naming repo and parent plan, Design with a pieces table, Decisions with why and trade-off, Before-building checks with their effect, Releases for staged work, Tasks with a proof each, a Review section, and a dated Progress log holding the `EV` lines.
+- Plugin icon (`.claude-plugin/icon.png`, the galdr G mark from the site); `claude plugin validate --strict --profile directory` now passes.
+- README banner redrawn in the site's style with the 1.0 flow (shape, plan, build, verify, review, handoff), as a PNG so it renders the same everywhere.
+
 ## 1.0.0 – 2026-11-14
 
 Breaking: galdr is now 7 skills (from 22), with no always-on hook.

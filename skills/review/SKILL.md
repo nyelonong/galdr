@@ -13,14 +13,13 @@ verdict. A human can approve the exact change in the browser gate.
 
 - The diff: `base...head` plus uncommitted work, or the paths the user names. Confirm it
   resolves and is not empty before anything else.
-- The spec: the plan file or spec the work was built from. With none, say so; Quality
-  still runs.
+- The plan file the work was built from. With none, say so; Quality still runs.
 
 ## 2. Independent reviewer
 
 When the change touches runtime behavior, data or migrations, security or privacy,
 concurrency, external systems or a public contract, or the user asks, give each axis
-to a fresh read-only subagent. Paste the diff, the spec and this skill's checks into its
+to a fresh read-only subagent. Paste the diff, the plan and this skill's checks into its
 prompt; never point it at a path to obey. It reports findings and never edits. When no
 subagent can be dispatched, say the review is author-only.
 
@@ -28,7 +27,7 @@ subagent can be dispatched, say the review is author-only.
 
 Report only: requirements **missing** or partial, behavior nobody asked for
 (**creep**), and requirements that look done but are **wrong**. Each finding quotes the
-spec line. When the spec line itself is the error, say so and send it back to planning
+plan line. When the plan line itself is the error, say so and send it back to planning
 instead of patching code to fit it.
 
 ## 4. Quality axis
@@ -42,8 +41,6 @@ Run the repo's checks and report failures. Then check:
   generalization with no stated need.
 - **Async ownership:** every goroutine, task, job or listener has an owner and a
   cancellation or shutdown path, and its failures reach the caller or a log.
-- **Names and shape:** a name that hides what it holds, one change scattered across
-  many files, one file changing for unrelated reasons.
 - **Comments are guilty.** Every comment, docstring and suppression in scope, new or
   existing, stays only if it is one of:
   1. a legal or license header;
@@ -66,7 +63,7 @@ A repo's documented standard overrides any check here; skip what a linter enforc
 
 Reproduce or refute each finding before reporting it. Report survivors through
 `ReportFindings` when the host has it, otherwise as `Axis | Severity | File:line |
-Finding | Spec line or rule`. Severity: **Critical** fix before merge, **Important**
+Finding | Plan line or rule`. Severity: **Critical** fix before merge, **Important**
 fix before the next task, **Minor** note.
 
 ```

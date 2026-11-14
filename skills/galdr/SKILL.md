@@ -30,30 +30,22 @@ reaches one, stop and give the exact command: "Next: run `/galdr:review`." `tdd`
 
 ## 3. Plan file
 
-Change playbooks keep one plan file per piece of work, `docs/plans/<YYYY-MM-DD>-<topic>.md`,
-written before code:
+Change playbooks keep one plan file per piece of work, written before code. When writing
+or resuming one, read `references/plan-format.md` and follow it; keep what `shape`
+wrote. No "TBD", "similar to task N" or "handle edge cases": write each one out.
 
-- `Status:` and `next:` lines at the top.
-- Goal, and acceptance checks that a command can decide.
-- Tasks as checkboxes. Each names the files it may touch, the test that proves it, and
-  the exact names and types it produces for later tasks. No "TBD", no "similar to task
-  N", no "handle edge cases": write each one out.
-- Assumptions made instead of asking.
-- Evidence, one line per check run: `EV <command> → <result> <counts> @<sha>`.
-
-Implementation starts once the user approves the plan; a clear request for a small local
-change is that approval, and its plan can be three lines. A material change to scope or
-risk needs approval again. Keep checkboxes, evidence and `next:` current; a new session
-resumes from `next:` after checking the claimed state with commands.
+Implementation starts after one approval of the whole plan. A clear request for a small
+local change is that approval, and its plan can be three lines. A material change to
+scope or risk needs approval again. Keep the status line, checkboxes and Progress
+current; a new session resumes from `next:` after checking the claimed state.
 
 ## 4. Run the tasks
 
 **Cheap mode** (default): do the tasks yourself, in order, one test-first loop each.
 
-**Thorough mode**, when tasks are independent and large enough to need their own
-context, or the user asks: one subagent per task, with a brief holding the goal, the
-files it may touch and nothing else, the test list, the acceptance commands, the base
-commit, and the return contract: one status (`complete`, `blocked`, `needs-decision`,
+**Thorough mode**, for independent tasks that need their own context, or on request:
+one subagent per task, briefed with the goal, the only files it may touch, the tests,
+the acceptance commands, the base commit, and the return contract: one status (`complete`, `blocked`, `needs-decision`,
 `failed`) plus evidence lines, and commits unless browser approval was asked for. Tasks
 that touch the same file never run in
 parallel. On return, the report is a claim: read the diff, check it against the brief
@@ -75,10 +67,9 @@ and a reply never ends on a plan to act instead of the act.
   for a stated need.
 - **Scope:** build only what was approved, and change only the code, callers, tests and
   docs it needs. Report unrelated defects instead of fixing them.
-- **Questions:** ask only what changes what gets built and cannot be settled by reading,
-  running something, or a sensible default. One per message, recommendation first, at
-  most 3 before the plan is written; put the rest in the plan as assumptions. Default to
-  the simplest design; mention a heavier one only as a rejected alternative.
+- **Questions:** only what changes what gets built and cannot be settled by reading,
+  running or a sensible default. One per message, recommendation first, at most 3 before
+  the plan; the rest become assumed decisions. Default to the simplest design.
 - **Schema or migration change:** read `references/migrations.md` before writing it.
 - **External actions:** ask before anything that changes data outside the repo, costs
   money, exposes private data, contacts a person, deploys, publishes, pushes or merges.
@@ -101,5 +92,5 @@ instruction, then repo instructions, then galdr, then default behavior.
    or commands.
 
 The default outcome keeps the branch and reports. Merge, push, open a PR, or delete a
-branch only on an explicit go for that action. On a conflict, regenerate lockfiles and
-generated code, ask when intent is unclear, and rerun the full checks after any merge.
+branch only on an explicit go for that action. After any merge, rerun the full checks;
+regenerate lockfiles rather than hand-merge them.

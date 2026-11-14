@@ -1,23 +1,24 @@
 ---
 name: shape
-description: Use when the user runs /galdr:shape to turn a fuzzy idea, a position to stress-test, or settled requirements into a written spec.
+description: Use when the user runs /galdr:shape to turn a fuzzy idea, a position to stress-test, or settled requirements into the goal and decisions of a plan.
 disable-model-invocation: true
 ---
 
 # shape
 
-Turns an idea into an approved spec at `docs/specs/<YYYY-MM-DD>-<topic>.md`.
+Writes the what and why of an idea as the top half of its plan file,
+`docs/plans/<YYYY-MM-DD>-<topic>.md`.
 
 ## Pick a mode
 
-- Requirements already settled → **synthesis**: no questions, write the spec.
+- Requirements already settled → **synthesis**: no questions, write the plan's top half.
 - A position to stress-test ("grill me") → **grill**.
 - No position yet → **explore**.
 
 ## Settle facts by trying, not asking
 
 Before each question, check whether reading the code, docs or config, or running
-something, answers it. Such a fact goes into the spec with its source; it is never
+something, answers it. Such a fact goes into the plan with its source; it is never
 asked. Only decisions, choices among options that change what gets built, reach the
 user.
 
@@ -33,7 +34,7 @@ user.
   ```
 
 - Synthesis and explore ask at most 3 questions before the draft. Every decision still
-  open goes into the spec as an assumption carrying your recommended choice.
+  open goes into the plan as an assumption carrying your recommended choice.
 - Grill was asked for questions: keep going, one at a time, until the tree is resolved
   or the user stops.
 - Default to the simplest design that meets the stated need. A heavier option (queue,
@@ -45,8 +46,8 @@ user.
 1. List the open decisions as a tree ordered by dependency: an early answer can change
    the later questions.
 2. Ask them in that order, under the budget above.
-3. Write each confirmed decision into the spec's decision table as it lands, creating
-   the file at the first one, so a session that dies loses nothing.
+3. Write each confirmed decision into the plan's Decisions table as it lands,
+   creating the file at the first one, so a session that dies loses nothing.
 4. Done when every branch is decided or deferred with a named owner. Then synthesis.
 
 ## Explore
@@ -58,26 +59,21 @@ user.
 
 ## Synthesis
 
-Write the spec with these sections, in order:
-
-- **Goal**: one paragraph.
-- **Non-goals**: what is out of scope.
-- **Constraints**: rules every task must obey, written as rules.
-- **Decisions**: table `# | Decision | Choice | Source`, where Source is `asked`,
-  `found` (with where) or `assumed`.
-- **Acceptance criteria**: each decidable by a command or an observable check.
+Write the plan's top half in the format of `skills/galdr/references/plan-format.md`:
+title, status line (`draft · next: /galdr`), header, Goal, Out of scope, Done when, and
+Decisions with each choice's why, trade-off and source. Add Design only when the
+discussion settled it.
 
 Then fix inline, before showing it:
 
 1. Placeholders: no "TBD", "handle edge cases" or "similar to X".
 2. Contradictions between sections.
 3. Scope: no more and no less than was asked.
-4. Ambiguity: if two readers could build it two ways, sharpen it until one reading is
-   left.
+4. Ambiguity: if two readers could build it two ways, sharpen it.
 
-## Hard gate
+## End
 
-No code, plan file or task starts until the user approves the spec. On approval, end
-with "Next: run `/galdr` to build it with the feature playbook."
+shape writes no tasks and no code. End with "Next: run `/galdr` to add the tasks; you
+approve the whole plan once, before any code."
 
-Done when the spec file exists, passes the four checks, and the user has approved it.
+Done when the plan file has these sections and passes the four checks.

@@ -11,8 +11,8 @@ Pick one mode and state it, with the target, in the first line of output:
 | `audit` | An existing document may have drifted | Claim table, then an approved rewrite |
 | `explain` | A subsystem needs a new explanation | Diagram, cited claim table, unknowns |
 
-Claims are component names, callers, data flow, queues, config keys, schemas, retries,
-timeouts, endpoints, flags, paths and owners. Rationale, history, opinions and "should"
+Claims are facts about code: names, callers, data flow, config, schemas, endpoints,
+paths and owners. Rationale, history, opinions and "should"
 statements are not claims; keep them and label them as such. Evidence is source cited
 as `path:line`; a claim spanning files cites each file. Similar names do not prove the
 same component.
