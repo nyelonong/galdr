@@ -1,3 +1,8 @@
+## 2.0.2 – 2026-11-15
+
+- Bug playbook: a one-task fix that needs independent review (for example a security, data or concurrency fix) now gets a plan file. Only other one-task fixes record the cause and evidence in the report alone.
+- `prove`: to confirm a flaky test, galdr reruns only the smallest set of tests that shows it, and stops when the result is clear.
+
 ## 2.0.1 – 2026-11-14
 
 - `galdr` loads the installed skill for the main language of the work before any design or edit.

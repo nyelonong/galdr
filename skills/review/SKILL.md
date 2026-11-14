@@ -38,7 +38,7 @@ delete rows." or "Independent review: not necessary. Only README text changed."
 
 For an independent review, give each axis to a new instance of the galdr `reviewer`
 agent. It has no Edit or Write tool. It still has Bash, and only its instructions
-forbid writes through the shell. If the runtime does not have that agent, use a new subagent and tell it to
+forbid writes through the shell. Without that agent, use a new subagent and tell it to
 stay read-only. Put the diff, the plan and the checks of this
 skill in its prompt. Do not give it a path to obey. The reviewer reports findings and
 does not edit.

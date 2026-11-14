@@ -59,14 +59,14 @@ NO COMPLETION CLAIMS WITHOUT FRESH EVIDENCE.
 - Run the proving command yourself after the last related edit. Do not use an older run.
 - A subagent report is a claim. Read its diff and run the checks yourself.
 - Each test claim states "N passed, M skipped" and the cause of each skip, for example
-  "37 skipped: docker not running". A skipped test did not run.
+  "37 skipped: docker not running".
 - "Fixed" needs a revert proof. Revert the fix and keep the test. Watch the test fail.
   Put the fix back. Watch the test pass. Report the two runs.
 - Use an earlier result only if no related edit came after it. Run again only the checks
   that are old or missing.
-- A test that passes and fails without a code change is a finding. Run it a few more
-  times and report it. If it blocks the proof of this change, it is P1: fix it here.
-  If not, it is P2.
+- A test that passes and fails without a code change is a finding. Run again only the
+  smallest set of tests that shows it. Stop when the result is clear. Report it. If it
+  blocks the proof of this change, it is P1: fix it here. If not, it is P2.
 
 The evidence ladder is: said, cited (`path:line`), reasoned, ran, reproduced. "Done"
 needs **ran**. "Fixed" needs **reproduced**. Name the rung when a claim is below ran.
@@ -99,9 +99,9 @@ Record each run in the Progress section of the plan:
 
 ## 7. Document audit
 
-Some requests ask you to check a design, architecture or runbook document against the
-code. Other requests ask for a new document that explains a subsystem with citations.
-For these requests, read `references/doc-audit.md` and do its steps.
+Use `references/doc-audit.md` to check a design, architecture or runbook document
+against the code. Also use it to write a new document that explains a subsystem with
+citations.
 
 ## Rationalizations
 
