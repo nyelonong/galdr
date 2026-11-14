@@ -1,3 +1,10 @@
+## 1.1.0 – 2026-11-14
+
+galdr now describes and enforces the method its author actually uses: plan first, a named proof for every change, test-first for bugs.
+
+- `tdd`: the Iron Law (no production code without a failing test first) now covers bug fixes, regressions, and changes the user asks to be test-first. New behavior names its proof before coding, gets tests written from the requirement at a public boundary (before or alongside the code), and must show each new test can fail once.
+- README, banner, site and manifests lead with plan-first and proof-first instead of test-first.
+
 ## 1.0.1 – 2026-11-14
 
 - One document per piece of work: `shape` writes the goal, constraints and decisions into the plan file instead of a separate spec, `/galdr` adds the tasks to the same file, and the user approves it once. `docs/specs/` is no longer written.

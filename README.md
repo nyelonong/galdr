@@ -1,19 +1,19 @@
 <p align="center">
-  <img src="assets/banner.png" alt="galdr: test-first engineering for coding agents. Shape, plan, build, verify, review, handoff." width="100%">
+  <img src="assets/banner.png" alt="galdr: plan-first engineering for coding agents. Shape, plan, build, verify, review, handoff." width="100%">
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.0.1-22d3ee?style=flat-square" alt="version 1.0.1"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.1.0-22d3ee?style=flat-square" alt="version 1.1.0"></a>
   <a href="skills/"><img src="https://img.shields.io/badge/skills-7-34d399?style=flat-square" alt="7 skills"></a>
-  <img src="https://img.shields.io/badge/discipline-TDD_first-f59e0b?style=flat-square" alt="TDD first">
+  <img src="https://img.shields.io/badge/discipline-proof_first-f59e0b?style=flat-square" alt="proof first">
 </p>
 
 <h1 align="center">galdr</h1>
 
 <p align="center">
   <b>Seven small skills that make an AI coding agent work like a careful engineer:<br>
-  a failing test before code, fresh evidence before "done",<br>
+  a plan and a named proof before code, fresh evidence before "done",<br>
   and, when you ask, your approval of the real diff before it is committed.</b>
 </p>
 
@@ -49,7 +49,7 @@ skills load when they apply, and everything else waits for a slash command.
 
 ```mermaid
 flowchart LR
-    A([request]) --> G{{/galdr}} --> S[shape] --> P[plan file] --> B[build test-first] --> V[verify] --> R[review + gate] --> Z([committed, your call to push])
+    A([request]) --> G{{/galdr}} --> S[shape] --> P[plan file] --> B[build against proofs] --> V[verify] --> R[review + gate] --> Z([committed, your call to push])
     classDef flow fill:#0b1120,stroke:#22d3ee,stroke-width:1px,color:#e0f2fe;
     class A,G,S,P,B,V,R,Z flow;
 ```
@@ -59,7 +59,7 @@ flowchart LR
 | Request | Playbook | Ends with |
 |---|---|---|
 | A question or a critique | `investigate` | A cited answer and one recommendation; nothing edited |
-| New or changed behavior | `feature` | Plan file, test-first tasks, review |
+| New or changed behavior | `feature` | Plan file, tasks with proofs, review |
 | Behavior that is wrong | `bug` | Root cause, a reproducing test, the fix, review |
 | Structure or performance pain | `refactor` | One ranked finding fixed, tests unchanged, review |
 | A design question code can answer | `prototype` | A recorded decision and a test list; the prototype deleted |
@@ -87,7 +87,7 @@ page loads nothing from the network.
 |---|---|---|
 | [`galdr`](skills/galdr/SKILL.md) | `/galdr` | Picks the playbook, keeps the plan file, runs the tasks, finishes |
 | [`shape`](skills/shape/SKILL.md) | `/galdr:shape` | Turns an idea into the plan's goal and decisions; checks facts itself and asks at most 3 questions |
-| [`tdd`](skills/tdd/SKILL.md) | on its own | No production code without a failing test first |
+| [`tdd`](skills/tdd/SKILL.md) | on its own | Every change ships with a test that proves it; bugs start from a failing test |
 | [`verify`](skills/verify/SKILL.md) | on its own | No "done" without fresh evidence, skip count included; audits docs against code |
 | [`debug`](skills/debug/SKILL.md) | on its own | No fix without a root cause; mitigate first in a live incident |
 | [`review`](skills/review/SKILL.md) | `/galdr:review` | Spec and quality verdicts, comments-are-guilty, the browser gate |

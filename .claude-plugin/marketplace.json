@@ -4,13 +4,13 @@
     "name": "Muhammad Zaki Al-Afrani"
   },
   "metadata": {
-    "description": "galdr: a test-first engineering methodology for coding agents, with a browser review gate"
+    "description": "galdr: a plan-first engineering methodology for coding agents, with a browser review gate"
   },
   "plugins": [
     {
       "name": "galdr",
       "source": "./",
-      "description": "galdr: test-first engineering methodology with a browser review gate"
+      "description": "galdr: plan-first engineering methodology with a browser review gate"
     }
   ]
 }

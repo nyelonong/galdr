@@ -41,7 +41,7 @@ current; a new session resumes from `next:` after checking the claimed state.
 
 ## 4. Run the tasks
 
-**Cheap mode** (default): do the tasks yourself, in order, one test-first loop each.
+**Cheap mode** (default): do the tasks yourself, in order.
 
 **Thorough mode**, for independent tasks that need their own context, or on request:
 one subagent per task, briefed with the goal, the only files it may touch, the tests,
