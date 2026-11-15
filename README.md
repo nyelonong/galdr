@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.0.2-22d3ee?style=flat-square" alt="version 2.0.2"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.1.0-22d3ee?style=flat-square" alt="version 2.1.0"></a>
   <a href="skills/"><img src="https://img.shields.io/badge/skills-6-34d399?style=flat-square" alt="6 skills"></a>
   <img src="https://img.shields.io/badge/discipline-proof_first-f59e0b?style=flat-square" alt="proof first">
   <img src="https://img.shields.io/badge/voice-ASD--STE100-64748b?style=flat-square" alt="ASD-STE100 voice">
@@ -72,6 +72,12 @@ A clear routine change needs no plan file. Other work keeps one local plan file 
 After each logical unit, galdr closes it out. It decides how deep to review, and if the
 change needs an independent reviewer. It decides from the defect that the change can
 cause, and it states the decision in one line. Then it commits the unit.
+
+When you correct galdr, it proposes a check that stops the mistake next time: a better
+API or structure, a lint rule, a type or a test, and a line in `CLAUDE.md` only when no
+check can find it. It counts the existing occurrences and adds the check when you
+approve. It does not build new code on a workaround that it finds in the code, and for a change you
+can see, its proof includes a screenshot, a recording or the output.
 
 ## The skills
 

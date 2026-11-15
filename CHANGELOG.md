@@ -1,3 +1,11 @@
+## 2.1.0 – 2026-11-15
+
+- Corrections become checks: when you correct galdr, or a finding can happen again, it proposes the check that stops it (an API or structure change, a lint rule, a type, a test) before a line in `CLAUDE.md` or `AGENTS.md`. It counts the existing occurrences and adds the check only when you approve.
+- New code does not copy, share or call a workaround, a deprecated API or a suppressed rule that galdr finds in the code. galdr reports it.
+- `prove`: a change that a user can see is proven on the real application, with a screenshot, a recording or the output linked in the report. A rule that must hold for all inputs uses a property-based test when the repository has the library.
+- `review`: a comment that tells why a workaround is acceptable is a finding against the workaround.
+- The word budget for all skills and references is now 7,400.
+
 ## 2.0.2 – 2026-11-15
 
 - Bug playbook: a one-task fix that needs independent review (for example a security, data or concurrency fix) now gets a plan file. Only other one-task fixes record the cause and evidence in the report alone.

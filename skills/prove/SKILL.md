@@ -35,6 +35,9 @@ reference. Start again from a failing test.
    or with it, at a public boundary.
 3. Show that each new test can fail. Break the behavior once, run the test, and record
    the failure as an `EV` line.
+4. For a change that a user can see (a screen, CLI output, an API response), run the
+   real application on the changed path. Keep a screenshot, a recording or the output,
+   and link it in the report.
 
 ## 3. Test kinds
 
@@ -49,6 +52,8 @@ reference. Start again from a failing test.
 - Never point a test at a live endpoint or at production credentials.
 - Test the behavior that a caller can see. Do not test configuration values or private
   internals.
+- For a rule that must hold for all inputs, use a property-based test if the
+  repository has the library.
 - Use a mock only at a boundary that you can name, with the reason that the real
   dependency cannot run there. Prefer the real dependency or an in-memory fake.
 

@@ -57,13 +57,13 @@ status line, the checkboxes and Progress current.
 
 **Cheap mode** (default): do the tasks yourself, in order. Each task follows `prove`.
 
-**Thorough mode**: use it for independent tasks that need their own context, or when
-the user asks. Give each task to one subagent. Its brief holds the goal, the only files
-that it can change, the tests, the acceptance commands and the base commit. It returns
-one status (`complete`, `blocked`, `needs-decision`, `failed`) and evidence lines. Do not give the same file to two parallel subagents. Give
-mechanical tasks (renames, moves, generated code) a cheaper model when the runtime lets
-you choose. A subagent report is a claim. Read the diff and compare it with the brief.
-Then examine quality and run the checks yourself.
+**Thorough mode**: use it for independent tasks that need their own context, or when the
+user asks. Give each task to one subagent. Its brief holds the goal, the only files that
+it can change, the tests, the acceptance commands and the base commit. It returns one
+status (`complete`, `blocked`, `needs-decision`, `failed`) and evidence lines. Do not give
+the same file to two parallel subagents. Give mechanical tasks (renames, moves, generated
+code) a cheaper model when the runtime lets you choose. A subagent report is a claim. Read
+the diff and compare it with the brief. Then examine quality and run the checks yourself.
 
 Continue until you complete all tasks. Stop only for these events:
 
@@ -74,8 +74,7 @@ Continue until you complete all tasks. Stop only for these events:
 - a browser approval that the user asked for (§5 step 4)
 - a user interrupt
 
-A passing check or a commit is not a stop. Never end a reply with a plan to act. Do the
-act.
+A passing check or commit is not a stop. Never end a reply with a plan to act. Do the act.
 
 ## 5. Close out each logical unit
 
@@ -101,13 +100,19 @@ these steps:
 
 - **Cheapest solution first:** no change, then existing code, the standard library, a
   platform or database feature, an installed dependency, and new code last. Read the
-  real code path and its callers before you choose.
+  real code path and its callers before you choose. New code does not copy, share or
+  call a workaround, a deprecated API or a suppressed rule. Report it.
 - **Simplest structure:** obey the Structure item of review §4. Copy code locally only
   when the copies can change independently.
 - **Structure before edits:** decide where the change goes, which boundary it crosses,
   which interface it exposes and who owns its state.
 - **Scope:** build only the approved work. Change only the code, callers, tests and docs
   that it needs. Report unrelated defects. Do not fix them.
+- **Corrections become checks:** when the user says that you made a mistake, or a
+  finding can occur again, propose a check that stops it. In order: an API or structure
+  change that makes the mistake impossible, a lint rule whose message names the fix, a
+  type, a test. A `CLAUDE.md` or `AGENTS.md` line is last. Count the existing
+  occurrences. Add the check and change them only after the user approves.
 - **Questions:** ask only what changes the result and what reading, running or a
   default cannot settle. Ask one question in each message, with your recommendation
   first, and at most 3 before the plan. The other decisions become assumed decisions.
@@ -123,9 +128,9 @@ these steps:
 - **Voice:** write in ASD-STE100 Simplified Technical English. Use the strict form for
   briefs, procedures and errors. In the strict form, each sentence has one instruction
   and 20 words at most. Use active voice, simple tenses, no phrasal verbs and no
-  semicolons. Replies, plans and
-  reports use the same sentence rules with a free vocabulary. Explain each ID and commit
-  SHA. Give a recommendation and its reason. Do not use em dashes.
+  semicolons. Replies, plans and reports use the same sentence rules with a free
+  vocabulary. Explain each ID and commit SHA. Give a recommendation and its reason. Do
+  not use em dashes.
 
 Checks and commands for a repository come from its CI configuration, its scripts and
 its `CLAUDE.md` or `AGENTS.md`, as `prove` §5 tells you. The order of priority is: user

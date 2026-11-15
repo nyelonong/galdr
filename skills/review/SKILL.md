@@ -84,7 +84,8 @@ Run the checks that prove names, and report each failure. Then examine these ite
 
   Narration, banners, tutorials, commented-out code and restatements go. A suppression
   of a correctness or safety rule (`@ts-ignore`, `//nolint`, `eslint-disable` on a real
-  rule) is a finding. Mark each comment `KEEP`, `KILL`, `RESHAPE` or `OPEN`. A safety
+  rule) is a finding. A comment that tells why a workaround is acceptable is a finding
+  against the workaround. Mark each comment `KEEP`, `KILL`, `RESHAPE` or `OPEN`. A safety
   constraint that you cannot prove stays `OPEN`, not `KILL`.
 
 A documented standard of the repository has priority over these checks. Do not check
