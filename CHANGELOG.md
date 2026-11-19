@@ -1,3 +1,12 @@
+## 2.2.0 – 2026-11-18
+
+- galdr never rewrites pushed history and never forces a push.
+- Silence, a tool permission, auto mode or "continue" is not approval of scope. New scope still needs a new approval.
+- After a context compaction, galdr reads the state (status line, `git status`, recovery folders) before it continues, the same as when it resumes earlier work.
+- galdr asks before it deletes or overwrites data, or writes to a shared environment such as a shared development database. A throwaway local database needs no question.
+- Safeguards: galdr never weakens validation, data-loss protection, security, privacy, authentication, authorization, accessibility, a stated requirement or a repository check to make a change pass.
+- The line budget for `skills/galdr/SKILL.md` is now 155. A sentence that repeated `prove` §5 (where a repository's checks come from) is gone from `galdr`.
+
 ## 2.1.0 – 2026-11-15
 
 - Corrections become checks: when you correct galdr, or a finding can happen again, it proposes the check that stops it (an API or structure change, a lint rule, a type, a test) before a line in `CLAUDE.md` or `AGENTS.md`. It counts the existing occurrences and adds the check only when you approve.

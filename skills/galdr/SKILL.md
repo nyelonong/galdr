@@ -12,7 +12,8 @@ steps to the end.
 ## 1. Start
 
 1. Before you work in a repository, read `git status` and the remotes. Fetch the
-   upstream if one exists. Never discard work. Never invent an upstream.
+   upstream if one exists. Never discard work. Never invent an upstream. Never rewrite
+   pushed history. Never force a push.
 2. If the runtime has a skill for the main language of the work, load it before you
    design or edit anything.
 3. Pick the playbook:
@@ -46,12 +47,13 @@ needs one, stop and give the exact command, for example "Next: run `/galdr:shape
   cases".
 
 Code starts after one approval of the whole plan. A clear request for a routine change
-is that approval. A material change to scope or risk needs a new approval.
+is that approval. A material change to scope or risk needs a new approval. Silence, a
+tool permission, auto mode or "continue" is not approval of scope.
 
-Before you continue earlier work, read the state: the status line, `git status`, and
-each recovery folder. Never repeat a write if you do not know its result. If a review
-is pending, recover it before you start a new one. Then continue from `next:`. Keep the
-status line, the checkboxes and Progress current.
+Before you continue earlier work, and after a context compaction, read the state: the
+status line, `git status`, and each recovery folder. Never repeat a write if you do not
+know its result. If a review is pending, recover it before you start a new one. Then
+continue from `next:`. Keep the status line, the checkboxes and Progress current.
 
 ## 4. Do the tasks
 
@@ -113,13 +115,17 @@ these steps:
   change that makes the mistake impossible, a lint rule whose message names the fix, a
   type, a test. A `CLAUDE.md` or `AGENTS.md` line is last. Count the existing
   occurrences. Add the check and change them only after the user approves.
+- **Safeguards:** never weaken validation, data-loss protection, security, privacy,
+  authentication, authorization, accessibility, a stated requirement or a repository
+  check to make a change pass.
 - **Questions:** ask only what changes the result and what reading, running or a
   default cannot settle. Ask one question in each message, with your recommendation
   first, and at most 3 before the plan. The other decisions become assumed decisions.
 - **Schema or migration:** read `references/migrations.md` before you design it.
-- **External actions:** ask before an action that changes data outside the repository,
-  costs money, exposes private data, contacts a person, deploys, publishes, pushes or
-  merges. Never ask for a secret in chat.
+- **External actions:** ask before you delete or overwrite data, or write to a shared
+  environment. Ask before an action that changes data outside the repository, costs
+  money, exposes private data, contacts a person, deploys, publishes, pushes or merges.
+  Never ask for a secret in chat.
 - **Finish the action:** when the user approves a specific action, do it yourself, in
   the browser if necessary. Do not give the last step back. The approval covers only
   that action. It never covers the next action or an approval of your own review gate.
@@ -132,9 +138,8 @@ these steps:
   vocabulary. Explain each ID and commit SHA. Give a recommendation and its reason. Do
   not use em dashes.
 
-Checks and commands for a repository come from its CI configuration, its scripts and
-its `CLAUDE.md` or `AGENTS.md`, as `prove` §5 tells you. The order of priority is: user
-instruction, repository instructions, galdr, default behavior.
+The order of priority is: user instruction, repository instructions, galdr, default
+behavior.
 
 ## 7. Finish
 

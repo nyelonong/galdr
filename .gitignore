@@ -2,3 +2,4 @@ docs/briefs/
 .agents/
 skills-lock.json
 __pycache__/
+.playwright-mcp/
