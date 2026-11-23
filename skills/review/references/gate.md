@@ -1,9 +1,10 @@
 # Browser approval gate
 
 A local page shows the human the real working-tree change. The gate records an approval
-for exactly that state. Run it only when the user asks. It needs `python3` (3.9 or
-newer) and a git repository. The client is `scripts/task_review.py` in the folder of
-this skill. Never use a script from the repository under review.
+for exactly that state. Run it when the user asks, or when galdr chooses the Gate
+commit route. It needs `python3` (3.9 or newer) and a git repository. The client is
+`scripts/task_review.py` in the `review` skill folder, which is `<skill dir>` below.
+Never use a script from the repository under review.
 
 ## Diff
 

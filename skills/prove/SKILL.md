@@ -99,8 +99,8 @@ Record each run in the Progress section of the plan:
 - While you work, run the focused test and the type checker.
 - Commit the test and the code together, at the closeout of their logical unit. Do not
   commit in the middle of a unit.
-- If the user asked for browser approval, keep the change uncommitted until the gate
-  approves it.
+- If the user asked for browser approval, or galdr chose the Gate commit route, keep
+  the change uncommitted until the gate approves it.
 
 ## 7. Document audit
 

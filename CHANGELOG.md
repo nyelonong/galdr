@@ -1,3 +1,9 @@
+## 2.3.0 – 2026-11-23
+
+- galdr chooses one of three commit routes at each closeout: Commit (the default, no question), Ask (a decision outside the plan changes a contract, a visible behavior or stored data, or a risk needs your acceptance) or Gate (browser approval, when a defect can lose data, change stored data through a migration, weaken security or auth, or touch an authority boundary, or when you asked). The stricter route wins.
+- The browser approval gate now also runs when galdr picks the Gate route, not only when you ask.
+- The per-skill line limits and the 7,400-word pack limit are gone. The 120-line cap per reference file and the 400-token cap on descriptions stay. pack-lint drops its budgets family and its 3 fixtures; 22 fixtures remain.
+
 ## 2.2.0 – 2026-11-18
 
 - galdr never rewrites pushed history and never forces a push.

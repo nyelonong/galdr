@@ -73,7 +73,7 @@ Continue until you complete all tasks. Stop only for these events:
 - a plan that contradicts itself or the code
 - a task that failed three times
 - a necessary independent review with no reviewer available (§5 step 2)
-- a browser approval that the user asked for (§5 step 4)
+- a wait for the Ask answer or the gate result (§5 step 4)
 - a user interrupt
 
 A passing check or commit is not a stop. Never end a reply with a plan to act. Do the act.
@@ -90,12 +90,26 @@ these steps:
    reason in one line in Progress, or in the report when no plan file exists.
 3. Fix the gaps in scope. Run the affected checks again. P0 and P1 findings block. P2
    findings are optional.
-4. Commit the unit. Commit only the files of the task. Write a short subject and two
+4. Choose the commit route. Write the route and its reason in one line, after the
+   review decision. Decide from the defect that the unit can cause, not from keywords.
+   If two routes apply, use the stricter route.
+   - **Commit** (default): the user asked for this work, the checks pass, and no P0 or
+     P1 finding is open. Commit without a question.
+   - **Ask**: the unit contains a decision that is not in the approved request or plan.
+     That decision changes a public contract, a visible behavior or a stored data
+     format. Or the unit leaves a risk that the user must accept. Ask one question.
+     Give the change, your decisions, the checks and the risk. Commit after approval.
+   - **Gate** (strictest): the user asked for browser approval. Or a defect in the unit
+     can have a material effect on data: lost or corrupt data, or a migration that
+     changes stored data. Or it can weaken security, privacy, authentication or
+     authorization. Or it can weaken an authority boundary such as secrets,
+     destructive commands or approvals. Read `skills/review/references/gate.md` and do
+     its diff steps. If the Ask route also applies, put your decisions and the risk in
+     the criterion. Commit after the gate approves.
+5. Commit the unit. Commit only the files of the task. Write a short subject and two
    body lines at most. Do not add internal IDs, AI attribution, `Co-Authored-By` lines
-   or generated-with footers. If the user asked for browser approval, stop with "Next:
-   run `/galdr:review`" before the commit. When the gate approves, commit as the gate
-   tells you, then do step 5.
-5. Add the evidence to Progress (or to the report), move `next:` forward, and start the
+   or generated-with footers. After a gate approval, commit as the gate tells you.
+6. Add the evidence to Progress (or to the report), move `next:` forward, and start the
    next unit.
 
 ## 6. Engineering rules

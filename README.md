@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.2.0-22d3ee?style=flat-square" alt="version 2.2.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.3.0-22d3ee?style=flat-square" alt="version 2.3.0"></a>
   <a href="skills/"><img src="https://img.shields.io/badge/skills-6-34d399?style=flat-square" alt="6 skills"></a>
   <img src="https://img.shields.io/badge/discipline-proof_first-f59e0b?style=flat-square" alt="proof first">
   <img src="https://img.shields.io/badge/voice-ASD--STE100-64748b?style=flat-square" alt="ASD-STE100 voice">
@@ -15,7 +15,7 @@
 <p align="center">
   <b>Six small skills that make an AI coding agent work like a careful engineer:<br>
   a plan and a named proof before code, fresh evidence before "done",<br>
-  a review at each logical unit, and your approval of the real diff when you ask.</b>
+  a review at each logical unit, and your approval of the real diff when it matters.</b>
 </p>
 
 <p align="center">
@@ -97,8 +97,10 @@ sentence, active voice, simple tenses, one meaning for each word.
 
 [`/galdr:review`](skills/review/SKILL.md) checks a change against its plan first and
 against code quality second. It gives two separate verdicts. When you ask for it, it
-opens a local page. The page shows the real working-tree diff, not a description of it,
-and waits for your decision:
+opens a local page. galdr also opens this page on its own before a commit that can
+lose data, change stored data or weaken security, auth or an authority boundary. The
+page shows the real working-tree diff, not a description of it, and waits for your
+decision:
 
 - **approve** records an approval for that exact state.
 - **request changes** sends your line comments back to the agent.
