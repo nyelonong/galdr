@@ -11,6 +11,11 @@
       "name": "galdr",
       "source": "./",
       "description": "galdr: plan-first engineering methodology with a browser review gate"
+    },
+    {
+      "name": "galdr-extras",
+      "source": "./plugins/galdr-extras",
+      "description": "Optional language skills for galdr, starting with Go"
     }
   ]
 }

@@ -11,7 +11,10 @@ Read this file before you design a schema or write a migration.
   the database only for an approved correctness requirement.
 - Prefer soft deletion for business records. Keep their foreign keys and ownership
   constraints. Add a hard-delete cascade only for an approved retention, privacy or
-  correctness need.
+  correctness need. Without that need, a foreign key uses `RESTRICT` or `NO ACTION` on
+  delete.
+- If a foreign key cannot exist, for example across two services or two databases, name
+  the application check that replaces it and its test.
 - Add a check, constraint or index only for a current correctness requirement, a
   current query, a uniqueness requirement or a measured need. Do not add two guarantees
   that do the same thing.
@@ -22,7 +25,8 @@ Read this file before you design a schema or write a migration.
    the migrations that ran.
 2. Make sure that nothing uses the version number that you plan to use.
 3. Trace each changed table and column through its writers, readers, queries and
-   validation.
+   validation. Search for copies of the same SQL. Change each copy that must stay the
+   same.
 4. Edit a migration only while it never ran outside your machine. If it ran elsewhere,
    add a new migration. If you do not know, ask. Never rewrite applied history.
 5. For a change that live code depends on, keep compatibility across one deploy. Add the

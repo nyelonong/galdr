@@ -1,3 +1,9 @@
+## 2.4.0 – 2026-11-23
+
+- New opt-in plugin `galdr-extras` 1.0.0 in the same marketplace, with `go-engineering`: Go design, errors, context, concurrency and testing rules, plus references for concurrency, network resilience, circuit breakers, observability and diagnostics. Install it with `/plugin install galdr-extras@nyelonong`. galdr loads it on its own when it is installed.
+- `skills/galdr/references/migrations.md`: foreign keys default to `RESTRICT` or `NO ACTION` on delete; where a foreign key cannot exist, name the application check that replaces it; search for copies of the same SQL.
+- pack-lint checks the skills under `plugins/*/skills/` for frontmatter, references, trailing newlines and project tokens. Its one-hop check now also catches a reference that names a sibling reference by file name. 8 new fixtures, 30 in total. `publish.sh` ships `plugins/`.
+
 ## 2.3.0 – 2026-11-23
 
 - galdr chooses one of three commit routes at each closeout: Commit (the default, no question), Ask (a decision outside the plan changes a contract, a visible behavior or stored data, or a risk needs your acceptance) or Gate (browser approval, when a defect can lose data, change stored data through a migration, weaken security or auth, or touch an authority boundary, or when you asked). The stricter route wins.

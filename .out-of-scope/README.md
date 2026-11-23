@@ -13,5 +13,5 @@ session that shows the failure it would have prevented (see `SCOPE.md`).
 | Native Codex and Antigravity carriers | They shipped broken for months; `npx skills add` installs the same skills. |
 | A per-repo galdr config file | Repo commands belong in the repo's own `CLAUDE.md` or `AGENTS.md`. |
 | A backlog, retro or doctor skill | Issue trackers, the plan file and `git log` already do these jobs. |
-| Runtime-specific mechanics (Pi, Codex or omp adapters, a fixed model for the review gate, a named language skill such as one for Go) | galdr is generic. It loads the installed skill for a language and uses the runtime's own tools. |
+| Runtime-specific mechanics (Pi, Codex or omp adapters, a fixed model for the review gate, a named language skill such as one for Go inside the core plugin) | galdr is generic. It loads the installed skill for a language and uses the runtime's own tools. Language skills ship in the opt-in `galdr-extras` plugin. |
 | A frozen list of when independent review is mandatory | galdr decides from the defect that a change can cause. A fixed list turns that judgment into a checklist. |

@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.3.0-22d3ee?style=flat-square" alt="version 2.3.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.4.0-22d3ee?style=flat-square" alt="version 2.4.0"></a>
   <a href="skills/"><img src="https://img.shields.io/badge/skills-6-34d399?style=flat-square" alt="6 skills"></a>
   <img src="https://img.shields.io/badge/discipline-proof_first-f59e0b?style=flat-square" alt="proof first">
   <img src="https://img.shields.io/badge/voice-ASD--STE100-64748b?style=flat-square" alt="ASD-STE100 voice">
@@ -130,6 +130,19 @@ npx skills add nyelonong/galdr
 
 The skills are plain `SKILL.md` files. The review gate is inside `skills/review/`, so it
 works wherever the skill goes.
+
+### Optional: galdr-extras
+
+`galdr-extras` is a second, opt-in plugin with language skills. It starts with
+`go-engineering`. galdr stays generic and works without it. When a language skill is
+installed, galdr loads it before it designs or edits code in that language.
+
+```
+/plugin install galdr-extras@nyelonong
+```
+
+With `npx skills add nyelonong/galdr`, select `go-engineering` in the list, or add
+`--skill go-engineering`.
 
 ### Upgrading from 1.x
 
