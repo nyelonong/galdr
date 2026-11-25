@@ -1,7 +1,7 @@
 {
   "name": "galdr-extras",
-  "version": "1.0.0",
-  "description": "Optional language skills for galdr. galdr loads them on its own when they are installed.",
+  "version": "1.1.0",
+  "description": "Optional skills for galdr: language skills and the senpai review gate. galdr loads them on its own when they are installed.",
   "author": {
     "name": "Muhammad Zaki Al-Afrani"
   }

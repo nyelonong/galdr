@@ -15,7 +15,7 @@
     {
       "name": "galdr-extras",
       "source": "./plugins/galdr-extras",
-      "description": "Optional language skills for galdr, starting with Go"
+      "description": "Optional skills for galdr: Go engineering and the senpai review gate"
     }
   ]
 }

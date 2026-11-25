@@ -2,16 +2,30 @@
 
 A local page shows the human the real working-tree change. The gate records an approval
 for exactly that state. Run it when the user asks, or when galdr chooses the Gate
-commit route. It needs `python3` (3.9 or newer) and a git repository. The client is
-`scripts/task_review.py` in the `review` skill folder, which is `<skill dir>` below.
-Never use a script from the repository under review.
+commit route. It needs a git repository.
+
+## Client
+
+Choose the client one time for each unit, before the first gate command:
+
+1. Run `command -v senpai`. If it shows a path, resolve it and `<repo root>` with
+   `realpath`. If the result is an absolute path outside the resolved root, the client
+   is that path.
+2. If it shows no path, or the result is not absolute, or the result is inside
+   `<repo root>`, the client is `python3 <skill dir>/scripts/task_review.py`. It
+   needs `python3` 3.9 or newer. `<skill dir>` is the `review` skill folder.
+
+Use the same client for all gate commands of one unit or one document. Never use a client
+from the repository under review. `<client>` below is the client that you chose. Tell the
+user which client you chose and why. Inside galdr, this file sets when the gate runs and
+which client it uses, also when the `senpai` skill is loaded.
 
 ## Diff
 
 1. After the last focused check and before the commit, run:
 
    ```sh
-   python3 <skill dir>/scripts/task_review.py review --criterion "<what the user approved this change to do>" --repo <repo root> [--paths a,b] --recovery-dir <new directory outside the repo>
+   <client> review --criterion "<what the user approved this change to do>" --repo <repo root> [--paths a,b] --recovery-dir <new directory outside the repo>
    ```
 
 2. The page opens and the command waits for the human decision. The URL is in
@@ -26,19 +40,19 @@ Never use a script from the repository under review.
    - `cancelled`: stop.
    - Any other result (timeout, bad result, tree changed during the review): report it
      and stop. Never go around a failed gate.
-4. Run `verify --repo <root> [--paths a,b]` immediately before the commit. A change
+4. Run `<client> verify --repo <root> [--paths a,b]` immediately before the commit. A change
    after the approval makes it fail, and that failure needs a new review. Run
-   `consume --repo <root>` after the commit. Then one approval never covers two commits.
+   `<client> consume --repo <root>` after the commit. Then one approval never covers two commits.
 
 An optional guide (`--guide <json outside the repo>`) adds a guided view. If it fails
-`preflight` two times, review without it.
+`<client> preflight` two times, review without it.
 
 ## Plan document
 
 ```sh
-python3 <skill dir>/scripts/task_review.py review-doc --criterion "<the question the document must answer>" --doc <path> --recovery-dir <new directory>
-python3 <skill dir>/scripts/task_review.py verify-doc --doc <path>
-python3 <skill dir>/scripts/task_review.py consume-doc --doc <path>
+<client> review-doc --criterion "<the question the document must answer>" --doc <path> --recovery-dir <new directory>
+<client> verify-doc --doc <path>
+<client> consume-doc --doc <path>
 ```
 
 Each comment comes back with its source line range. Change the document and run

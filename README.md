@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-plugin-6e56cf?style=flat-square" alt="Claude Code plugin">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.4.0-22d3ee?style=flat-square" alt="version 2.4.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.5.0-22d3ee?style=flat-square" alt="version 2.5.0"></a>
   <a href="skills/"><img src="https://img.shields.io/badge/skills-6-34d399?style=flat-square" alt="6 skills"></a>
   <img src="https://img.shields.io/badge/discipline-proof_first-f59e0b?style=flat-square" alt="proof first">
   <img src="https://img.shields.io/badge/voice-ASD--STE100-64748b?style=flat-square" alt="ASD-STE100 voice">
@@ -110,8 +110,16 @@ decision:
 For an independent review, galdr uses its own `reviewer` agent. It has no Edit or Write
 tool. It still has Bash, and only its instructions forbid writes through the shell.
 
-It runs on Python 3.9 or newer with no installs. The fonts and scripts are bundled, and
-the page loads nothing from the network.
+The gate uses [senpai](https://github.com/nyelonong/senpai) when it is installed. senpai
+is the same gate as a standalone binary, with an inbox and a split pane inside Rex or Tern.
+Without senpai, galdr uses its bundled copy, which runs on Python 3.9 or newer with no
+installs. Both copies record approvals in the same ledger format. One unit uses one copy
+from review to commit. The fonts and scripts are bundled, and the page loads nothing from
+the network.
+
+```
+curl -fsSL https://raw.githubusercontent.com/nyelonong/senpai/main/install.sh | sh
+```
 
 ## Install
 
@@ -133,16 +141,17 @@ works wherever the skill goes.
 
 ### Optional: galdr-extras
 
-`galdr-extras` is a second, opt-in plugin with language skills. It starts with
-`go-engineering`. galdr stays generic and works without it. When a language skill is
-installed, galdr loads it before it designs or edits code in that language.
+`galdr-extras` is a second, opt-in plugin. It has `go-engineering` and the `senpai`
+skill. galdr stays generic and works without it. When a language skill is installed,
+galdr loads it before it designs or edits code in that language. The `senpai` skill
+tells the agent how to use the senpai binary; install the binary with the line above.
 
 ```
 /plugin install galdr-extras@nyelonong
 ```
 
-With `npx skills add nyelonong/galdr`, select `go-engineering` in the list, or add
-`--skill go-engineering`.
+With `npx skills add nyelonong/galdr`, select `go-engineering` or `senpai` in the list,
+or add `--skill go-engineering` or `--skill senpai`.
 
 ### Upgrading from 1.x
 

@@ -1,3 +1,8 @@
+## 2.5.0 – 2026-11-25
+
+- The review gate runs the installed `senpai` binary when `command -v senpai` finds it, and the bundled Python client only when it does not. One unit or document uses one client for every gate command. Both write the same ledger format.
+- `galdr-extras` 1.1.0 adds the `senpai` skill, copied from the senpai repository. New `testing/senpai-skill-sync-test.sh` fails when the copy drifts.
+
 ## 2.4.0 – 2026-11-23
 
 - New opt-in plugin `galdr-extras` 1.0.0 in the same marketplace, with `go-engineering`: Go design, errors, context, concurrency and testing rules, plus references for concurrency, network resilience, circuit breakers, observability and diagnostics. Install it with `/plugin install galdr-extras@nyelonong`. galdr loads it on its own when it is installed.
